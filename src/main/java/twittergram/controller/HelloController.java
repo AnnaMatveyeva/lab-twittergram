@@ -11,9 +11,9 @@ public class HelloController {
         return "This is hello page";
     }
 
-    @GetMapping("/hello-user")
-    public String getHelloUser() {
-        return "This is hello-user page";
+    @GetMapping("/hello-admin")
+    public String getHelloAdmin() {
+        return "This is admin page";
     }
 
 }
