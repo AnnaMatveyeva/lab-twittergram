@@ -1,4 +1,4 @@
-package twittergram.service;
+package twittergram.security;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import twittergram.entity.User;
+import twittergram.service.UserService;
 
 @RequiredArgsConstructor
 @Service

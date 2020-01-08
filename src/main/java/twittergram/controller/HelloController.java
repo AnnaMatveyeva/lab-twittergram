@@ -6,6 +6,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HelloController {
 
+    @GetMapping("/")
+    public String getEmptyPath() {
+        return "For free";
+    }
+
     @GetMapping("/hello")
     public String getHello() {
         return "This is hello page";
