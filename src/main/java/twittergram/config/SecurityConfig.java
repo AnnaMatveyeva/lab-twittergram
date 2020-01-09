@@ -11,7 +11,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import twittergram.security.JwtTokenProvider;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import twittergram.security.JwtTokenFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -20,7 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtTokenFilter jwtRequestFilter;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -32,8 +33,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/hello").hasRole("REGULAR")
             .antMatchers("/hello-admin").hasRole("ADMIN")
-            .and()
-            .apply(new JwtConfigurer(jwtTokenProvider));
+            .and();
+        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override

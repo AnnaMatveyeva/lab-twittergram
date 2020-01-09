@@ -2,14 +2,15 @@ package twittergram.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import java.io.IOException;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,7 +19,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import twittergram.entity.InvalidTokens;
 import twittergram.entity.Role;
-import twittergram.exception.InvalidJwtAuthenticationException;
 
 @Component
 @RequiredArgsConstructor
@@ -70,20 +70,14 @@ public class JwtTokenProvider {
         return null;
     }
 
-    public boolean validateToken(String token) {
-        try {
-            Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
-
-            if (claims.getBody().getExpiration().before(new Date()) ||
-                InvalidTokens.INSTANCE.getTokensList().contains(token)) {
-                return false;
-            }
-
-            return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new InvalidJwtAuthenticationException("Expired or invalid JWT token");
+    public boolean validateToken(String token, HttpServletResponse response) throws IOException {
+        Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
+        if (claims.getBody().getExpiration().before(new Date()) ||
+            InvalidTokens.INSTANCE.getTokensList().contains(token)) {
+            return false;
         }
-    }
 
+        return true;
+    }
 
 }
