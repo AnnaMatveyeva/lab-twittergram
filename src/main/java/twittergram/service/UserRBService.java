@@ -2,6 +2,7 @@ package twittergram.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -30,12 +31,12 @@ public class UserRBService implements Validator {
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "NotEmpty");
-        if (user.getFirstName().length() < 4 || user.getFirstName().length() > 32) {
+        if (user.getLastName().length() < 4 || user.getLastName().length() > 32) {
             errors.rejectValue("lastName", "Size.userForm.lastName");
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "nickname", "NotEmpty");
-        if (user.getFirstName().length() < 4 || user.getFirstName().length() > 32) {
+        if (user.getNickname().length() < 4 || user.getNickname().length() > 32) {
             errors.rejectValue("nickname", "Size.userForm.nickname");
         }
 
@@ -58,6 +59,21 @@ public class UserRBService implements Validator {
 
         if (!user.getConfirmPass().equals(user.getPassword())) {
             errors.rejectValue("confirmPass", "Diff.userForm.confirmPass");
+        }
+    }
+
+    public void validate(UserRequestBody user, Errors errors) {
+
+        if (!StringUtils.isEmpty(user.getFirstName())) {
+            if (user.getFirstName().length() < 4 || user.getFirstName().length() > 32) {
+                errors.rejectValue("firstName", "Size.userForm.firstName");
+            }
+        } else if (!StringUtils.isEmpty(user.getLastName())) {
+            if (user.getLastName().length() < 4 || user.getLastName().length() > 32) {
+                errors.rejectValue("lastName", "Size.userForm.lastName");
+            }
+        } else {
+            errors.reject("Fields are empty");
         }
     }
 

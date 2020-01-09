@@ -3,6 +3,7 @@ package twittergram.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import twittergram.entity.User;
 import twittergram.model.UserRequestBody;
 import twittergram.repository.RoleRepository;
@@ -33,6 +34,17 @@ public class UserService {
         user.setRole(roleRepo.findByName("ROLE_REGULAR"));
         user.setEmail(userRequestBody.getEmail());
 
+        return userRepo.save(user);
+    }
+
+    public User update(String nickname, String firstName, String lastName) {
+        User user = findByNickname(nickname);
+        if (!StringUtils.isEmpty(firstName)) {
+            user.setFirstName(firstName);
+        }
+        if(!StringUtils.isEmpty(lastName)) {
+            user.setLastName(lastName);
+        }
         return userRepo.save(user);
     }
 }
