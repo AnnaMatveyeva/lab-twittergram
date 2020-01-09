@@ -1,4 +1,4 @@
-package twittergram.entity;
+package twittergram.model;
 
 import lombok.Data;
 

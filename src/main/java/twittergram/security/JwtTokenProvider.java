@@ -17,8 +17,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import twittergram.entity.InvalidTokens;
 import twittergram.entity.Role;
+import twittergram.model.InvalidTokens;
 
 @Component
 @RequiredArgsConstructor

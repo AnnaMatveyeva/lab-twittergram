@@ -18,6 +18,9 @@
       <column name="role_id" type="INT">
         <constraints nullable="false"/>
       </column>
+      <column name="email" type="VARCHAR(40)">
+        <constraints nullable="false"/>
+      </column>
     </createTable>
 
     <addForeignKeyConstraint baseColumnNames="role_id"
