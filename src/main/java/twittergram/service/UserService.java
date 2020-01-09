@@ -42,9 +42,10 @@ public class UserService {
         if (!StringUtils.isEmpty(firstName)) {
             user.setFirstName(firstName);
         }
-        if(!StringUtils.isEmpty(lastName)) {
+        if (!StringUtils.isEmpty(lastName)) {
             user.setLastName(lastName);
         }
         return userRepo.save(user);
     }
+
 }

@@ -22,13 +22,15 @@ public class UserController {
 
     @PutMapping("/user")
     public User updateUser(@RequestBody UserRequestBody userRequestBody,
-        BindingResult bindingResult,HttpServletResponse response, HttpServletRequest request)
+        BindingResult bindingResult, HttpServletResponse response, HttpServletRequest request)
         throws IOException {
         userRBService.validate(userRequestBody, bindingResult);
         if (bindingResult.hasErrors()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid data");
         }
         return userService
-            .update(request.getRemoteUser(), userRequestBody.getFirstName(), userRequestBody.getLastName());
+            .update(request.getRemoteUser(), userRequestBody.getFirstName(),
+                userRequestBody.getLastName());
     }
+
 }

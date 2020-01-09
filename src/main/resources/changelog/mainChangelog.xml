@@ -6,4 +6,5 @@
   <include file="changelog/rolesChangelog.xml"/>
   <include file="changelog/usersChangelog.xml"/>
   <include file="changelog/insertChangelog.xml"/>
+  <include file="changelog/storiesChangelog.xml"/>
 </databaseChangeLog>
