@@ -24,12 +24,23 @@ public class UserRBService implements Validator {
     public void validate(Object o, Errors errors) {
         UserRequestBody user = (UserRequestBody) o;
 
-        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "username", "NotEmpty");
-        if (user.getUsername().length() < 4 || user.getUsername().length() > 32) {
-            errors.rejectValue("username", "Size.userForm.username");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "NotEmpty");
+        if (user.getFirstName().length() < 4 || user.getFirstName().length() > 32) {
+            errors.rejectValue("firstName", "Size.userForm.firstName");
         }
-        if (userService.findByName(user.getUsername()) != null) {
-            errors.rejectValue("username", "Duplicate.userForm.username");
+
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "NotEmpty");
+        if (user.getFirstName().length() < 4 || user.getFirstName().length() > 32) {
+            errors.rejectValue("lastName", "Size.userForm.lastName");
+        }
+
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "nickname", "NotEmpty");
+        if (user.getFirstName().length() < 4 || user.getFirstName().length() > 32) {
+            errors.rejectValue("nickname", "Size.userForm.nickname");
+        }
+
+        if (userService.findByNickname(user.getNickname()) != null) {
+            errors.rejectValue("nickname", "Duplicate.userForm.nickname");
         }
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "NotEmpty");

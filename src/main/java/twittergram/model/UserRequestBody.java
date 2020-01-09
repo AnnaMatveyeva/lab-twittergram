@@ -5,7 +5,11 @@ import lombok.Data;
 @Data
 public class UserRequestBody {
 
-    private String username;
+    private String nickname;
+
+    private String firstName;
+
+    private String lastName;
 
     private String password;
 

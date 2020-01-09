@@ -38,13 +38,13 @@ public class AuthenticationController {
         HttpServletResponse response)
         throws IOException {
         try {
-            String username = data.getUsername();
+            String nickname = data.getNickname();
             authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, data.getPassword()));
-            String token = jwtTokenProvider.createToken(username,
-                Arrays.asList(userService.findByName(username).getRole()));
+                new UsernamePasswordAuthenticationToken(nickname, data.getPassword()));
+            String token = jwtTokenProvider.createToken(nickname,
+                Arrays.asList(userService.findByNickname(nickname).getRole()));
             Map<Object, Object> model = new HashMap<>();
-            model.put("username", username);
+            model.put("nickname", nickname);
             model.put("token", token);
             System.out.println("New token created");
             return ok(model);

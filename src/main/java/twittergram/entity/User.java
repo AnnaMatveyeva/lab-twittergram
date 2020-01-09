@@ -13,8 +13,14 @@ import lombok.Data;
 @Table(name = "users")
 public class User extends AbstractEntity {
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
+    @Column(name = "nickname")
+    private  String nickname;
 
     @Column(name = "password")
     private String password;

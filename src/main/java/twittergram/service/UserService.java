@@ -16,8 +16,8 @@ public class UserService {
     private final RoleRepository roleRepo;
     private final PasswordEncoder passwordEncoder;
 
-    public User findByName(String username) {
-        return userRepo.findByName(username);
+    public User findByNickname(String nickname) {
+        return userRepo.findByNickname(nickname);
     }
 
     public User findByEmail(String email) {
@@ -26,7 +26,9 @@ public class UserService {
 
     public User save(UserRequestBody userRequestBody) {
         User user = new User();
-        user.setName(userRequestBody.getUsername());
+        user.setFirstName(userRequestBody.getFirstName());
+        user.setLastName(userRequestBody.getLastName());
+        user.setNickname(userRequestBody.getNickname());
         user.setPassword(passwordEncoder.encode(userRequestBody.getPassword()));
         user.setRole(roleRepo.findByName("ROLE_REGULAR"));
         user.setEmail(userRequestBody.getEmail());
