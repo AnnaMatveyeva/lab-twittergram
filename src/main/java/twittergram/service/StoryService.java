@@ -17,7 +17,7 @@ public class StoryService {
         Story story = new Story();
         story.setText(text);
         story.setDate(LocalDate.now());
-        story.setUser(userService.findByNickname(nickname));
+        story.setUserId(userService.findByNickname(nickname).getId());
         return storyRepo.save(story);
     }
 
