@@ -1,5 +1,6 @@
 package twittergram.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -46,6 +47,10 @@ public class UserService {
             user.setLastName(lastName);
         }
         return userRepo.save(user);
+    }
+
+    public List<User> getAll() {
+        return userRepo.findAll();
     }
 
 }

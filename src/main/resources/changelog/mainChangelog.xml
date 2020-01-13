@@ -7,4 +7,5 @@
   <include file="changelog/usersChangelog.xml"/>
   <include file="changelog/insertChangelog.xml"/>
   <include file="changelog/storiesChangelog.xml"/>
+  <include file="changelog/photoChangelog.xml"/>
 </databaseChangeLog>

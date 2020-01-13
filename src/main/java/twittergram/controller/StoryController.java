@@ -7,18 +7,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import twittergram.entity.Story;
 import twittergram.model.StoryRequestBody;
 import twittergram.service.StoryService;
 
 @RestController
+@RequestMapping("/api/story")
 @RequiredArgsConstructor
 public class StoryController {
 
     private final StoryService storyService;
 
-    @PostMapping("/story")
+    @PostMapping("/")
     public Story addStory(@RequestBody StoryRequestBody storyRequestBody,
         HttpServletRequest request,
         HttpServletResponse response) throws IOException {
