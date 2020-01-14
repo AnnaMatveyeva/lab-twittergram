@@ -2,6 +2,7 @@ package twittergram.service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -9,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import twittergram.entity.Photo;
 import twittergram.entity.Tag;
 import twittergram.entity.User;
+import twittergram.exception.LikeNotFoundException;
 import twittergram.exception.PhotoNotFoundException;
 import twittergram.model.PhotoRequestBody;
 import twittergram.repository.PhotoRepository;
@@ -68,5 +70,27 @@ public class PhotoService {
         } else {
             throw new PhotoNotFoundException();
         }
+    }
+
+    public Photo findByLikeOwner(String likeOwnerNick){
+        Photo photo = photoRepo
+            .findByLikesUserId(userService.findByNickname(likeOwnerNick).getId());
+        if (photo != null) {
+            return photo;
+        } else {
+            throw new LikeNotFoundException();
+        }
+    }
+
+    public Photo findById(Long id) {
+        try {
+            return photoRepo.findById(id).get();
+        } catch (NoSuchElementException ex) {
+            throw new PhotoNotFoundException();
+        }
+    }
+
+    public Photo update(Photo photo){
+        return photoRepo.save(photo);
     }
 }

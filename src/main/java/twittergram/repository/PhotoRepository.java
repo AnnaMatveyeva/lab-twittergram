@@ -8,4 +8,6 @@ import twittergram.entity.Photo;
 public interface PhotoRepository extends JpaRepository<Photo, Long> {
 
     Photo findByImageAndUserId(int id, Long userId);
+
+    Photo findByLikesUserId(Long userId);
 }

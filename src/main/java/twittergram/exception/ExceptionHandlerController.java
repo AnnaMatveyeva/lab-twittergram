@@ -27,4 +27,11 @@ public class ExceptionHandlerController {
         throws IOException {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
     }
+    @ExceptionHandler(PhotoNotFoundException.class)
+    public void handleLikeNotFoundException(HttpServletResponse response,
+        LikeNotFoundException ex)
+        throws IOException {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
+    }
+
 }

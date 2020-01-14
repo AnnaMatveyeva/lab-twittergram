@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import twittergram.entity.Photo;
+import twittergram.exception.LikeNotFoundException;
 import twittergram.model.PhotoRequestBody;
+import twittergram.service.LikeService;
 import twittergram.service.PhotoService;
 
 @RestController
@@ -23,6 +25,7 @@ import twittergram.service.PhotoService;
 public class PhotoController {
 
     private final PhotoService photoService;
+    private final LikeService likeService;
 
     @PostMapping("/addImage")
     public String addImage(@RequestParam MultipartFile file, HttpServletRequest request) {
@@ -45,9 +48,15 @@ public class PhotoController {
             .body(fileSystemResource);
     }
 
-    @GetMapping(value = "/getPhotosContent")
+    @GetMapping(value = "/getPhotoContent")
     public Photo getPhotoContent(@RequestParam int id, HttpServletRequest request) {
         return photoService.getByImageId(id, request.getRemoteUser());
+    }
+
+    @PostMapping("/like")
+    public Photo setLike(HttpServletRequest request, @RequestParam Long photoId) {
+        likeService.setLike(photoId, request.getRemoteUser());
+        return photoService.findByLikeOwner(request.getRemoteUser());
     }
 
 }

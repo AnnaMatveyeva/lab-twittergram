@@ -22,8 +22,13 @@
             <column name="user_id" type="INT">
                 <constraints nullable="false"/>
             </column>
-        </createTable>
 
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="user_id"
+            baseTableName="photos"
+            constraintName="fk_user_photo_id"
+            referencedColumnNames="id"
+            referencedTableName="users"/>
     </changeSet>
 
 </databaseChangeLog>

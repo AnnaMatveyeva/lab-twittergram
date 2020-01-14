@@ -11,4 +11,5 @@
   <include file="changelog/tagChangelog.xml"/>
   <include file="changelog/photo_tagsChangelog.xml"/>
   <include file="changelog/story_tagsChangelog.xml"/>
+  <include file="changelog/likeChangelog.xml"/>
 </databaseChangeLog>
