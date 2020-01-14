@@ -19,4 +19,9 @@ public class Tag extends AbstractEntity {
     @ManyToMany(mappedBy = "tags")
     private List<Photo> photos = new ArrayList<>();
 
+    @JsonIgnore
+    @ManyToMany(mappedBy = "tags")
+    private List<Story> stories = new ArrayList<>();
+
+
 }

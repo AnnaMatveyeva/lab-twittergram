@@ -6,8 +6,10 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import twittergram.entity.Story;
 import twittergram.model.StoryRequestBody;
@@ -25,11 +27,17 @@ public class StoryController {
         HttpServletRequest request,
         HttpServletResponse response) throws IOException {
         if (!StringUtils.isEmpty(storyRequestBody.getText())) {
-            return storyService.create(storyRequestBody.getText(), request.getRemoteUser());
+            return storyService.create(storyRequestBody, request.getRemoteUser());
         } else {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Text is empty");
             return null;
         }
+    }
+
+    @PutMapping("/")
+    public Story update(@RequestParam Long id, @RequestBody StoryRequestBody storyRequestBody,
+        HttpServletRequest request) {
+        return storyService.update(id, storyRequestBody, request.getRemoteUser());
     }
 
 }

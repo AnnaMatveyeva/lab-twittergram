@@ -17,7 +17,6 @@ public class FileService {
 
         try {
 
-
             String fileName = String.valueOf(imageId);
             String resultPath = absolutePath + "\\" + nickname + "\\" + fileName;
             File filePath = new File(resultPath);

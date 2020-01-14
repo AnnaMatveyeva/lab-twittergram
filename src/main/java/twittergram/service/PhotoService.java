@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 import twittergram.entity.Photo;
 import twittergram.entity.Tag;
 import twittergram.entity.User;
-import twittergram.exception.FileStorageException;
+import twittergram.exception.PhotoNotFoundException;
 import twittergram.model.PhotoRequestBody;
 import twittergram.repository.PhotoRepository;
 
@@ -34,11 +34,18 @@ public class PhotoService {
     }
 
     public Photo getByImageId(int id, String nickname) {
-        return photoRepo.findByImageAndUserId(id, userService.findByNickname(nickname).getId());
+        Photo photo = photoRepo
+            .findByImageAndUserId(id, userService.findByNickname(nickname).getId());
+        if (photo != null) {
+            return photo;
+        } else {
+            throw new PhotoNotFoundException();
+        }
+
     }
 
     public Photo addPhotoContent(int image, PhotoRequestBody photoRequestBody, String nickname) {
-        Photo photo = photoRepo.findByImageAndUserId(image, userService.findByNickname(nickname).getId());
+        Photo photo = getByImageId(image, nickname);
         if (photo != null) {
             if (!StringUtils.isEmpty(photoRequestBody.getDescription())) {
                 photo.setDescription(photoRequestBody.getDescription());
@@ -47,19 +54,19 @@ public class PhotoService {
                 List<Tag> tags = tagService.saveAll(photoRequestBody.getTags());
                 if (photo.getTags().isEmpty()) {
                     photo.setTags(tags);
-                    tagService.addPhotos(tags, photo);
+                    tagService.addTagsPhoto(tags, photo);
                 } else {
                     for (Tag tag : tags) {
                         if (!photo.getTags().contains(tag)) {
                             photo.getTags().add(tag);
-                            tagService.addPhoto(tag, photo);
+                            tagService.addTagPhoto(tag, photo);
                         }
                     }
                 }
             }
             return photoRepo.save(photo);
         } else {
-            throw new FileStorageException("Photo not found");
+            throw new PhotoNotFoundException();
         }
     }
 }

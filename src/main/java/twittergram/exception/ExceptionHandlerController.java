@@ -9,7 +9,21 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionHandlerController {
 
     @ExceptionHandler(FileStorageException.class)
-    public void handleException(HttpServletResponse response, FileStorageException ex)
+    public void handleFileException(HttpServletResponse response, FileStorageException ex)
+        throws IOException {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(StoryNotFoundException.class)
+    public void handleStoryNotFoundException(HttpServletResponse response,
+        StoryNotFoundException ex)
+        throws IOException {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
+    }
+
+    @ExceptionHandler(PhotoNotFoundException.class)
+    public void handlePhotoNotFoundException(HttpServletResponse response,
+        PhotoNotFoundException ex)
         throws IOException {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
     }

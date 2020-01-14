@@ -3,10 +3,10 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet author="admin" id="8">
+    <changeSet author="admin" id="9">
 
-        <createTable tableName="photos_tags">
-            <column name="photo_id" type="INT">
+        <createTable tableName="stories_tags">
+            <column name="story_id" type="INT">
                 <constraints nullable="false" />
             </column>
             <column name="tag_id" type="INT">
@@ -14,11 +14,11 @@
             </column>
         </createTable>
 
-        <addForeignKeyConstraint constraintName="fk_photos"
-            baseTableName="photos_tags" baseColumnNames="photo_id"
-            referencedTableName="photos" referencedColumnNames="id" />
-        <addForeignKeyConstraint constraintName="fk_tag_for_photos"
-            baseTableName="photos_tags" baseColumnNames="tag_id"
+        <addForeignKeyConstraint constraintName="fk_stories"
+            baseTableName="stories_tags" baseColumnNames="story_id"
+            referencedTableName="stories" referencedColumnNames="id" />
+        <addForeignKeyConstraint constraintName="fk_tag_for_stories"
+            baseTableName="stories_tags" baseColumnNames="tag_id"
             referencedTableName="tags" referencedColumnNames="id" />
 
     </changeSet>

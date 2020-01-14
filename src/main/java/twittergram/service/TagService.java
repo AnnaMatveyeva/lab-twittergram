@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import twittergram.entity.Photo;
+import twittergram.entity.Story;
 import twittergram.entity.Tag;
 import twittergram.repository.TagRepository;
 
@@ -26,16 +27,29 @@ public class TagService {
         return result;
     }
 
-    public Tag addPhoto(Tag tag, Photo photo) {
+    public Tag addTagPhoto(Tag tag, Photo photo) {
         tag.getPhotos().add(photo);
         tagRepo.save(tag);
         return tag;
     }
 
-    public List<Tag> addPhotos(List<Tag> tags, Photo photo){
-        for(Tag tag : tags){
+    public List<Tag> addTagsPhoto(List<Tag> tags, Photo photo) {
+        for (Tag tag : tags) {
             tag.getPhotos().add(photo);
         }
         return tagRepo.saveAll(tags);
+    }
+
+    public List<Tag> addTagsStory(List<Tag> tags, Story story) {
+        for (Tag tag : tags) {
+            tag.getStories().add(story);
+        }
+        return tagRepo.saveAll(tags);
+    }
+
+    public Tag addTagStory(Tag tag, Story story) {
+        tag.getStories().add(story);
+        tagRepo.save(tag);
+        return tag;
     }
 }
