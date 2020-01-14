@@ -7,5 +7,5 @@ import twittergram.entity.Photo;
 @Repository
 public interface PhotoRepository extends JpaRepository<Photo, Long> {
 
-    Photo findByImage(int id);
+    Photo findByImageAndUserId(int id,Long userId);
 }

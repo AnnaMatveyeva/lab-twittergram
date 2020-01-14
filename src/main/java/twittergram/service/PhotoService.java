@@ -29,16 +29,16 @@ public class PhotoService {
         photo.setImage(user.getPhotos().size());
         photo.setUserId(userService.findByNickname(nickname).getId());
         photo.setDate(LocalDate.now());
-        photo.setPath(fileService.uploadFile(file, photo.getImage()));
+        photo.setPath(fileService.uploadFile(file, photo.getImage(), nickname));
         return photoRepo.save(photo);
     }
 
-    public Photo getByImageId(int id) {
-        return photoRepo.findByImage(id);
+    public Photo getByImageId(int id, String nickname) {
+        return photoRepo.findByImageAndUserId(id, userService.findByNickname(nickname).getId());
     }
 
-    public Photo addPhotoContent(int image, PhotoRequestBody photoRequestBody) {
-        Photo photo = photoRepo.findByImage(image);
+    public Photo addPhotoContent(int image, PhotoRequestBody photoRequestBody, String nickname) {
+        Photo photo = photoRepo.findByImageAndUserId(image, userService.findByNickname(nickname).getId());
         if (photo != null) {
             if (!StringUtils.isEmpty(photoRequestBody.getDescription())) {
                 photo.setDescription(photoRequestBody.getDescription());

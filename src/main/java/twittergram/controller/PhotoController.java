@@ -33,22 +33,22 @@ public class PhotoController {
 
     @PostMapping("/addPhotoContent")
     public Photo addPhotoContent(@RequestParam int imageId,
-        @RequestBody PhotoRequestBody photoRequestBody) {
-        return photoService.addPhotoContent(imageId, photoRequestBody);
+        @RequestBody PhotoRequestBody photoRequestBody, HttpServletRequest request) {
+        return photoService.addPhotoContent(imageId, photoRequestBody,request.getRemoteUser());
     }
 
     @GetMapping(value = "/getImageById")
-    public ResponseEntity getImage(@RequestParam int id) {
+    public ResponseEntity getImage(@RequestParam int id, HttpServletRequest request) {
         Resource fileSystemResource = new FileSystemResource(
-            photoService.getByImageId(id).getPath());
+            photoService.getByImageId(id, request.getRemoteUser()).getPath());
         return ResponseEntity.ok()
             .contentType(MediaType.IMAGE_JPEG)
             .body(fileSystemResource);
     }
 
     @GetMapping(value = "/getPhotosContent")
-    public Photo getPhotoContent(@RequestParam int id) {
-        return photoService.getByImageId(id);
+    public Photo getPhotoContent(@RequestParam int id, HttpServletRequest request) {
+        return photoService.getByImageId(id, request.getRemoteUser());
     }
 
 }

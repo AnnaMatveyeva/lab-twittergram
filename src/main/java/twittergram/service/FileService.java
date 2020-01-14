@@ -1,5 +1,6 @@
 package twittergram.service;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -12,13 +13,20 @@ public class FileService {
 
     private final Path absolutePath = Paths.get("src/main/resources/uploads/").toAbsolutePath();
 
-    public String uploadFile(MultipartFile file, int imageId) {
+    public String uploadFile(MultipartFile file, int imageId, String nickname) {
 
         try {
+
+
             String fileName = String.valueOf(imageId);
-            FileOutputStream outputStream = new FileOutputStream(absolutePath + "\\" + fileName);
+            String resultPath = absolutePath + "\\" + nickname + "\\" + fileName;
+            File filePath = new File(resultPath);
+            if (!filePath.exists()) {
+                filePath.getParentFile().mkdir();
+            }
+            FileOutputStream outputStream = new FileOutputStream(resultPath);
             outputStream.write(file.getBytes());
-            return absolutePath + "\\" + fileName;
+            return resultPath;
         } catch (Exception e) {
             e.printStackTrace();
             throw new FileStorageException("Could not store file " + file.getOriginalFilename()
