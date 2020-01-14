@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -32,7 +33,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
                 }
             }
             filterChain.doFilter(request, response);
-        } catch (JwtException ex) {
+        } catch (JwtException | AuthenticationException ex) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication failed");
         }
     }

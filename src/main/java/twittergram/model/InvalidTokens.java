@@ -1,4 +1,4 @@
-package twittergram.entity;
+package twittergram.model;
 
 import java.util.ArrayList;
 import java.util.List;

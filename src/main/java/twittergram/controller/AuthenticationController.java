@@ -13,12 +13,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import twittergram.entity.AuthenticationRequest;
-import twittergram.entity.InvalidTokens;
+import twittergram.model.AuthenticationRequest;
+import twittergram.model.InvalidTokens;
+import twittergram.model.UserRequestBody;
 import twittergram.security.JwtTokenProvider;
+import twittergram.service.UserRBService;
 import twittergram.service.UserService;
 
 @RequiredArgsConstructor
@@ -28,24 +31,25 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
+    private final UserRBService userRBService;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody AuthenticationRequest data,
         HttpServletResponse response)
         throws IOException {
         try {
-            String username = data.getUsername();
+            String nickname = data.getNickname();
             authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(username, data.getPassword()));
-            String token = jwtTokenProvider.createToken(username,
-                Arrays.asList(userService.findByName(username).getRole()));
+                new UsernamePasswordAuthenticationToken(nickname, data.getPassword()));
+            String token = jwtTokenProvider.createToken(nickname,
+                Arrays.asList(userService.findByNickname(nickname).getRole()));
             Map<Object, Object> model = new HashMap<>();
-            model.put("username", username);
+            model.put("nickname", nickname);
             model.put("token", token);
             System.out.println("New token created");
             return ok(model);
         } catch (AuthenticationException e) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Bad credentials");
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
             return null;
         }
     }
@@ -60,6 +64,19 @@ public class AuthenticationController {
             InvalidTokens.INSTANCE.getTokensList().add(token);
         }
         return "user logged out";
+    }
+
+    @PostMapping("/registration")
+    public ResponseEntity registration(@RequestBody UserRequestBody userRequestBody,
+        HttpServletResponse response, BindingResult bindingResult)
+        throws IOException {
+        userRBService.validate(userRequestBody, bindingResult);
+        if (bindingResult.hasErrors()) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid data");
+            return null;
+        }
+
+        return ok(userService.save(userRequestBody));
     }
 
 }
