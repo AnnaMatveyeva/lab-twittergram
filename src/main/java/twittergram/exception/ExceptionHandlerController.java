@@ -1,9 +1,7 @@
 package twittergram.exception;
 
-import static org.springframework.http.ResponseEntity.status;
-
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -11,7 +9,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ExceptionHandlerController {
 
     @ExceptionHandler(FileStorageException.class)
-    public ResponseEntity handleException() {
-        return status(HttpStatus.BAD_REQUEST).build();
+    public void handleException(HttpServletResponse response, FileStorageException ex)
+        throws IOException {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
     }
 }

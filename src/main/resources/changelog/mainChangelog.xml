@@ -8,4 +8,6 @@
   <include file="changelog/insertChangelog.xml"/>
   <include file="changelog/storiesChangelog.xml"/>
   <include file="changelog/photoChangelog.xml"/>
+  <include file="changelog/tagChangelog.xml"/>
+  <include file="changelog/photo_tagsChangelog.xml"/>
 </databaseChangeLog>
