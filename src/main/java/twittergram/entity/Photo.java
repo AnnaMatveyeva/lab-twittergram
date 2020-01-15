@@ -1,7 +1,6 @@
 package twittergram.entity;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,11 +11,16 @@ import javax.persistence.Table;
 import lombok.Data;
 
 @Entity
-@Table(name = "stories")
+@Table(name = "photos")
 @Data
-public class Story extends AbstractEntity {
+public class Photo extends AbstractEntity {
 
-    private String text;
+    private String description;
+
+    @Column(name = "image")
+    private int image;
+
+    private String path;
 
     private LocalDate date;
 
@@ -25,15 +29,14 @@ public class Story extends AbstractEntity {
 
     @ManyToMany
     @JoinTable(
-        name = "stories_tags",
-        joinColumns = @JoinColumn(name = "story_id"),
+        name = "photos_tags",
+        joinColumns = @JoinColumn(name = "photo_id"),
         inverseJoinColumns = @JoinColumn(name = "tag_id"))
-    private List<Tag> tags = new ArrayList<>();
+    private List<Tag> tags;
 
     @ManyToMany
-    @JoinTable(name = "stories_likes",
-        joinColumns = @JoinColumn(name = "story_id"),
+    @JoinTable(name = "photos_likes",
+        joinColumns = @JoinColumn(name = "photo_id"),
         inverseJoinColumns = @JoinColumn(name = "like_id"))
-    private List<Like> likes = new ArrayList<>();
-
+    private List<Like> likes;
 }

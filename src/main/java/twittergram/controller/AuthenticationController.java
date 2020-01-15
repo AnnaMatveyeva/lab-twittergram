@@ -32,6 +32,7 @@ public class AuthenticationController {
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
     private final UserRBService userRBService;
+    private final InvalidTokens invalidTokens;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody AuthenticationRequest data,
@@ -61,7 +62,7 @@ public class AuthenticationController {
         if (auth != null && auth.startsWith("Bearer ")) {
             String token = auth.substring(7);
             System.out.println("Token is " + token);
-            InvalidTokens.INSTANCE.getTokensList().add(token);
+            invalidTokens.getTokensList().add(token);
         }
         return "user logged out";
     }

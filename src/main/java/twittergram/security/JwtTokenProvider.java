@@ -31,6 +31,7 @@ public class JwtTokenProvider {
     private long validityInMilliseconds = 3600000;
 
     private final UserDetailsServiceImp userDetailsService;
+    private final InvalidTokens invalidTokens;
 
     @PostConstruct
     protected void init() {
@@ -73,7 +74,7 @@ public class JwtTokenProvider {
     public boolean validateToken(String token, HttpServletResponse response) throws IOException {
         Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
         if (claims.getBody().getExpiration().before(new Date()) ||
-            InvalidTokens.INSTANCE.getTokensList().contains(token)) {
+            invalidTokens.getTokensList().contains(token)) {
             return false;
         }
 

@@ -2,10 +2,10 @@ package twittergram.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import twittergram.entity.Story;
+import twittergram.entity.Like;
 
 @Repository
-public interface StoryRepository extends JpaRepository<Story, Long> {
+public interface LikeRepository extends JpaRepository<Like, Long> {
 
-    Story findByText(String text);
+    Like findByUserId(Long userId);
 }

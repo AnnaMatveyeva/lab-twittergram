@@ -2,10 +2,10 @@ package twittergram.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import twittergram.entity.Story;
+import twittergram.entity.Photo;
 
 @Repository
-public interface StoryRepository extends JpaRepository<Story, Long> {
+public interface PhotoRepository extends JpaRepository<Photo, Long> {
 
-    Story findByText(String text);
+    Photo findByImageAndUserId(int id, Long userId);
 }
