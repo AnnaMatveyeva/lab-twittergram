@@ -7,19 +7,19 @@
 
         <createTable tableName="stories_likes">
             <column name="story_id" type="INT">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="like_id" type="INT">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
         </createTable>
 
         <addForeignKeyConstraint constraintName="fk_stories_for_likes"
             baseTableName="stories_likes" baseColumnNames="story_id"
-            referencedTableName="stories" referencedColumnNames="id" />
+            referencedTableName="stories" referencedColumnNames="id"/>
         <addForeignKeyConstraint constraintName="fk_like_for_stories"
             baseTableName="stories_likes" baseColumnNames="like_id"
-            referencedTableName="likes" referencedColumnNames="id" />
+            referencedTableName="likes" referencedColumnNames="id"/>
 
     </changeSet>
 

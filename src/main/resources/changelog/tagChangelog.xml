@@ -1,19 +1,19 @@
 <databaseChangeLog
-  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-  <changeSet author="admin" id="7">
+    <changeSet author="admin" id="7">
 
-    <createTable tableName="tags">
-      <column autoIncrement="true" name="id" type="INT">
-        <constraints primaryKey="true"/>
-      </column>
-      <column name="text" type="VARCHAR(255)">
-        <constraints unique="true" nullable="false"/>
-      </column>
-    </createTable>
+        <createTable tableName="tags">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="text" type="VARCHAR(255)">
+                <constraints unique="true" nullable="false"/>
+            </column>
+        </createTable>
 
-  </changeSet>
+    </changeSet>
 
 </databaseChangeLog>

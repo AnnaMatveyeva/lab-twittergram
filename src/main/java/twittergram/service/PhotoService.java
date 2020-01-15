@@ -1,6 +1,8 @@
 package twittergram.service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -78,5 +80,19 @@ public class PhotoService {
             photo.getLikes().add(like);
             return photoRepo.save(photo);
         }
+    }
+
+    public List<Photo> findByTag(String tag) {
+        return photoRepo.findByTags_Text(tag);
+    }
+
+    public List<Photo> findByDate(String date) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(date, formatter);
+        return photoRepo.findByDate(localDate);
+    }
+
+    public List<Photo> findByAuthor(String nickname) {
+        return photoRepo.findByUserId(userService.findByNickname(nickname).getId());
     }
 }

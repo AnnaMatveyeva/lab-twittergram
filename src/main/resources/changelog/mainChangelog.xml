@@ -1,17 +1,17 @@
 <databaseChangeLog
-  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-  <include file="changelog/rolesChangelog.xml"/>
-  <include file="changelog/usersChangelog.xml"/>
-  <include file="changelog/storiesChangelog.xml"/>
-  <include file="changelog/photoChangelog.xml"/>
-  <include file="changelog/tagChangelog.xml"/>
-  <include file="changelog/photos_tagsChangelog.xml"/>
-  <include file="changelog/stories_tagsChangelog.xml"/>
-  <include file="changelog/likeChangelog.xml"/>
-  <include file="changelog/insertChangelog.xml"/>
-  <include file="changelog/photos_likesChangelog.xml"/>
-  <include file="changelog/stories_likesChangelog.xml"/>
+    <include file="changelog/rolesChangelog.xml"/>
+    <include file="changelog/usersChangelog.xml"/>
+    <include file="changelog/storiesChangelog.xml"/>
+    <include file="changelog/photoChangelog.xml"/>
+    <include file="changelog/tagChangelog.xml"/>
+    <include file="changelog/photos_tagsChangelog.xml"/>
+    <include file="changelog/stories_tagsChangelog.xml"/>
+    <include file="changelog/likeChangelog.xml"/>
+    <include file="changelog/insertChangelog.xml"/>
+    <include file="changelog/photos_likesChangelog.xml"/>
+    <include file="changelog/stories_likesChangelog.xml"/>
 </databaseChangeLog>

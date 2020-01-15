@@ -7,19 +7,19 @@
 
         <createTable tableName="stories_tags">
             <column name="story_id" type="INT">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="tag_id" type="INT">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
         </createTable>
 
         <addForeignKeyConstraint constraintName="fk_story_for_tags"
             baseTableName="stories_tags" baseColumnNames="story_id"
-            referencedTableName="stories" referencedColumnNames="id" />
+            referencedTableName="stories" referencedColumnNames="id"/>
         <addForeignKeyConstraint constraintName="fk_tag_for_stories"
             baseTableName="stories_tags" baseColumnNames="tag_id"
-            referencedTableName="tags" referencedColumnNames="id" />
+            referencedTableName="tags" referencedColumnNames="id"/>
 
     </changeSet>
 
