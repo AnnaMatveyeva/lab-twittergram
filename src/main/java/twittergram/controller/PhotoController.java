@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import twittergram.entity.Photo;
 import twittergram.model.PhotoRequestBody;
-import twittergram.service.LikeService;
 import twittergram.service.PhotoService;
 
 @RestController
@@ -24,7 +23,6 @@ import twittergram.service.PhotoService;
 public class PhotoController {
 
     private final PhotoService photoService;
-    private final LikeService likeService;
 
     @PostMapping("/addImage")
     public String addImage(@RequestParam MultipartFile file, HttpServletRequest request) {
@@ -41,20 +39,19 @@ public class PhotoController {
     @GetMapping(value = "/getUserImage")
     public ResponseEntity getImage(@RequestParam int imageId, HttpServletRequest request) {
         Resource fileSystemResource = new FileSystemResource(
-            photoService.getByImageId(imageId, request.getRemoteUser()).getPath());
+            photoService.getByImageAndUserId(imageId, request.getRemoteUser()).getPath());
         return ResponseEntity.ok()
             .contentType(MediaType.IMAGE_JPEG)
             .body(fileSystemResource);
     }
 
     @GetMapping(value = "/getPhoto")
-    public Photo getPhotoContent(@RequestParam Long photoId, HttpServletRequest request) {
+    public Photo getPhotoContent(@RequestParam Long photoId) {
         return photoService.findById(photoId);
     }
 
     @PostMapping("/like")
     public Photo setLike(HttpServletRequest request, @RequestParam Long photoId) {
-
         return photoService.addLike(photoId, request.getRemoteUser());
     }
 

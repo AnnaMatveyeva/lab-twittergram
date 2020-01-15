@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import twittergram.entity.Like;
 import twittergram.entity.Photo;
+import twittergram.entity.Story;
 import twittergram.repository.LikeRepository;
 
 @Service
@@ -17,6 +18,13 @@ public class LikeService {
         Like like = new Like();
         like.setUserId(likeOwnerId);
         like.getPhotos().add(photo);
+        return likeRepo.save(like);
+    }
+
+    public Like createLike(Story story, Long likeOwnerId) {
+        Like like = new Like();
+        like.setUserId(likeOwnerId);
+        like.getStories().add(story);
         return likeRepo.save(like);
     }
 
@@ -38,5 +46,25 @@ public class LikeService {
         like.getPhotos().add(photo);
         return likeRepo.save(like);
     }
+
+    public Like addLikeStory(Like like, Story story) {
+        like.getStories().add(story);
+        return likeRepo.save(like);
+    }
+
+    public Like setLike(Story story, String likeOwnerNick) {
+        Long likeOwnerId = userService.findByNickname(likeOwnerNick).getId();
+        Like like = likeRepo.findByUserId(likeOwnerId);
+        if (like != null) {
+            if (like.getStories().contains(story)) {
+                return like;
+            } else {
+                return addLikeStory(like, story);
+            }
+        } else {
+            return createLike(story, likeOwnerId);
+        }
+    }
+
 
 }

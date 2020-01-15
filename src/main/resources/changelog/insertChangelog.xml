@@ -52,7 +52,7 @@
     </insert>
   </changeSet>
 
-
+<!--INSERT PHOTOS-->
   <changeSet id="11" author="admin">
     <insert tableName="photos">
       <column name="id" value="1"/>
@@ -63,4 +63,15 @@
       <column name="user_id" value="2"/>
     </insert>
   </changeSet>
+
+<!--  INSERT STORY-->
+  <changeSet id="14" author="admin">
+    <insert tableName="stories">
+      <column name="id" value="1"/>
+      <column name="text" value="This is story"/>
+      <column name="date" value="2020-01-15"/>
+      <column name="user_id" value="2"/>
+    </insert>
+  </changeSet>
+
 </databaseChangeLog>

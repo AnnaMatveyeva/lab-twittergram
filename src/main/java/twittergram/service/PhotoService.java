@@ -34,7 +34,7 @@ public class PhotoService {
         return photoRepo.save(photo);
     }
 
-    public Photo getByImageId(int id, String nickname) {
+    public Photo getByImageAndUserId(int id, String nickname) {
         Photo photo = photoRepo
             .findByImageAndUserId(id, userService.findByNickname(nickname).getId());
         if (photo != null) {
@@ -46,7 +46,7 @@ public class PhotoService {
     }
 
     public Photo addPhotoContent(int image, PhotoRequestBody photoRequestBody, String nickname) {
-        Photo photo = getByImageId(image, nickname);
+        Photo photo = getByImageAndUserId(image, nickname);
         if (photo != null) {
             if (!StringUtils.isEmpty(photoRequestBody.getDescription())) {
                 photo.setDescription(photoRequestBody.getDescription());
@@ -72,7 +72,11 @@ public class PhotoService {
     public Photo addLike(Long photoId, String likeOwnerNick) {
         Photo photo = findById(photoId);
         Like like = likeService.setLike(photo, likeOwnerNick);
-        photo.getLikes().add(like);
-        return photoRepo.save(photo);
+        if (photo.getLikes().contains(like)) {
+            return photo;
+        } else {
+            photo.getLikes().add(like);
+            return photoRepo.save(photo);
+        }
     }
 }

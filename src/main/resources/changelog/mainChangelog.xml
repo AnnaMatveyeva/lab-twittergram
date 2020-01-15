@@ -13,4 +13,5 @@
   <include file="changelog/likeChangelog.xml"/>
   <include file="changelog/insertChangelog.xml"/>
   <include file="changelog/photos_likesChangelog.xml"/>
+  <include file="changelog/stories_likesChangelog.xml"/>
 </databaseChangeLog>

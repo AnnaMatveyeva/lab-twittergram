@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import twittergram.entity.Like;
 import twittergram.entity.Story;
 import twittergram.entity.Tag;
 import twittergram.exception.StoryNotFoundException;
@@ -19,6 +20,7 @@ public class StoryService {
     private final StoryRepository storyRepo;
     private final UserService userService;
     private final TagService tagService;
+    private final LikeService likeService;
 
     public Story findById(Long id) {
         try {
@@ -55,7 +57,7 @@ public class StoryService {
         return story;
     }
 
-    public Story update(Long storyId, StoryRequestBody storyRequestBody, String nickname) {
+    public Story update(Long storyId, StoryRequestBody storyRequestBody) {
         Story story = findById(storyId);
         if (!StringUtils.isEmpty(storyRequestBody.getText())) {
             story.setText(storyRequestBody.getText());
@@ -67,4 +69,14 @@ public class StoryService {
 
     }
 
+    public Story addLike(Long storyId, String likeOwnerNick) {
+        Story story = findById(storyId);
+        Like like = likeService.setLike(story, likeOwnerNick);
+        if (story.getLikes().contains(like)) {
+            return story;
+        } else {
+            story.getLikes().add(like);
+            return storyRepo.save(story);
+        }
+    }
 }
