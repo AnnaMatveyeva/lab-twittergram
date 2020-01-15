@@ -2,14 +2,11 @@ package twittergram.entity;
 
 import java.time.LocalDate;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import lombok.Data;
 
@@ -37,7 +34,9 @@ public class Photo extends AbstractEntity {
         inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<Tag> tags;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
+    @ManyToMany
+    @JoinTable(name = "photos_likes",
+        joinColumns = @JoinColumn(name = "photo_id"),
+        inverseJoinColumns = @JoinColumn(name = "like_id"))
     private List<Like> likes;
 }

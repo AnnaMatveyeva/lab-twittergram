@@ -50,6 +50,17 @@
       <column name="role_id" value="2"/>
       <column name="email" value="oleg@gmail.com"/>
     </insert>
+  </changeSet>
 
+
+  <changeSet id="11" author="admin">
+    <insert tableName="photos">
+      <column name="id" value="1"/>
+      <column name="image" value="0"/>
+      <column name="description" value="This is photo"/>
+      <column name="path" value="C:\\Users\\Hanna.Matveyeva\\IdeaProjects\\lab-twittergram\\src\\main\\resources\\uploads\\egor\\0"/>
+      <column name="date" value="2020-01-15"/>
+      <column name="user_id" value="2"/>
+    </insert>
   </changeSet>
 </databaseChangeLog>

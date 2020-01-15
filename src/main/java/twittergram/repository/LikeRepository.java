@@ -6,5 +6,6 @@ import twittergram.entity.Like;
 
 @Repository
 public interface LikeRepository extends JpaRepository<Like, Long> {
+
     Like findByUserId(Long userId);
 }

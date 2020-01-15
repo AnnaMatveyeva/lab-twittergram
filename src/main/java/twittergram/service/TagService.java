@@ -52,4 +52,19 @@ public class TagService {
         tagRepo.save(tag);
         return tag;
     }
+
+    public void addTags(List<Tag> tags, Photo photo) {
+        tags = saveAll(tags);
+        if (photo.getTags().isEmpty()) {
+            photo.setTags(tags);
+            addTagsPhoto(tags, photo);
+        } else {
+            for (Tag tag : tags) {
+                if (!photo.getTags().contains(tag)) {
+                    photo.getTags().add(tag);
+                    addTagPhoto(tag, photo);
+                }
+            }
+        }
+    }
 }

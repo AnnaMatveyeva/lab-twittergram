@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import twittergram.entity.Photo;
-import twittergram.exception.LikeNotFoundException;
 import twittergram.model.PhotoRequestBody;
 import twittergram.service.LikeService;
 import twittergram.service.PhotoService;
@@ -39,24 +38,24 @@ public class PhotoController {
         return photoService.addPhotoContent(imageId, photoRequestBody, request.getRemoteUser());
     }
 
-    @GetMapping(value = "/getImageById")
-    public ResponseEntity getImage(@RequestParam int id, HttpServletRequest request) {
+    @GetMapping(value = "/getUserImage")
+    public ResponseEntity getImage(@RequestParam int imageId, HttpServletRequest request) {
         Resource fileSystemResource = new FileSystemResource(
-            photoService.getByImageId(id, request.getRemoteUser()).getPath());
+            photoService.getByImageId(imageId, request.getRemoteUser()).getPath());
         return ResponseEntity.ok()
             .contentType(MediaType.IMAGE_JPEG)
             .body(fileSystemResource);
     }
 
-    @GetMapping(value = "/getPhotoContent")
-    public Photo getPhotoContent(@RequestParam int id, HttpServletRequest request) {
-        return photoService.getByImageId(id, request.getRemoteUser());
+    @GetMapping(value = "/getPhoto")
+    public Photo getPhotoContent(@RequestParam Long photoId, HttpServletRequest request) {
+        return photoService.findById(photoId);
     }
 
     @PostMapping("/like")
     public Photo setLike(HttpServletRequest request, @RequestParam Long photoId) {
-        likeService.setLike(photoId, request.getRemoteUser());
-        return photoService.findByLikeOwner(request.getRemoteUser());
+
+        return photoService.addLike(photoId, request.getRemoteUser());
     }
 
 }
