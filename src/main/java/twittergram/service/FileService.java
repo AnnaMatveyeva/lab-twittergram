@@ -11,12 +11,10 @@ import twittergram.exception.FileStorageException;
 @Service
 public class FileService {
 
-    private final Path absolutePath = Paths.get("src/main/resources/uploads/").toAbsolutePath();
+    private final Path absolutePath = Paths.get("src/main/resources/uploads/");
 
     public String uploadFile(MultipartFile file, int imageId, String nickname) {
-
         try {
-
             String fileName = String.valueOf(imageId);
             String resultPath = absolutePath + "\\" + nickname + "\\" + fileName;
             File filePath = new File(resultPath);
@@ -33,4 +31,12 @@ public class FileService {
         }
     }
 
+    public void deleteFile(String path) {
+        File file = new File(path);
+        file.getAbsolutePath();
+        File abFile = new File(file.getAbsolutePath());
+        if (abFile.delete()) {
+            System.out.println("deleted");
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package twittergram.service;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import twittergram.entity.Like;
@@ -12,7 +13,6 @@ import twittergram.repository.LikeRepository;
 public class LikeService {
 
     private final LikeRepository likeRepo;
-    private final UserService userService;
 
     public Like createLike(Photo photo, Long likeOwnerId) {
         Like like = new Like();
@@ -28,8 +28,7 @@ public class LikeService {
         return likeRepo.save(like);
     }
 
-    public Like setLike(Photo photo, String likeOwnerNick) {
-        Long likeOwnerId = userService.findByNickname(likeOwnerNick).getId();
+    public Like setLike(Photo photo, Long likeOwnerId) {
         Like like = likeRepo.findByUserId(likeOwnerId);
         if (like != null) {
             if (like.getPhotos().contains(photo)) {
@@ -52,8 +51,7 @@ public class LikeService {
         return likeRepo.save(like);
     }
 
-    public Like setLike(Story story, String likeOwnerNick) {
-        Long likeOwnerId = userService.findByNickname(likeOwnerNick).getId();
+    public Like setLike(Story story, Long likeOwnerId) {
         Like like = likeRepo.findByUserId(likeOwnerId);
         if (like != null) {
             if (like.getStories().contains(story)) {
@@ -66,5 +64,32 @@ public class LikeService {
         }
     }
 
+    public void removeStory(Like like, Story story) {
+        like.getStories().remove(story);
+        likeRepo.save(like);
+    }
+
+    public void removePhoto(Like like, Photo photo) {
+        like.getPhotos().remove(photo);
+        likeRepo.save(like);
+    }
+
+    public void removeFromStories(List<Story> stories, Long userId) {
+        Like like = likeRepo.findByUserId(userId);
+        for (Story story : stories) {
+            story.getLikes().remove(like);
+            like.getStories().remove(story);
+        }
+        likeRepo.save(like);
+    }
+
+    public void removeFromPhotos(List<Photo> photos, Long userId) {
+        Like like = likeRepo.findByUserId(userId);
+        for (Photo photo : photos) {
+            photo.getLikes().remove(like);
+            like.getPhotos().remove(photo);
+        }
+        likeRepo.save(like);
+    }
 
 }

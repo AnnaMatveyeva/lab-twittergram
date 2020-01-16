@@ -16,4 +16,6 @@ public interface StoryRepository extends JpaRepository<Story, Long> {
     List<Story> findByDate(LocalDate date);
 
     List<Story> findByUserId(Long userId);
+
+    List<Story> findByLikes_UserId(Long userId);
 }

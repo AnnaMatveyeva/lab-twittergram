@@ -67,4 +67,15 @@ public class TagService {
             }
         }
     }
+
+    public void removeStory(Tag tag, Story story) {
+        tag.getStories().remove(story);
+        tagRepo.save(tag);
+    }
+
+    public void removePhoto(Tag tag, Photo photo) {
+        tag.getPhotos().remove(photo);
+        tagRepo.save(tag);
+    }
+
 }

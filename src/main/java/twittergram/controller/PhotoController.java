@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import twittergram.entity.Photo;
 import twittergram.model.PhotoRequestBody;
 import twittergram.service.PhotoService;
+import twittergram.service.UserService;
 
 @RestController
 @RequestMapping("/api/photo")
@@ -23,23 +24,26 @@ import twittergram.service.PhotoService;
 public class PhotoController {
 
     private final PhotoService photoService;
+    private final UserService userService;
 
     @PostMapping("/addImage")
     public String addImage(@RequestParam MultipartFile file, HttpServletRequest request) {
-        photoService.create(file, request.getRemoteUser());
+        photoService.create(file, userService.findByNickname(request.getRemoteUser()));
         return file.getOriginalFilename();
     }
 
     @PostMapping("/addPhotoContent")
     public Photo addPhotoContent(@RequestParam int imageId,
         @RequestBody PhotoRequestBody photoRequestBody, HttpServletRequest request) {
-        return photoService.addPhotoContent(imageId, photoRequestBody, request.getRemoteUser());
+        return photoService.addPhotoContent(imageId, photoRequestBody,
+            userService.findByNickname(request.getRemoteUser()).getId());
     }
 
     @GetMapping(value = "/getUserImage")
     public ResponseEntity getImage(@RequestParam int imageId, HttpServletRequest request) {
         Resource fileSystemResource = new FileSystemResource(
-            photoService.getByImageAndUserId(imageId, request.getRemoteUser()).getPath());
+            photoService.getByImageAndUserId(imageId,
+                userService.findByNickname(request.getRemoteUser()).getId()).getPath());
         return ResponseEntity.ok()
             .contentType(MediaType.IMAGE_JPEG)
             .body(fileSystemResource);
@@ -52,7 +56,8 @@ public class PhotoController {
 
     @PostMapping("/like")
     public Photo setLike(HttpServletRequest request, @RequestParam Long photoId) {
-        return photoService.addLike(photoId, request.getRemoteUser());
+        return photoService
+            .addLike(photoId, userService.findByNickname(request.getRemoteUser()).getId());
     }
 
 }

@@ -19,7 +19,6 @@ import twittergram.repository.StoryRepository;
 public class StoryService {
 
     private final StoryRepository storyRepo;
-    private final UserService userService;
     private final TagService tagService;
     private final LikeService likeService;
 
@@ -31,11 +30,11 @@ public class StoryService {
         }
     }
 
-    public Story create(StoryRequestBody storyRequestBody, String nickname) {
+    public Story create(StoryRequestBody storyRequestBody, Long userId) {
         Story story = new Story();
         story.setText(storyRequestBody.getText());
         story.setDate(LocalDate.now());
-        story.setUserId(userService.findByNickname(nickname).getId());
+        story.setUserId(userId);
         if (!storyRequestBody.getTags().isEmpty()) {
             story = addTags(storyRequestBody.getTags(), storyRepo.save(story));
         }
@@ -70,9 +69,9 @@ public class StoryService {
 
     }
 
-    public Story addLike(Long storyId, String likeOwnerNick) {
+    public Story addLike(Long storyId, Long likeOwnerId) {
         Story story = findById(storyId);
-        Like like = likeService.setLike(story, likeOwnerNick);
+        Like like = likeService.setLike(story, likeOwnerId);
         if (story.getLikes().contains(like)) {
             return story;
         } else {
@@ -92,7 +91,30 @@ public class StoryService {
         return storyRepo.findByDate(localDate);
     }
 
-    public List<Story> findByAuthor(String nickname) {
-        return storyRepo.findByUserId(userService.findByNickname(nickname).getId());
+    public List<Story> findByAuthor(Long id) {
+        return storyRepo.findByUserId(id);
     }
+
+    public void deleteList(List<Story> stories) {
+        for (Story story : stories) {
+            delete(story);
+        }
+    }
+
+    public void deleteUserLikes(Long userId) {
+        List<Story> stories = storyRepo.findByLikes_UserId(userId);
+        likeService.removeFromStories(stories, userId);
+        storyRepo.saveAll(stories);
+    }
+
+    public void delete(Story story) {
+        for (Like like : story.getLikes()) {
+            likeService.removeStory(like, story);
+        }
+        for (Tag tag : story.getTags()) {
+            tagService.removeStory(tag, story);
+        }
+        storyRepo.delete(story);
+    }
+
 }

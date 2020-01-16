@@ -27,6 +27,7 @@
             <column name="password"
                 value="$2a$10$ja.g4DeanYTt/xreJ4GttOG6zx4Y5PZ3l7n8mlyseu0tOWex1EDKG"/>
             <column name="role_id" value="1"/>
+            <column name="status" value="ACTIVE"/>
             <column name="email" value="admin@gmail.com"/>
         </insert>
 
@@ -39,6 +40,7 @@
             <column name="password"
                 value="$2a$10$ClneJIBiv6blIwnHf/kNme0E3nQclagTWYff1w4pIjn4hXOiMQaL."/>
             <column name="role_id" value="2"/>
+            <column name="status" value="ACTIVE"/>
             <column name="email" value="egor@gmail.com"/>
         </insert>
 
@@ -51,6 +53,7 @@
             <column name="password"
                 value="$2a$10$GKsZ1Ao3A169xathpzSsg.D8BVFI.QtuJeM85XycEmHoZ3TimDwRG"/>
             <column name="role_id" value="2"/>
+            <column name="status" value="ACTIVE"/>
             <column name="email" value="oleg@gmail.com"/>
         </insert>
     </changeSet>
@@ -62,7 +65,7 @@
             <column name="image" value="0"/>
             <column name="description" value="This is photo"/>
             <column name="path"
-                value="C:\\Users\\Hanna.Matveyeva\\IdeaProjects\\lab-twittergram\\src\\main\\resources\\uploads\\egor\\0"/>
+                value="src\main\resources\uploads\egor\0"/>
             <column name="date" value="2020-01-15"/>
             <column name="user_id" value="2"/>
         </insert>

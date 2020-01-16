@@ -10,6 +10,7 @@ import twittergram.entity.Photo;
 import twittergram.entity.Story;
 import twittergram.service.PhotoService;
 import twittergram.service.StoryService;
+import twittergram.service.UserService;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +19,7 @@ public class SearchController {
 
     private final PhotoService photoService;
     private final StoryService storyService;
+    private final UserService userService;
 
     @GetMapping("/photosByTag")
     public List<Photo> findPhotoByTag(@RequestParam String tag) {
@@ -31,7 +33,7 @@ public class SearchController {
 
     @GetMapping("/photosByAuthor")
     public List<Photo> findPhotoByAuthor(@RequestParam String nickname) {
-        return photoService.findByAuthor(nickname);
+        return photoService.findByAuthor(userService.findByNickname(nickname).getId());
     }
 
     @GetMapping("/storiesByTag")
@@ -46,7 +48,7 @@ public class SearchController {
 
     @GetMapping("/storiesByAuthor")
     public List<Story> findStoriesByAuthor(@RequestParam String nickname) {
-        return storyService.findByAuthor(nickname);
+        return storyService.findByAuthor(userService.findByNickname(nickname).getId());
     }
 
 }

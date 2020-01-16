@@ -23,7 +23,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
 
         UserDetails userDetails = null;
         List<GrantedAuthority> grantList = null;
-        if (user == null) {
+        if (user == null || user.getStatus().equals("DELETED")) {
             throw new UsernameNotFoundException("user " + nickname + " not found");
         }
         String userRole = user.getRole().getName();

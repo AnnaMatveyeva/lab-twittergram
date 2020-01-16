@@ -28,5 +28,11 @@ public class ExceptionHandlerController {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    public void handleUserNotFoundException(HttpServletResponse response,
+        UserNotFoundException ex)
+        throws IOException {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
+    }
 
 }

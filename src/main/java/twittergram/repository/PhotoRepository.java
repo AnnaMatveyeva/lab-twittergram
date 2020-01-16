@@ -16,4 +16,6 @@ public interface PhotoRepository extends JpaRepository<Photo, Long> {
     List<Photo> findByDate(LocalDate date);
 
     List<Photo> findByUserId(Long userId);
+
+    List<Photo> findByLikes_UserId(Long userId);
 }

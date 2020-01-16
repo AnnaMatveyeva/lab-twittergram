@@ -27,6 +27,7 @@
             <column name="email" type="VARCHAR(40)">
                 <constraints nullable="false"/>
             </column>
+            <column name="status" type="VARCHAR(10)"/>
         </createTable>
 
         <addForeignKeyConstraint baseColumnNames="role_id"
