@@ -2,6 +2,7 @@ package twittergram.service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
@@ -117,7 +118,19 @@ public class StoryService {
         storyRepo.delete(story);
     }
 
-    public Story findByText(StoryRequestBody storyRequestBody) {
-        return storyRepo.findByText(storyRequestBody.getText());
+
+    public List<Story> getAll() {
+        return storyRepo.findAll();
+    }
+
+    public List<Story> findWhichContain(String text) {
+        List<Story> allStories = getAll();
+        List<Story> searchResult = new ArrayList<>();
+        for (Story story : allStories) {
+            if (story.getText().contains(text)) {
+                searchResult.add(story);
+            }
+        }
+        return searchResult;
     }
 }
