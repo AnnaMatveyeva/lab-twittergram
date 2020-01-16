@@ -3,13 +3,11 @@ package twittergram.controller;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import twittergram.entity.Photo;
 import twittergram.entity.Story;
-import twittergram.model.StoryRequestBody;
 import twittergram.service.PhotoService;
 import twittergram.service.StoryService;
 import twittergram.service.UserService;
@@ -53,20 +51,8 @@ public class SearchController {
         return storyService.findByAuthor(userService.findByNickname(nickname).getId());
     }
 
-    @GetMapping("/storyByText")
-    public Story findStoryByText(@RequestBody StoryRequestBody storyRequestBody) {
-        return storyService.findByText(storyRequestBody);
+    @GetMapping("/storiesByText")
+    public List<Story> findStoriesByText(@RequestParam String text) {
+        return storyService.findWhichContain(text);
     }
-
-    @GetMapping("/photosByDistance")
-    public List<Photo> findByDistance(@RequestParam double longitude, @RequestParam double latitude,
-        @RequestParam double radius) {
-        return photoService.findByDistance(longitude, latitude, radius);
-    }
-
-    @GetMapping("/photosByCoors")
-    public List<Photo> findByCoor(@RequestParam double longitude, @RequestParam double latitude) {
-        return photoService.findByCoordinates(longitude, latitude);
-    }
-
 }

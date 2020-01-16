@@ -9,7 +9,6 @@ import twittergram.entity.Story;
 @Repository
 public interface StoryRepository extends JpaRepository<Story, Long> {
 
-    Story findByText(String text);
 
     List<Story> findByTags_Text(String text);
 
