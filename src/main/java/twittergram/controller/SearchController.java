@@ -57,9 +57,16 @@ public class SearchController {
     public Story findStoryByText(@RequestBody StoryRequestBody storyRequestBody) {
         return storyService.findByText(storyRequestBody);
     }
-    @GetMapping("/photosByGPS")
-    public List<Photo> findByGPS(@RequestParam double longitude, @RequestParam double latitude, @RequestParam double radius){
-        return photoService.findByGPS(longitude,latitude, radius);
+
+    @GetMapping("/photosByDistance")
+    public List<Photo> findByDistance(@RequestParam double longitude, @RequestParam double latitude,
+        @RequestParam double radius) {
+        return photoService.findByDistance(longitude, latitude, radius);
+    }
+
+    @GetMapping("/photosByCoors")
+    public List<Photo> findByCoor(@RequestParam double longitude, @RequestParam double latitude) {
+        return photoService.findByCoordinates(longitude, latitude);
     }
 
 }

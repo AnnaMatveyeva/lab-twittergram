@@ -123,9 +123,13 @@ public class PhotoService {
         photoRepo.delete(photo);
     }
 
-    public List<Photo> findByGPS(double longitude, double latitude, double radius) {
+    public List<Photo> findByDistance(double longitude, double latitude, double radius) {
         return photoRepo
             .findByLongitudeBetweenAndLatitudeBetween(longitude - radius, longitude + radius,
                 latitude - radius, latitude + radius);
+    }
+
+    public List<Photo> findByCoordinates(double longitude, double latitude) {
+        return photoRepo.findByLongitudeAndLatitude(longitude, latitude);
     }
 }

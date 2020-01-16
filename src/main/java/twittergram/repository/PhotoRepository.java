@@ -19,7 +19,10 @@ public interface PhotoRepository extends JpaRepository<Photo, Long> {
 
     List<Photo> findByLikes_UserId(Long userId);
 
-    List<Photo> findByLongitudeBetweenAndLatitudeBetween(double fromLong, double toLong, double fromLat, double toLat);
+    List<Photo> findByLongitudeBetweenAndLatitudeBetween(double fromLong, double toLong,
+        double fromLat, double toLat);
+
+    List<Photo> findByLongitudeAndLatitude(double longitude, double latitude);
 
 
 }

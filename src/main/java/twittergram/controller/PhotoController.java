@@ -1,7 +1,5 @@
 package twittergram.controller;
 
-import java.awt.geom.Point2D;
-import java.awt.geom.Point2D.Double;
 import javax.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
