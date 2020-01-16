@@ -117,4 +117,7 @@ public class StoryService {
         storyRepo.delete(story);
     }
 
+    public Story findByText(StoryRequestBody storyRequestBody) {
+        return storyRepo.findByText(storyRequestBody.getText());
+    }
 }
