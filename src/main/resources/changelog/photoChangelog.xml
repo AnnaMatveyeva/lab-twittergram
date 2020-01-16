@@ -22,6 +22,8 @@
             <column name="user_id" type="INT">
                 <constraints nullable="false"/>
             </column>
+            <column name="latitude" type="INT"/>
+            <column name="longitude" type="INT"/>
 
         </createTable>
         <addForeignKeyConstraint baseColumnNames="user_id"

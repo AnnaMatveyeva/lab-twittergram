@@ -68,6 +68,8 @@
                 value="src\main\resources\uploads\egor\0"/>
             <column name="date" value="2020-01-15"/>
             <column name="user_id" value="2"/>
+            <column name="longitude" value="10"/>
+            <column name="latitude" value="10"/>
         </insert>
     </changeSet>
 

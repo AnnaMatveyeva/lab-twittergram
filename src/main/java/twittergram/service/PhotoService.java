@@ -53,8 +53,13 @@ public class PhotoService {
                 photo.setDescription(photoRequestBody.getDescription());
             }
             if (!photoRequestBody.getTags().isEmpty()) {
-
                 tagService.addTags(photoRequestBody.getTags(), photo);
+            }
+            if (!StringUtils.isEmpty(photoRequestBody.getLatitude())) {
+                photo.setLatitude(photoRequestBody.getLatitude());
+            }
+            if (!StringUtils.isEmpty(photoRequestBody.getLongitude())) {
+                photo.setLongitude(photoRequestBody.getLongitude());
             }
             return photoRepo.save(photo);
         } else {
@@ -116,5 +121,11 @@ public class PhotoService {
         }
         fileService.deleteFile(photo.getPath());
         photoRepo.delete(photo);
+    }
+
+    public List<Photo> findByGPS(double longitude, double latitude, double radius) {
+        return photoRepo
+            .findByLongitudeBetweenAndLatitudeBetween(longitude - radius, longitude + radius,
+                latitude - radius, latitude + radius);
     }
 }

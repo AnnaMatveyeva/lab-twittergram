@@ -39,4 +39,8 @@ public class Photo extends AbstractEntity {
         joinColumns = @JoinColumn(name = "photo_id"),
         inverseJoinColumns = @JoinColumn(name = "like_id"))
     private List<Like> likes;
+
+    private double latitude;
+
+    private double longitude;
 }

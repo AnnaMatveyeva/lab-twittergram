@@ -14,4 +14,8 @@ public class PhotoRequestBody {
 
     private List<Tag> tags = new ArrayList<>();
 
+    private double latitude;
+
+    private double longitude;
+
 }
