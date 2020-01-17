@@ -35,12 +35,23 @@ public class UserService {
     }
 
     public User findByNickname(String nickname) {
-        return userRepo.findByNickname(nickname);
+        User user = userRepo.findByNickname(nickname);
+        if (user != null && user.getStatus().equals("ACTIVE")) {
+            return user;
+        } else {
+            throw new UserNotFoundException();
+        }
     }
 
     public User findByEmail(String email) {
-        return userRepo.findByEmail(email);
+        User user = userRepo.findByEmail(email);
+        if (user != null && user.getStatus().equals("ACTIVE")) {
+            return user;
+        } else {
+            throw new UserNotFoundException();
+        }
     }
+    
 
     public User save(UserRequestBody userRequestBody) {
         User user = new User();
