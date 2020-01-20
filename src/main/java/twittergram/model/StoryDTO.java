@@ -2,14 +2,14 @@ package twittergram.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.Max;
 import lombok.Data;
 import twittergram.entity.Tag;
 
 @Data
-public class StoryRequestBody {
+public class StoryDTO {
 
-    @Size(max = 150, message = "Story's length should be more than 2 ad less than 150 characters")
+    @Max(value = 150, message = "Story's length should be more than 2 ad less than 150 characters")
     private String text;
 
     private List<Tag> tags = new ArrayList<>();

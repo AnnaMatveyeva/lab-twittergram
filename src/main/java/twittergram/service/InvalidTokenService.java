@@ -11,7 +11,7 @@ public class InvalidTokenService {
 
     private InvalidTokenRepository invalidTokenRepo;
 
-    public InvalidToken findByToken(String token){
+    public InvalidToken findByToken(String token) {
         return invalidTokenRepo.findByToken(token);
     }
 

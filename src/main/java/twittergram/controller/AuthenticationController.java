@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import twittergram.model.AuthenticationRequest;
 import twittergram.model.InvalidTokens;
-import twittergram.model.UserRequestBody;
+import twittergram.model.UserDTO;
 import twittergram.security.JwtTokenProvider;
 import twittergram.service.UserRBService;
 import twittergram.service.UserService;
@@ -68,16 +68,16 @@ public class AuthenticationController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity registration(@RequestBody UserRequestBody userRequestBody,
+    public ResponseEntity registration(@RequestBody UserDTO userDTO,
         HttpServletResponse response, BindingResult bindingResult)
         throws IOException {
-        userRBService.validate(userRequestBody, bindingResult);
+        userRBService.validate(userDTO, bindingResult);
         if (bindingResult.hasErrors()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid data");
             return null;
         }
 
-        return ok(userService.save(userRequestBody));
+        return ok(userService.save(userDTO));
     }
 
 }

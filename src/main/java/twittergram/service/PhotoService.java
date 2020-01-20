@@ -13,7 +13,7 @@ import twittergram.entity.Photo;
 import twittergram.entity.Tag;
 import twittergram.entity.User;
 import twittergram.exception.PhotoNotFoundException;
-import twittergram.model.PhotoRequestBody;
+import twittergram.model.PhotoDTO;
 import twittergram.repository.PhotoRepository;
 
 @Service
@@ -46,20 +46,20 @@ public class PhotoService {
 
     }
 
-    public Photo addPhotoContent(int image, PhotoRequestBody photoRequestBody, Long userId) {
+    public Photo addPhotoContent(int image, PhotoDTO photoDTO, Long userId) {
         Photo photo = getByImageAndUserId(image, userId);
         if (photo != null) {
-            if (!StringUtils.isEmpty(photoRequestBody.getDescription())) {
-                photo.setDescription(photoRequestBody.getDescription());
+            if (!StringUtils.isEmpty(photoDTO.getDescription())) {
+                photo.setDescription(photoDTO.getDescription());
             }
-            if (!photoRequestBody.getTags().isEmpty()) {
-                tagService.addTags(photoRequestBody.getTags(), photo);
+            if (!photoDTO.getTags().isEmpty()) {
+                tagService.addTags(photoDTO.getTags(), photo);
             }
-            if (!StringUtils.isEmpty(photoRequestBody.getLatitude())) {
-                photo.setLatitude(photoRequestBody.getLatitude());
+            if (!StringUtils.isEmpty(photoDTO.getLatitude())) {
+                photo.setLatitude(photoDTO.getLatitude());
             }
-            if (!StringUtils.isEmpty(photoRequestBody.getLongitude())) {
-                photo.setLongitude(photoRequestBody.getLongitude());
+            if (!StringUtils.isEmpty(photoDTO.getLongitude())) {
+                photo.setLongitude(photoDTO.getLongitude());
             }
             return photoRepo.save(photo);
         } else {

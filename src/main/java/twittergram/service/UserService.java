@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import twittergram.entity.User;
 import twittergram.exception.UserNotFoundException;
-import twittergram.model.UserRequestBody;
+import twittergram.model.UserDTO;
 import twittergram.repository.RoleRepository;
 import twittergram.repository.UserRepository;
 
@@ -51,17 +51,17 @@ public class UserService {
             throw new UserNotFoundException();
         }
     }
-    
 
-    public User save(UserRequestBody userRequestBody) {
+
+    public User save(UserDTO userDTO) {
         User user = new User();
-        user.setFirstName(userRequestBody.getFirstName());
-        user.setLastName(userRequestBody.getLastName());
-        user.setNickname(userRequestBody.getNickname());
-        user.setPassword(passwordEncoder.encode(userRequestBody.getPassword()));
+        user.setFirstName(userDTO.getFirstName());
+        user.setLastName(userDTO.getLastName());
+        user.setNickname(userDTO.getNickname());
+        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
         user.setRole(roleRepo.findByName("ROLE_REGULAR"));
         user.setActive(true);
-        user.setEmail(userRequestBody.getEmail());
+        user.setEmail(userDTO.getEmail());
 
         return userRepo.save(user);
     }

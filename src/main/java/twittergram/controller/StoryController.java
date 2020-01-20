@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import twittergram.entity.Story;
-import twittergram.model.StoryRequestBody;
+import twittergram.model.StoryDTO;
 import twittergram.service.StoryService;
 import twittergram.service.UserService;
 
@@ -27,11 +26,11 @@ public class StoryController {
     private final UserService userService;
 
     @PostMapping
-    public Story addStory(@RequestBody StoryRequestBody storyRequestBody,
+    public Story addStory(@RequestBody StoryDTO storyDTO,
         HttpServletRequest request,
         HttpServletResponse response) throws IOException {
-        if (!StringUtils.isEmpty(storyRequestBody.getText())) {
-            return storyService.create(storyRequestBody,
+        if (!StringUtils.isEmpty(storyDTO.getText())) {
+            return storyService.create(storyDTO,
                 userService.findByNickname(request.getRemoteUser()).getId());
         } else {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Text is empty");
@@ -41,8 +40,8 @@ public class StoryController {
 
     @PutMapping("/{id}")
     public Story update(@PathVariable Long id,
-        @RequestBody StoryRequestBody storyRequestBody) {
-        return storyService.update(id, storyRequestBody);
+        @RequestBody StoryDTO storyDTO) {
+        return storyService.update(id, storyDTO);
     }
 
     @PostMapping("/like/{id}")

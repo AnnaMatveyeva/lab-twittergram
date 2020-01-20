@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import twittergram.entity.Photo;
-import twittergram.model.PhotoRequestBody;
+import twittergram.model.PhotoDTO;
 import twittergram.service.PhotoService;
 import twittergram.service.UserService;
 
@@ -37,8 +37,8 @@ public class PhotoController {
 
     @PutMapping("/{imageId}")
     public Photo addPhotoContent(@PathVariable int imageId,
-        @RequestBody PhotoRequestBody photoRequestBody, HttpServletRequest request) {
-        return photoService.addPhotoContent(imageId, photoRequestBody,
+        @RequestBody PhotoDTO photoDTO, HttpServletRequest request) {
+        return photoService.addPhotoContent(imageId, photoDTO,
             userService.findByNickname(request.getRemoteUser()).getId());
     }
 

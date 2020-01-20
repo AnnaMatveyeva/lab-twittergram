@@ -12,7 +12,7 @@ import twittergram.entity.Like;
 import twittergram.entity.Story;
 import twittergram.entity.Tag;
 import twittergram.exception.StoryNotFoundException;
-import twittergram.model.StoryRequestBody;
+import twittergram.model.StoryDTO;
 import twittergram.repository.StoryRepository;
 
 @Service
@@ -31,13 +31,13 @@ public class StoryService {
         }
     }
 
-    public Story create(StoryRequestBody storyRequestBody, Long userId) {
+    public Story create(StoryDTO storyDTO, Long userId) {
         Story story = new Story();
-        story.setText(storyRequestBody.getText());
+        story.setText(storyDTO.getText());
         story.setDate(LocalDate.now());
         story.setUserId(userId);
-        if (!storyRequestBody.getTags().isEmpty()) {
-            story = addTags(storyRequestBody.getTags(), storyRepo.save(story));
+        if (!storyDTO.getTags().isEmpty()) {
+            story = addTags(storyDTO.getTags(), storyRepo.save(story));
         }
         return storyRepo.save(story);
     }
@@ -58,13 +58,13 @@ public class StoryService {
         return story;
     }
 
-    public Story update(Long storyId, StoryRequestBody storyRequestBody) {
+    public Story update(Long storyId, StoryDTO storyDTO) {
         Story story = findById(storyId);
-        if (!StringUtils.isEmpty(storyRequestBody.getText())) {
-            story.setText(storyRequestBody.getText());
+        if (!StringUtils.isEmpty(storyDTO.getText())) {
+            story.setText(storyDTO.getText());
         }
-        if (!storyRequestBody.getTags().isEmpty()) {
-            addTags(storyRequestBody.getTags(), story);
+        if (!storyDTO.getTags().isEmpty()) {
+            addTags(storyDTO.getTags(), story);
         }
         return storyRepo.save(story);
 

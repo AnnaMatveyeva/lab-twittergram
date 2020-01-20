@@ -1,7 +1,5 @@
 package twittergram.controller;
 
-import java.util.HashMap;
-import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

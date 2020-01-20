@@ -3,7 +3,7 @@ package twittergram.model;
 import lombok.Data;
 
 @Data
-public class UserRequestBody {
+public class UserDTO {
 
     private String nickname;
 

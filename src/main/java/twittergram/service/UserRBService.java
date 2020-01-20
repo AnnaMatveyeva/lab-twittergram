@@ -6,7 +6,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
-import twittergram.model.UserRequestBody;
+import twittergram.model.UserDTO;
 
 @Service
 @RequiredArgsConstructor
@@ -18,12 +18,12 @@ public class UserRBService implements Validator {
 
     @Override
     public boolean supports(Class<?> aClass) {
-        return UserRequestBody.class.equals(aClass);
+        return UserDTO.class.equals(aClass);
     }
 
     @Override
     public void validate(Object o, Errors errors) {
-        UserRequestBody user = (UserRequestBody) o;
+        UserDTO user = (UserDTO) o;
 
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "NotEmpty");
         if (user.getFirstName().length() < 4 || user.getFirstName().length() > 32) {
@@ -62,7 +62,7 @@ public class UserRBService implements Validator {
         }
     }
 
-    public void validate(UserRequestBody user, Errors errors) {
+    public void validate(UserDTO user, Errors errors) {
 
         if (!StringUtils.isEmpty(user.getFirstName())) {
             if (user.getFirstName().length() < 4 || user.getFirstName().length() > 32) {

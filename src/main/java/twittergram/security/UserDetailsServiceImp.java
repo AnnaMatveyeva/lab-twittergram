@@ -20,11 +20,11 @@ public class UserDetailsServiceImp implements UserDetailsService {
     private final UserService userService;
 
     public UserDetails loadUserByUsername(String nickname)
-        throws UsernameNotFoundException{
+        throws UsernameNotFoundException {
         User user = null;
         try {
             user = userService.findByNickname(nickname);
-        }catch (UserNotFoundException ex ){
+        } catch (UserNotFoundException ex) {
             throw new UsernameNotFoundException("user " + nickname + " not found");
         }
 
