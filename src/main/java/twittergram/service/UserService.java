@@ -24,7 +24,7 @@ public class UserService {
     public User findById(Long id) {
         try {
             User user = userRepo.findById(id).get();
-            if (user.getStatus().equals("ACTIVE")) {
+            if (user.isActive()) {
                 return user;
             } else {
                 throw new UserNotFoundException();
@@ -36,7 +36,7 @@ public class UserService {
 
     public User findByNickname(String nickname) {
         User user = userRepo.findByNickname(nickname);
-        if (user != null && user.getStatus().equals("ACTIVE")) {
+        if (user != null && user.isActive()) {
             return user;
         } else {
             throw new UserNotFoundException();
@@ -45,7 +45,7 @@ public class UserService {
 
     public User findByEmail(String email) {
         User user = userRepo.findByEmail(email);
-        if (user != null && user.getStatus().equals("ACTIVE")) {
+        if (user != null && user.isActive()) {
             return user;
         } else {
             throw new UserNotFoundException();
@@ -60,7 +60,7 @@ public class UserService {
         user.setNickname(userRequestBody.getNickname());
         user.setPassword(passwordEncoder.encode(userRequestBody.getPassword()));
         user.setRole(roleRepo.findByName("ROLE_REGULAR"));
-        user.setStatus("ACTIVE");
+        user.setActive(true);
         user.setEmail(userRequestBody.getEmail());
 
         return userRepo.save(user);
@@ -79,7 +79,7 @@ public class UserService {
 
     public void delete(Long id) {
         User user = findById(id);
-        user.setStatus("DELETED");
+        user.setActive(false);
         userRepo.save(user);
 
         storyService.deleteList(user.getStories());

@@ -76,20 +76,24 @@ public class LikeService {
 
     public void removeFromStories(List<Story> stories, Long userId) {
         Like like = likeRepo.findByUserId(userId);
-        for (Story story : stories) {
-            story.getLikes().remove(like);
-            like.getStories().remove(story);
+        if (like != null) {
+            for (Story story : stories) {
+                story.getLikes().remove(like);
+                like.getStories().remove(story);
+            }
+            likeRepo.save(like);
         }
-        likeRepo.save(like);
     }
 
     public void removeFromPhotos(List<Photo> photos, Long userId) {
         Like like = likeRepo.findByUserId(userId);
-        for (Photo photo : photos) {
-            photo.getLikes().remove(like);
-            like.getPhotos().remove(photo);
+        if (like != null) {
+            for (Photo photo : photos) {
+                photo.getLikes().remove(like);
+                like.getPhotos().remove(photo);
+            }
+            likeRepo.save(like);
         }
-        likeRepo.save(like);
     }
 
 }

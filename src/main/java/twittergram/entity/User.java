@@ -42,6 +42,6 @@ public class User extends AbstractEntity {
     @JoinColumn(name = "user_id")
     private List<Photo> photos = new ArrayList<>();
 
-    @Column(name = "status")
-    private String status;
+    @Column(name = "is_active")
+    private boolean isActive;
 }

@@ -1,9 +1,14 @@
 package twittergram.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import twittergram.service.PhotoService;
 import twittergram.service.StoryService;
@@ -18,22 +23,22 @@ public class AdminController {
     private final StoryService storyService;
     private final PhotoService photoService;
 
-    @DeleteMapping("/user")
-    public String deleteUser(@RequestParam Long id) {
+    @DeleteMapping("/user/{id}")
+    public ResponseEntity<Object> deleteUser(@PathVariable Long id, HttpServletResponse response) {
         userService.delete(id);
-        return "user deleted";
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @DeleteMapping("/story")
-    public String deleteStory(@RequestParam Long id) {
+    @DeleteMapping("/story/{id}")
+    public ResponseEntity deleteStory(@PathVariable Long id) {
         storyService.delete(storyService.findById(id));
-        return "story deleted";
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @DeleteMapping("/photo")
-    public String deletePhoto(@RequestParam Long id) {
+    @DeleteMapping("/photo/{id}")
+    public ResponseEntity deletePhoto(@PathVariable Long id) {
         photoService.delete(photoService.findById(id));
-        return "photo deleted";
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }

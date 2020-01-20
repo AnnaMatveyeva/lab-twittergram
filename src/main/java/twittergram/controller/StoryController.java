@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +26,7 @@ public class StoryController {
     private final StoryService storyService;
     private final UserService userService;
 
-    @PostMapping("/addStory")
+    @PostMapping
     public Story addStory(@RequestBody StoryRequestBody storyRequestBody,
         HttpServletRequest request,
         HttpServletResponse response) throws IOException {
@@ -38,20 +39,20 @@ public class StoryController {
         }
     }
 
-    @PutMapping("/update")
-    public Story update(@RequestParam Long storyId,
+    @PutMapping("/{id}")
+    public Story update(@PathVariable Long id,
         @RequestBody StoryRequestBody storyRequestBody) {
-        return storyService.update(storyId, storyRequestBody);
+        return storyService.update(id, storyRequestBody);
     }
 
-    @PostMapping("/like")
-    public Story setLike(@RequestParam Long storyId, HttpServletRequest request) {
+    @PostMapping("/like/{id}")
+    public Story setLike(@PathVariable Long id, HttpServletRequest request) {
         return storyService
-            .addLike(storyId, userService.findByNickname(request.getRemoteUser()).getId());
+            .addLike(id, userService.findByNickname(request.getRemoteUser()).getId());
     }
 
-    @GetMapping("/getStory")
-    public Story getStoryById(@RequestParam Long storyId) {
-        return storyService.findById(storyId);
+    @GetMapping("/{id}")
+    public Story getStoryById(@PathVariable Long id) {
+        return storyService.findById(id);
     }
 }

@@ -21,37 +21,37 @@ public class SearchController {
     private final StoryService storyService;
     private final UserService userService;
 
-    @GetMapping("/photosByTag")
+    @GetMapping("/photos-by-tag")
     public List<Photo> findPhotoByTag(@RequestParam String tag) {
         return photoService.findByTag(tag);
     }
 
-    @GetMapping("/photosByDate")
+    @GetMapping("/photos-by-date")
     public List<Photo> findPhotoByDate(@RequestParam String date) {
         return photoService.findByDate(date);
     }
 
-    @GetMapping("/photosByAuthor")
+    @GetMapping("/photos-by-author")
     public List<Photo> findPhotoByAuthor(@RequestParam String nickname) {
         return photoService.findByAuthor(userService.findByNickname(nickname).getId());
     }
 
-    @GetMapping("/storiesByTag")
+    @GetMapping("/stories-by-tag")
     public List<Story> findStoriesByTag(@RequestParam String tag) {
         return storyService.findByTag(tag);
     }
 
-    @GetMapping("/storiesByDate")
+    @GetMapping("/stories-by-date")
     public List<Story> findStoriesByDate(@RequestParam String date) {
         return storyService.findByDate(date);
     }
 
-    @GetMapping("/storiesByAuthor")
+    @GetMapping("/stories-by-author")
     public List<Story> findStoriesByAuthor(@RequestParam String nickname) {
         return storyService.findByAuthor(userService.findByNickname(nickname).getId());
     }
 
-    @GetMapping("/storiesByText")
+    @GetMapping("/stories-by-text")
     public List<Story> findStoriesByText(@RequestParam String text) {
         return storyService.findWhichContain(text);
     }

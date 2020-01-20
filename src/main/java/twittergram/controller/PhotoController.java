@@ -7,7 +7,9 @@ import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,21 +29,21 @@ public class PhotoController {
     private final PhotoService photoService;
     private final UserService userService;
 
-    @PostMapping("/addImage")
+    @PostMapping("/image")
     public String addImage(@RequestParam MultipartFile file, HttpServletRequest request) {
         photoService.create(file, userService.findByNickname(request.getRemoteUser()));
         return file.getOriginalFilename();
     }
 
-    @PostMapping("/addPhotoContent")
-    public Photo addPhotoContent(@RequestParam int imageId,
+    @PutMapping("/{imageId}")
+    public Photo addPhotoContent(@PathVariable int imageId,
         @RequestBody PhotoRequestBody photoRequestBody, HttpServletRequest request) {
         return photoService.addPhotoContent(imageId, photoRequestBody,
             userService.findByNickname(request.getRemoteUser()).getId());
     }
 
-    @GetMapping(value = "/getUserImage")
-    public ResponseEntity getImage(@RequestParam int imageId, HttpServletRequest request) {
+    @GetMapping("/image/{imageId}")
+    public ResponseEntity getImage(@PathVariable int imageId, HttpServletRequest request) {
         Resource fileSystemResource = new FileSystemResource(
             photoService.getByImageAndUserId(imageId,
                 userService.findByNickname(request.getRemoteUser()).getId()).getPath());
@@ -50,15 +52,15 @@ public class PhotoController {
             .body(fileSystemResource);
     }
 
-    @GetMapping(value = "/getPhoto")
-    public Photo getPhotoContent(@RequestParam Long photoId) {
-        return photoService.findById(photoId);
+    @GetMapping("/{id}")
+    public Photo getPhotoContent(@PathVariable Long id) {
+        return photoService.findById(id);
     }
 
-    @PostMapping("/like")
-    public Photo setLike(HttpServletRequest request, @RequestParam Long photoId) {
+    @PostMapping("/like/{id}")
+    public Photo setLike(HttpServletRequest request, @PathVariable Long id) {
         return photoService
-            .addLike(photoId, userService.findByNickname(request.getRemoteUser()).getId());
+            .addLike(id, userService.findByNickname(request.getRemoteUser()).getId());
     }
 
 }
