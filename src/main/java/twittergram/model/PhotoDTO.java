@@ -9,7 +9,7 @@ import twittergram.entity.Tag;
 @Data
 public class PhotoDTO {
 
-    @Max(value = 150, message = "Description's length should be more than 2 ad less than 150 characters")
+    @Max(value = 150, message = "Description's length should be less than 150 characters")
     private String description;
 
     private List<Tag> tags = new ArrayList<>();
