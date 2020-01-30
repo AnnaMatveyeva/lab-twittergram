@@ -9,7 +9,7 @@ import twittergram.repository.InvalidTokenRepository;
 @RequiredArgsConstructor
 public class InvalidTokenService {
 
-    private InvalidTokenRepository invalidTokenRepo;
+    private final InvalidTokenRepository invalidTokenRepo;
 
     public InvalidToken findByToken(String token) {
         return invalidTokenRepo.findByToken(token);
