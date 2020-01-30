@@ -9,8 +9,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import twittergram.entity.User;
-import twittergram.model.UserDTO;
-import twittergram.service.UserRBService;
+import twittergram.model.UserUpdateDTO;
 import twittergram.service.UserService;
 
 @RestController
@@ -18,19 +17,18 @@ import twittergram.service.UserService;
 public class UserController {
 
     private final UserService userService;
-    private final UserRBService userRBService;
 
     @PutMapping("/user")
-    public User updateUser(@RequestBody UserDTO userDTO,
+    public User updateUser(@RequestBody UserUpdateDTO userUpdateDTO,
         BindingResult bindingResult, HttpServletResponse response, HttpServletRequest request)
         throws IOException {
-        userRBService.validate(userDTO, bindingResult);
+
         if (bindingResult.hasErrors()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid data");
         }
         return userService
-            .update(request.getRemoteUser(), userDTO.getFirstName(),
-                userDTO.getLastName());
+            .update(request.getRemoteUser(), userUpdateDTO.getFirstName(),
+                userUpdateDTO.getLastName());
     }
 
 }

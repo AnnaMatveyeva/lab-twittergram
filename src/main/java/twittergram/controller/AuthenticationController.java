@@ -19,9 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import twittergram.model.AuthenticationRequest;
 import twittergram.model.InvalidTokens;
-import twittergram.model.UserDTO;
+import twittergram.model.UserRegistrationDTO;
 import twittergram.security.JwtTokenProvider;
-import twittergram.service.UserRBService;
 import twittergram.service.UserService;
 
 @RequiredArgsConstructor
@@ -31,7 +30,6 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
-    private final UserRBService userRBService;
     private final InvalidTokens invalidTokens;
 
     @PostMapping("/login")
@@ -68,16 +66,16 @@ public class AuthenticationController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity registration(@RequestBody UserDTO userDTO,
+    public ResponseEntity registration(@RequestBody UserRegistrationDTO userRegistrationDTO,
         HttpServletResponse response, BindingResult bindingResult)
         throws IOException {
-        userRBService.validate(userDTO, bindingResult);
+        userService.registrationDTOValidation(userRegistrationDTO);
         if (bindingResult.hasErrors()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid data");
             return null;
         }
 
-        return ok(userService.save(userDTO));
+        return ok(userService.save(userRegistrationDTO));
     }
 
 }

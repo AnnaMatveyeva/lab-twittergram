@@ -5,11 +5,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import twittergram.entity.Role;
 import twittergram.entity.User;
 import twittergram.exception.UserNotFoundException;
-import twittergram.model.UserDTO;
+import twittergram.exception.UserValidationException;
+import twittergram.model.UserRegistrationDTO;
 import twittergram.repository.RoleRepository;
 import twittergram.repository.UserRepository;
+import twittergram.service.mapper.UserMapper;
 
 @RequiredArgsConstructor
 @Service
@@ -20,6 +23,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final StoryService storyService;
     private final PhotoService photoService;
+    private final UserMapper userMapper;
 
     public User findById(Long id) {
         try {
@@ -53,16 +57,10 @@ public class UserService {
     }
 
 
-    public User save(UserDTO userDTO) {
-        User user = new User();
-        user.setFirstName(userDTO.getFirstName());
-        user.setLastName(userDTO.getLastName());
-        user.setNickname(userDTO.getNickname());
-        user.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        user.setRole(roleRepo.findByName("ROLE_REGULAR"));
-        user.setActive(true);
-        user.setEmail(userDTO.getEmail());
-
+    public User save(UserRegistrationDTO userRegistrationDTO) {
+        registrationDTOValidation(userRegistrationDTO);
+        Role role = roleRepo.findByName("ROLE_REGULAR");
+        User user = userMapper.toUser(userRegistrationDTO, passwordEncoder, role);
         return userRepo.save(user);
     }
 
@@ -88,5 +86,29 @@ public class UserService {
         photoService.deleteUserLikes(id);
     }
 
+    public void registrationDTOValidation(UserRegistrationDTO userRegistrationDto) {
+        if (!userRegistrationDto.getPassword().equals(userRegistrationDto.getConfirmPass())) {
+            throw new UserValidationException("Passwords don't match");
+        }
+        checkNickname(userRegistrationDto.getNickname());
+        checkEmail(userRegistrationDto.getEmail());
+    }
 
+    public boolean checkNickname(String nick) {
+        try {
+            findByNickname(nick);
+            throw new UserValidationException("Nickname exists");
+
+        } catch (UserNotFoundException ex) {
+            return true;
+        }
+    }
+    public boolean checkEmail(String email){
+        try {
+            findByEmail(email);
+            throw new UserValidationException("User with such email exists");
+        }catch (UserNotFoundException ex) {
+            return true;
+        }
+    }
 }

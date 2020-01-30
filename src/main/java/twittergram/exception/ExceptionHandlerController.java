@@ -35,4 +35,10 @@ public class ExceptionHandlerController {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
     }
 
+    @ExceptionHandler(UserValidationException.class)
+    public void handleUserValidationException(HttpServletResponse response,
+        UserValidationException ex)
+        throws IOException {
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
+    }
 }
