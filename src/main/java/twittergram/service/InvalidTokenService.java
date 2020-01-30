@@ -15,4 +15,10 @@ public class InvalidTokenService {
         return invalidTokenRepo.findByToken(token);
     }
 
+    public void add(String token) {
+        InvalidToken invalidToken = new InvalidToken();
+        invalidToken.setToken(token);
+        invalidTokenRepo.save(invalidToken);
+    }
+
 }

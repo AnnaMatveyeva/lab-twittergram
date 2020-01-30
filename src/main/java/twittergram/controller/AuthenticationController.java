@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import twittergram.model.AuthenticationRequest;
-import twittergram.model.InvalidTokens;
 import twittergram.model.UserRegistrationDTO;
 import twittergram.security.JwtTokenProvider;
+import twittergram.service.InvalidTokenService;
 import twittergram.service.UserService;
 
 @RequiredArgsConstructor
@@ -29,7 +29,7 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
-    private final InvalidTokens invalidTokens;
+    private final InvalidTokenService invalidTokenService;
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody AuthenticationRequest data,
@@ -52,16 +52,15 @@ public class AuthenticationController {
         }
     }
 
-    @PostMapping("/logout")
-    public String logout(HttpServletRequest request) {
+    @PostMapping("/logoff")
+    public ResponseEntity logout(HttpServletRequest request) {
         String auth = request.getHeader("Authorization");
 
         if (auth != null && auth.startsWith("Bearer ")) {
             String token = auth.substring(7);
-            System.out.println("Token is " + token);
-            invalidTokens.getTokensList().add(token);
+            invalidTokenService.add(token);
         }
-        return "user logged out";
+        return ok("User logged out");
     }
 
     @PostMapping("/registration")
