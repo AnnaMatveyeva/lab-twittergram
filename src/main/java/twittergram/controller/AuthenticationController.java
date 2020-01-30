@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -67,14 +66,9 @@ public class AuthenticationController {
 
     @PostMapping("/registration")
     public ResponseEntity registration(@RequestBody UserRegistrationDTO userRegistrationDTO,
-        HttpServletResponse response, BindingResult bindingResult)
+        HttpServletResponse response)
         throws IOException {
         userService.registrationDTOValidation(userRegistrationDTO);
-        if (bindingResult.hasErrors()) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid data");
-            return null;
-        }
-
         return ok(userService.save(userRegistrationDTO));
     }
 

@@ -103,11 +103,12 @@ public class UserService {
             return true;
         }
     }
-    public boolean checkEmail(String email){
+
+    public boolean checkEmail(String email) {
         try {
             findByEmail(email);
             throw new UserValidationException("User with such email exists");
-        }catch (UserNotFoundException ex) {
+        } catch (UserNotFoundException ex) {
             return true;
         }
     }
