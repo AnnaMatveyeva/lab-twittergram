@@ -19,10 +19,10 @@ public class PhotoDTO extends AbstractDTO {
     private List<Tag> tags = new ArrayList<>();
 
     private List<Like> likes = new ArrayList<>();
+    
+    private double latitude = 0;
 
-    private double latitude;
-
-    private double longitude;
+    private double longitude = 0;
 
     @JsonProperty(access = Access.READ_ONLY)
     private int image;
