@@ -8,36 +8,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class ExceptionHandlerController {
 
-    @ExceptionHandler(FileStorageException.class)
-    public void handleFileException(HttpServletResponse response, FileStorageException ex)
-        throws IOException {
-        response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
-    }
-
-    @ExceptionHandler(StoryNotFoundException.class)
-    public void handleStoryNotFoundException(HttpServletResponse response,
-        StoryNotFoundException ex)
-        throws IOException {
-        response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
-    }
-
-    @ExceptionHandler(PhotoNotFoundException.class)
-    public void handlePhotoNotFoundException(HttpServletResponse response,
-        PhotoNotFoundException ex)
-        throws IOException {
-        response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
-    }
-
-    @ExceptionHandler(UserNotFoundException.class)
-    public void handleUserNotFoundException(HttpServletResponse response,
-        UserNotFoundException ex)
-        throws IOException {
-        response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
-    }
-
-    @ExceptionHandler(UserValidationException.class)
-    public void handleUserValidationException(HttpServletResponse response,
-        UserValidationException ex)
+    @ExceptionHandler({FileStorageException.class, StoryNotFoundException.class,
+        PhotoNotFoundException.class, UserNotFoundException.class, UserValidationException.class,
+        UserDeletedException.class})
+    public void handleException(HttpServletResponse response, Exception ex)
         throws IOException {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());
     }

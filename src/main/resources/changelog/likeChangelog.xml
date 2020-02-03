@@ -3,7 +3,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet author="admin" id="10">
+    <changeSet author="admin" id="init_like_table">
 
         <createTable tableName="likes">
             <column autoIncrement="true" name="id" type="INT">

@@ -1,0 +1,14 @@
+package twittergram.model;
+
+import javax.validation.constraints.Size;
+import lombok.Data;
+
+@Data
+public abstract class AbstractUserDTO extends AbstractDTO {
+
+    @Size(min = 4, max = 40, message = "First name should contain more than 4,but less than 40 characters")
+    private String firstName;
+
+    @Size(min = 4, max = 40, message = "Last name should contain more than 4,but less than 40 characters")
+    private String lastName;
+}

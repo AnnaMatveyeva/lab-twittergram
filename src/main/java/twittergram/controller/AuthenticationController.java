@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,7 +17,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import twittergram.model.AuthenticationRequest;
+import twittergram.model.AuthenticationDTO;
 import twittergram.model.UserRegistrationDTO;
 import twittergram.security.JwtTokenProvider;
 import twittergram.service.InvalidTokenService;
@@ -32,7 +33,7 @@ public class AuthenticationController {
     private final InvalidTokenService invalidTokenService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody AuthenticationRequest data,
+    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data,
         HttpServletResponse response)
         throws IOException {
         try {
@@ -64,7 +65,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity registration(@RequestBody UserRegistrationDTO userRegistrationDTO,
+    public ResponseEntity registration(@RequestBody @Valid UserRegistrationDTO userRegistrationDTO,
         HttpServletResponse response)
         throws IOException {
         userService.registrationDTOValidation(userRegistrationDTO);

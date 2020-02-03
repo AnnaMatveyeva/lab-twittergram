@@ -6,22 +6,14 @@ import javax.validation.constraints.Size;
 import lombok.Data;
 
 @Data
-public class UserRegistrationDTO {
+public class UserRegistrationDTO extends AbstractUserDTO {
 
     @NotEmpty(message = "Nickname may not be empty")
-    @Size(min = 4, max = 32, message = "Nickname should contain more than 4,but less than 32 characters")
+    @Size(min = 4, max = 40, message = "Nickname should contain more than 4,but less than 40 characters")
     private String nickname;
 
-    @NotEmpty(message = "First name may not be empty")
-    @Size(min = 4, max = 32, message = "First name should contain more than 4,but less than 32 characters")
-    private String firstName;
-
-    @NotEmpty(message = "Last name may not be empty")
-    @Size(min = 4, max = 32, message = "Last name should contain more than 4,but less than 32 characters")
-    private String lastName;
-
     @NotEmpty(message = "Password may not be empty")
-    @Size(min = 4, max = 32, message = "Password should contain more than 4,but less than 32 characters")
+    @Size(min = 4, max = 40, message = "Password should contain more than 4,but less than 40 characters")
     private String password;
 
     @NotEmpty(message = "Confirm password may not be empty")

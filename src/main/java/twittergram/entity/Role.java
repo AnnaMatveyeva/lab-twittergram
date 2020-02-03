@@ -10,6 +10,6 @@ import lombok.Data;
 @Table(name = "roles")
 public class Role extends AbstractEntity {
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false, length = 255, unique = true)
     private String name;
 }

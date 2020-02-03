@@ -14,6 +14,7 @@ import twittergram.entity.Tag;
 import twittergram.exception.StoryNotFoundException;
 import twittergram.model.StoryDTO;
 import twittergram.repository.StoryRepository;
+import twittergram.service.mapper.StoryMapper;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +23,7 @@ public class StoryService {
     private final StoryRepository storyRepo;
     private final TagService tagService;
     private final LikeService likeService;
+    private final StoryMapper mapper;
 
     public Story findById(Long id) {
         try {
@@ -31,7 +33,11 @@ public class StoryService {
         }
     }
 
-    public Story create(StoryDTO storyDTO, Long userId) {
+    public StoryDTO findDTOById(Long id) {
+        return mapper.toDTO(findById(id));
+    }
+
+    public StoryDTO create(StoryDTO storyDTO, Long userId) {
         Story story = new Story();
         story.setText(storyDTO.getText());
         story.setDate(LocalDate.now());
@@ -39,7 +45,7 @@ public class StoryService {
         if (!storyDTO.getTags().isEmpty()) {
             story = addTags(storyDTO.getTags(), storyRepo.save(story));
         }
-        return storyRepo.save(story);
+        return mapper.toDTO(storyRepo.save(story));
     }
 
     public Story addTags(List<Tag> storyTags, Story story) {
@@ -58,7 +64,7 @@ public class StoryService {
         return story;
     }
 
-    public Story update(Long storyId, StoryDTO storyDTO) {
+    public StoryDTO update(Long storyId, StoryDTO storyDTO) {
         Story story = findById(storyId);
         if (!StringUtils.isEmpty(storyDTO.getText())) {
             story.setText(storyDTO.getText());
@@ -66,34 +72,46 @@ public class StoryService {
         if (!storyDTO.getTags().isEmpty()) {
             addTags(storyDTO.getTags(), story);
         }
-        return storyRepo.save(story);
+        return mapper.toDTO(storyRepo.save(story));
 
     }
 
-    public Story addLike(Long storyId, Long likeOwnerId) {
+    public StoryDTO addLike(Long storyId, Long likeOwnerId) {
         Story story = findById(storyId);
         Like like = likeService.setLike(story, likeOwnerId);
         if (story.getLikes().contains(like)) {
-            return story;
+            return mapper.toDTO(story);
         } else {
             story.getLikes().add(like);
-            return storyRepo.save(story);
+            return mapper.toDTO(storyRepo.save(story));
         }
     }
 
 
-    public List<Story> findByTag(String tag) {
-        return storyRepo.findByTags_Text(tag);
+    public List<StoryDTO> findByTag(String tag) {
+        List<StoryDTO> dtos = new ArrayList<>();
+        for (Story entity : storyRepo.findByTags_Text(tag)) {
+            dtos.add(mapper.toDTO(entity));
+        }
+        return dtos;
     }
 
-    public List<Story> findByDate(String date) {
+    public List<StoryDTO> findByDate(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(date, formatter);
-        return storyRepo.findByDate(localDate);
+        List<StoryDTO> dtos = new ArrayList<>();
+        for (Story entity : storyRepo.findByDate(localDate)) {
+            dtos.add(mapper.toDTO(entity));
+        }
+        return dtos;
     }
 
-    public List<Story> findByAuthor(Long id) {
-        return storyRepo.findByUserId(id);
+    public List<StoryDTO> findByAuthor(Long id) {
+        List<StoryDTO> dtos = new ArrayList<>();
+        for (Story entity : storyRepo.findByUserId(id)) {
+            dtos.add(mapper.toDTO(entity));
+        }
+        return dtos;
     }
 
     public void deleteList(List<Story> stories) {
@@ -123,12 +141,12 @@ public class StoryService {
         return storyRepo.findAll();
     }
 
-    public List<Story> findWhichContain(String text) {
+    public List<StoryDTO> findWhichContain(String text) {
         List<Story> allStories = getAll();
-        List<Story> searchResult = new ArrayList<>();
+        List<StoryDTO> searchResult = new ArrayList<>();
         for (Story story : allStories) {
             if (story.getText().contains(text)) {
-                searchResult.add(story);
+                searchResult.add(mapper.toDTO(story));
             }
         }
         return searchResult;

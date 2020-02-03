@@ -1,6 +1,8 @@
 package twittergram.controller;
 
+import java.security.Principal;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
@@ -15,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import twittergram.entity.Photo;
 import twittergram.model.PhotoDTO;
 import twittergram.service.PhotoService;
 import twittergram.service.UserService;
@@ -32,12 +33,13 @@ public class PhotoController {
     @PostMapping("/image")
     public String addImage(@RequestParam MultipartFile file, HttpServletRequest request) {
         photoService.create(file, userService.findByNickname(request.getRemoteUser()));
+
         return file.getOriginalFilename();
     }
 
     @PutMapping("/{imageId}")
-    public Photo addPhotoContent(@PathVariable int imageId,
-        @RequestBody PhotoDTO photoDTO, HttpServletRequest request) {
+    public PhotoDTO addPhotoContent(@PathVariable int imageId,
+        @RequestBody @Valid PhotoDTO photoDTO, HttpServletRequest request) {
         return photoService.addPhotoContent(imageId, photoDTO,
             userService.findByNickname(request.getRemoteUser()).getId());
     }
@@ -53,12 +55,12 @@ public class PhotoController {
     }
 
     @GetMapping("/{id}")
-    public Photo getPhotoContent(@PathVariable Long id) {
-        return photoService.findById(id);
+    public PhotoDTO getPhotoContent(@PathVariable Long id) {
+        return photoService.findDTOById(id);
     }
 
     @PostMapping("/like/{id}")
-    public Photo setLike(HttpServletRequest request, @PathVariable Long id) {
+    public PhotoDTO setLike(HttpServletRequest request, @PathVariable Long id) {
         return photoService
             .addLike(id, userService.findByNickname(request.getRemoteUser()).getId());
     }

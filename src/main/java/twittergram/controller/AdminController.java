@@ -13,7 +13,7 @@ import twittergram.service.StoryService;
 import twittergram.service.UserService;
 
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/admin")
 @RequiredArgsConstructor
 public class AdminController {
 

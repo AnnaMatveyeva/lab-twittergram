@@ -11,8 +11,13 @@ public class InvalidTokenService {
 
     private final InvalidTokenRepository invalidTokenRepo;
 
-    public InvalidToken findByToken(String token) {
-        return invalidTokenRepo.findByToken(token);
+    public boolean isExists(String token) {
+        InvalidToken tokenFromDb = invalidTokenRepo.findByToken(token);
+        if (tokenFromDb != null) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void add(String token) {

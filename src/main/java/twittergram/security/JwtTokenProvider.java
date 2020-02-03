@@ -74,7 +74,7 @@ public class JwtTokenProvider {
     public boolean validateToken(String token, HttpServletResponse response) throws IOException {
         Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
         if (claims.getBody().getExpiration().before(new Date()) ||
-            invalidTokenService.findByToken(token) != null) {
+            invalidTokenService.isExists(token)) {
             return false;
         }
 

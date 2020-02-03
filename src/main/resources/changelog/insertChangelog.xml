@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
     <!--INSERT ROLES-->
-    <changeSet id="3" author="admin">
+    <changeSet id="insert_roles" author="admin">
         <insert tableName="roles">
             <column name="id" value="1"/>
             <column name="name" value="ROLE_ADMIN"/>
@@ -17,7 +17,7 @@
     </changeSet>
 
     <!--INSERT USERS-->
-    <changeSet id="4" author="admin">
+    <changeSet id="insert_users" author="admin">
         <insert tableName="users">
             <column name="id" value="1"/>
             <column name="first_name" value="admin"/>
@@ -59,7 +59,7 @@
     </changeSet>
 
     <!--INSERT PHOTOS-->
-    <changeSet id="11" author="admin">
+    <changeSet id="insert_photos" author="admin">
         <insert tableName="photos">
             <column name="id" value="1"/>
             <column name="image" value="0"/>
@@ -74,7 +74,7 @@
     </changeSet>
 
     <!--  INSERT STORY-->
-    <changeSet id="14" author="admin">
+    <changeSet id="insert_stories" author="admin">
         <insert tableName="stories">
             <column name="id" value="1"/>
             <column name="text" value="This is new story"/>

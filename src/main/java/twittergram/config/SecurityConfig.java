@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers("/hello", "/api/story/**", "/api/story**", "/api/photo**")
             .hasRole("REGULAR")
-            .antMatchers("/hello-admin", "/api/admin/**").hasRole("ADMIN")
+            .antMatchers("/hello-admin", "/admin/**").hasRole("ADMIN")
             .antMatchers("/registration").anonymous()
             .antMatchers("/api/search**").permitAll();
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);

@@ -15,16 +15,19 @@ import lombok.Data;
 @Data
 public class Photo extends AbstractEntity {
 
+    @Column(name = "description", length = 255)
     private String description;
 
-    @Column(name = "image")
+    @Column(name = "image", nullable = false)
     private int image;
 
+    @Column(name = "path", nullable = false, length = 255, unique = true)
     private String path;
 
+    @Column(name = "date", nullable = false)
     private LocalDate date;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
     @ManyToMany
@@ -40,7 +43,7 @@ public class Photo extends AbstractEntity {
         inverseJoinColumns = @JoinColumn(name = "like_id"))
     private List<Like> likes;
 
-    private double latitude;
+    private double latitude = 0;
 
-    private double longitude;
+    private double longitude = 0;
 }

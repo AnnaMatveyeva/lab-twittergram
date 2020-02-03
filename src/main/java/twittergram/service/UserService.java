@@ -1,15 +1,17 @@
 package twittergram.service;
 
-import java.util.NoSuchElementException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import twittergram.entity.Role;
 import twittergram.entity.User;
+import twittergram.exception.UserDeletedException;
 import twittergram.exception.UserNotFoundException;
 import twittergram.exception.UserValidationException;
 import twittergram.model.UserRegistrationDTO;
+import twittergram.model.UserUpdateDTO;
 import twittergram.repository.RoleRepository;
 import twittergram.repository.UserRepository;
 import twittergram.service.mapper.UserMapper;
@@ -23,18 +25,17 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final StoryService storyService;
     private final PhotoService photoService;
-    private final UserMapper userMapper;
+    private final UserMapper mapper;
+    private final UserValidator validator;
 
     public User findById(Long id) {
-        try {
-            User user = userRepo.findById(id).get();
-            if (user.isActive()) {
-                return user;
-            } else {
-                throw new UserNotFoundException();
-            }
-        } catch (NoSuchElementException ex) {
-            throw new UserNotFoundException();
+
+        Optional<User> op = userRepo.findById(id);
+        User user = op.orElseThrow(UserNotFoundException::new);
+        if (user.isActive()) {
+            return user;
+        } else {
+            throw new UserDeletedException("User " + user.getNickname() + " has been deleted");
         }
     }
 
@@ -60,11 +61,11 @@ public class UserService {
     public User save(UserRegistrationDTO userRegistrationDTO) {
         registrationDTOValidation(userRegistrationDTO);
         Role role = roleRepo.findByName("ROLE_REGULAR");
-        User user = userMapper.toUser(userRegistrationDTO, passwordEncoder, role);
+        User user = mapper.toEntity(userRegistrationDTO, passwordEncoder, role);
         return userRepo.save(user);
     }
 
-    public User update(String nickname, String firstName, String lastName) {
+    public UserUpdateDTO update(String nickname, String firstName, String lastName) {
         User user = findByNickname(nickname);
         if (!StringUtils.isEmpty(firstName)) {
             user.setFirstName(firstName);
@@ -72,7 +73,7 @@ public class UserService {
         if (!StringUtils.isEmpty(lastName)) {
             user.setLastName(lastName);
         }
-        return userRepo.save(user);
+        return mapper.toDTO(userRepo.save(user));
     }
 
     public void delete(Long id) {
@@ -87,14 +88,12 @@ public class UserService {
     }
 
     public void registrationDTOValidation(UserRegistrationDTO userRegistrationDto) {
-        if (!userRegistrationDto.getPassword().equals(userRegistrationDto.getConfirmPass())) {
-            throw new UserValidationException("Passwords don't match");
-        }
+        validator.arePasswordsMatch(userRegistrationDto);
         checkNickname(userRegistrationDto.getNickname());
         checkEmail(userRegistrationDto.getEmail());
     }
 
-    public boolean checkNickname(String nick) {
+    private boolean checkNickname(String nick) {
         try {
             findByNickname(nick);
             throw new UserValidationException("Nickname exists");
@@ -104,7 +103,7 @@ public class UserService {
         }
     }
 
-    public boolean checkEmail(String email) {
+    private boolean checkEmail(String email) {
         try {
             findByEmail(email);
             throw new UserValidationException("User with such email exists");

@@ -10,7 +10,7 @@ import lombok.Data;
 @Data
 public class InvalidToken extends AbstractEntity {
 
-    @Column(name = "token")
+    @Column(name = "token", nullable = false, unique = true, length = 500)
     private String token;
 
 }

@@ -16,11 +16,13 @@ import lombok.Data;
 @Data
 public class Story extends AbstractEntity {
 
+    @Column(name = "text", nullable = false, length = 400)
     private String text;
 
+    @Column(name = "date", nullable = false)
     private LocalDate date;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private Long userId;
 
     @ManyToMany

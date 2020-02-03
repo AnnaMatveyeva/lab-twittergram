@@ -14,7 +14,7 @@ import lombok.Data;
 @Data
 public class Like extends AbstractEntity {
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false, unique = true)
     private Long userId;
 
     @JsonIgnore
