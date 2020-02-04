@@ -5,6 +5,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,10 +14,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import twittergram.model.StoryDTO;
 import twittergram.service.StoryService;
 import twittergram.service.UserService;
+import twittergram.service.specification.StoriesWithAuthor;
+import twittergram.service.specification.StoriesWithDate;
+import twittergram.service.specification.StoriesWithTag;
+import twittergram.service.specification.StoriesWithText;
 
 @RestController
 @RequestMapping("/api/story")
@@ -53,5 +60,15 @@ public class StoryController {
     @GetMapping("/{id}")
     public StoryDTO getStoryById(@PathVariable Long id) {
         return storyService.findDTOById(id);
+    }
+
+    @GetMapping
+    public Page<StoryDTO> getPhotos(@RequestParam(required = false) Long userId,
+        @RequestParam(required = false) String tag, @RequestParam(required = false) String date,
+        @RequestParam(required = false) String text, Pageable pageable) {
+
+        return storyService.findAll(new StoriesWithAuthor(userId).and(new StoriesWithTag(tag))
+            .and(new StoriesWithDate(date))
+            .and(new StoriesWithText(text)), pageable);
     }
 }

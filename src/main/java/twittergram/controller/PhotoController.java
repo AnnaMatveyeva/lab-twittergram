@@ -5,6 +5,8 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 import twittergram.model.PhotoDTO;
 import twittergram.service.PhotoService;
 import twittergram.service.UserService;
+import twittergram.service.specification.PhotoByDistance;
+import twittergram.service.specification.PhotosWithAuthor;
+import twittergram.service.specification.PhotosWithCoordinates;
+import twittergram.service.specification.PhotosWithDate;
+import twittergram.service.specification.PhotosWithTag;
 
 
 @RestController
@@ -62,6 +69,19 @@ public class PhotoController {
     public PhotoDTO setLike(HttpServletRequest request, @PathVariable Long id) {
         return photoService
             .addLike(id, userService.findByNickname(request.getRemoteUser()).getId());
+    }
+
+    @GetMapping
+    public Page<PhotoDTO> getPhotos(@RequestParam(required = false) Long userId,
+        @RequestParam(required = false) String tag, @RequestParam(required = false) String date,
+        @RequestParam(required = false) Double longitude,
+        @RequestParam(required = false) Double latitude,
+        @RequestParam(required = false) Integer radius, Pageable pageable) {
+
+        return photoService.findAll(
+            new PhotosWithAuthor(userId).and(new PhotosWithTag(tag)).and(new PhotosWithDate(date))
+                .and(new PhotosWithCoordinates(longitude, latitude, radius))
+                .and(new PhotoByDistance(longitude, latitude, radius)), pageable);
     }
 
 }

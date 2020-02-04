@@ -1,11 +1,14 @@
 package twittergram.service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -92,32 +95,6 @@ public class PhotoService {
         }
     }
 
-    public List<PhotoDTO> findByTag(String tag) {
-        List<PhotoDTO> dtos = new ArrayList<>();
-        for (Photo entity : photoRepo.findByTags_Text(tag)) {
-            dtos.add(mapper.toDTO(entity));
-        }
-        return dtos;
-    }
-
-    public List<PhotoDTO> findByDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate localDate = LocalDate.parse(date, formatter);
-        List<PhotoDTO> dtos = new ArrayList<>();
-        for (Photo entity : photoRepo.findByDate(localDate)) {
-            dtos.add(mapper.toDTO(entity));
-        }
-        return dtos;
-    }
-
-    public List<PhotoDTO> findByAuthor(Long userId) {
-        List<PhotoDTO> dtos = new ArrayList<>();
-        for (Photo entity : photoRepo.findByUserId(userId)) {
-            dtos.add(mapper.toDTO(entity));
-        }
-        return dtos;
-    }
-
     public void deleteList(List<Photo> photos) {
         for (Photo photo : photos) {
             delete(photo);
@@ -141,24 +118,11 @@ public class PhotoService {
         photoRepo.delete(photo);
     }
 
-    public List<PhotoDTO> findByDistance(double longitude, double latitude, double radius) {
-        List<Photo> found = photoRepo
-            .findByLongitudeBetweenAndLatitudeBetween(longitude - radius, longitude + radius,
-                latitude - radius, latitude + radius);
-        List<PhotoDTO> result = new ArrayList<>();
-        for (Photo photo : found) {
-            result.add(mapper.toDTO(photo));
+    public Page<PhotoDTO> findAll(Specification spec, Pageable pageable) {
+        List<PhotoDTO> dtos = new ArrayList<>();
+        for (Object entity : photoRepo.findAll(spec, pageable)) {
+            dtos.add(mapper.toDTO((Photo) entity));
         }
-        return result;
-    }
-
-    public List<PhotoDTO> findByCoordinates(double longitude, double latitude) {
-        List<Photo> found = photoRepo.findByLongitudeAndLatitude(longitude, latitude);
-
-        List<PhotoDTO> result = new ArrayList<>();
-        for (Photo photo : found) {
-            result.add(mapper.toDTO(photo));
-        }
-        return result;
+        return new PageImpl<PhotoDTO>(dtos, pageable, dtos.size());
     }
 }

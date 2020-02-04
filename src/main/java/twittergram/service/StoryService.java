@@ -1,11 +1,14 @@
 package twittergram.service;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import twittergram.entity.Like;
@@ -87,33 +90,6 @@ public class StoryService {
         }
     }
 
-
-    public List<StoryDTO> findByTag(String tag) {
-        List<StoryDTO> dtos = new ArrayList<>();
-        for (Story entity : storyRepo.findByTags_Text(tag)) {
-            dtos.add(mapper.toDTO(entity));
-        }
-        return dtos;
-    }
-
-    public List<StoryDTO> findByDate(String date) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate localDate = LocalDate.parse(date, formatter);
-        List<StoryDTO> dtos = new ArrayList<>();
-        for (Story entity : storyRepo.findByDate(localDate)) {
-            dtos.add(mapper.toDTO(entity));
-        }
-        return dtos;
-    }
-
-    public List<StoryDTO> findByAuthor(Long id) {
-        List<StoryDTO> dtos = new ArrayList<>();
-        for (Story entity : storyRepo.findByUserId(id)) {
-            dtos.add(mapper.toDTO(entity));
-        }
-        return dtos;
-    }
-
     public void deleteList(List<Story> stories) {
         for (Story story : stories) {
             delete(story);
@@ -137,18 +113,11 @@ public class StoryService {
     }
 
 
-    public List<Story> getAll() {
-        return storyRepo.findAll();
-    }
-
-    public List<StoryDTO> findWhichContain(String text) {
-        List<Story> allStories = getAll();
-        List<StoryDTO> searchResult = new ArrayList<>();
-        for (Story story : allStories) {
-            if (story.getText().contains(text)) {
-                searchResult.add(mapper.toDTO(story));
-            }
+    public Page<StoryDTO> findAll(Specification spec, Pageable pageable) {
+        List<StoryDTO> dtos = new ArrayList<>();
+        for (Object entity : storyRepo.findAll(spec, pageable)) {
+            dtos.add(mapper.toDTO((Story) entity));
         }
-        return searchResult;
+        return new PageImpl<StoryDTO>(dtos, pageable, dtos.size());
     }
 }
