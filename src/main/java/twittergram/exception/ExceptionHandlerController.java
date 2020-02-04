@@ -10,7 +10,7 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler({FileStorageException.class, StoryNotFoundException.class,
         PhotoNotFoundException.class, UserNotFoundException.class, UserValidationException.class,
-        UserDeletedException.class})
+        UserNotActiveException.class})
     public void handleException(HttpServletResponse response, Exception ex)
         throws IOException {
         response.sendError(HttpServletResponse.SC_BAD_REQUEST, ex.getMessage());

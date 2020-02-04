@@ -10,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import twittergram.entity.User;
-import twittergram.exception.UserDeletedException;
+import twittergram.exception.UserNotActiveException;
 import twittergram.exception.UserNotFoundException;
 import twittergram.service.UserService;
 
@@ -31,7 +31,7 @@ public class UserDetailsServiceImp implements UserDetailsService {
         UserDetails userDetails = null;
         List<GrantedAuthority> grantList = null;
         if (!user.isActive()) {
-            throw new UserDeletedException("User " + nickname + " has been deleted");
+            throw new UserNotActiveException("User " + nickname + " not active");
         }
         String userRole = user.getRole().getName();
 

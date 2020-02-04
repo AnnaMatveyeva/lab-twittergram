@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import twittergram.entity.Role;
 import twittergram.entity.User;
-import twittergram.exception.UserDeletedException;
+import twittergram.exception.UserNotActiveException;
 import twittergram.exception.UserNotFoundException;
 import twittergram.exception.UserValidationException;
 import twittergram.model.UserRegistrationDTO;
@@ -35,7 +35,7 @@ public class UserService {
         if (user.isActive()) {
             return user;
         } else {
-            throw new UserDeletedException("User " + user.getNickname() + " has been deleted");
+            throw new UserNotActiveException("User " + user.getNickname() + " has been deleted");
         }
     }
 
