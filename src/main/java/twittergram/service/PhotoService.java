@@ -141,13 +141,24 @@ public class PhotoService {
         photoRepo.delete(photo);
     }
 
-    public List<Photo> findByDistance(double longitude, double latitude, double radius) {
-        return photoRepo
+    public List<PhotoDTO> findByDistance(double longitude, double latitude, double radius) {
+        List<Photo> found = photoRepo
             .findByLongitudeBetweenAndLatitudeBetween(longitude - radius, longitude + radius,
                 latitude - radius, latitude + radius);
+        List<PhotoDTO> result = new ArrayList<>();
+        for (Photo photo : found) {
+            result.add(mapper.toDTO(photo));
+        }
+        return result;
     }
 
-    public List<Photo> findByCoordinates(double longitude, double latitude) {
-        return photoRepo.findByLongitudeAndLatitude(longitude, latitude);
+    public List<PhotoDTO> findByCoordinates(double longitude, double latitude) {
+        List<Photo> found = photoRepo.findByLongitudeAndLatitude(longitude, latitude);
+
+        List<PhotoDTO> result = new ArrayList<>();
+        for (Photo photo : found) {
+            result.add(mapper.toDTO(photo));
+        }
+        return result;
     }
 }

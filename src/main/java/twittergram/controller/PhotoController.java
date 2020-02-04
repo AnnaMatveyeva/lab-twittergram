@@ -1,6 +1,5 @@
 package twittergram.controller;
 
-import java.security.Principal;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;

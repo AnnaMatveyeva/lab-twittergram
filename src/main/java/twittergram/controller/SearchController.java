@@ -55,4 +55,16 @@ public class SearchController {
     public List<StoryDTO> findStoriesByText(@RequestParam String text) {
         return storyService.findWhichContain(text);
     }
+
+    @GetMapping("/photos-by-distance")
+    public List<PhotoDTO> findPhotosByDistance(@RequestParam double latitude,
+        @RequestParam double longitude, @RequestParam int radius) {
+        return photoService.findByDistance(longitude, latitude, radius);
+    }
+
+    @GetMapping("/photos-by-coordinates")
+    public List<PhotoDTO> findPhotosByCoordinate(@RequestParam double latitude,
+        @RequestParam double longitude) {
+        return photoService.findByCoordinates(longitude, latitude);
+    }
 }
