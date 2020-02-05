@@ -7,6 +7,7 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -76,12 +77,12 @@ public class PhotoController {
         @RequestParam(required = false) String tag, @RequestParam(required = false) String date,
         @RequestParam(required = false) Double longitude,
         @RequestParam(required = false) Double latitude,
-        @RequestParam(required = false) Integer radius, Pageable pageable) {
+        @RequestParam(required = false) Integer radius, Sort sort, Pageable pageable) {
 
         return photoService.findAll(
             new PhotosWithAuthor(userId).and(new PhotosWithTag(tag)).and(new PhotosWithDate(date))
                 .and(new PhotosWithCoordinates(longitude, latitude, radius))
-                .and(new PhotoByDistance(longitude, latitude, radius)), pageable);
+                .and(new PhotoByDistance(longitude, latitude, radius)), pageable, sort);
     }
 
 }

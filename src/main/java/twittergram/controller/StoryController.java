@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -65,10 +66,10 @@ public class StoryController {
     @GetMapping
     public Page<StoryDTO> getPhotos(@RequestParam(required = false) Long userId,
         @RequestParam(required = false) String tag, @RequestParam(required = false) String date,
-        @RequestParam(required = false) String text, Pageable pageable) {
+        @RequestParam(required = false) String text, Pageable pageable, Sort sort) {
 
         return storyService.findAll(new StoriesWithAuthor(userId).and(new StoriesWithTag(tag))
             .and(new StoriesWithDate(date))
-            .and(new StoriesWithText(text)), pageable);
+            .and(new StoriesWithText(text)), pageable, sort);
     }
 }

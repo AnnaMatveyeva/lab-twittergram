@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -113,9 +114,10 @@ public class StoryService {
     }
 
 
-    public Page<StoryDTO> findAll(Specification spec, Pageable pageable) {
+    public Page<StoryDTO> findAll(Specification spec, Pageable pageable,
+        Sort sort) {
         List<StoryDTO> dtos = new ArrayList<>();
-        for (Object entity : storyRepo.findAll(spec, pageable)) {
+        for (Object entity : storyRepo.findAll(spec, sort)) {
             dtos.add(mapper.toDTO((Story) entity));
         }
         return new PageImpl<StoryDTO>(dtos, pageable, dtos.size());

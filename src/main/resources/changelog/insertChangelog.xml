@@ -84,7 +84,7 @@
         <insert tableName="stories">
             <column name="id" value="2"/>
             <column name="text" value="This story by oleg"/>
-            <column name="date" value="2020-01-16"/>
+            <column name="date" value="2020-01-13"/>
             <column name="user_id" value="3"/>
         </insert>
         <insert tableName="stories">
