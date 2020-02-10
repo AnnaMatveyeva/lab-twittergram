@@ -18,7 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import twittergram.entity.Role;
-import twittergram.model.InvalidTokens;
+import twittergram.service.InvalidTokenService;
 
 @Component
 @RequiredArgsConstructor
@@ -31,6 +31,7 @@ public class JwtTokenProvider {
     private long validityInMilliseconds = 3600000;
 
     private final UserDetailsServiceImp userDetailsService;
+    private final InvalidTokenService invalidTokenService;
 
     @PostConstruct
     protected void init() {
@@ -73,7 +74,7 @@ public class JwtTokenProvider {
     public boolean validateToken(String token, HttpServletResponse response) throws IOException {
         Jws<Claims> claims = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token);
         if (claims.getBody().getExpiration().before(new Date()) ||
-            InvalidTokens.INSTANCE.getTokensList().contains(token)) {
+            invalidTokenService.isExists(token)) {
             return false;
         }
 

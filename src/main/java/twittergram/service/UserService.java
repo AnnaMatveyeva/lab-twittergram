@@ -1,13 +1,20 @@
 package twittergram.service;
 
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import twittergram.entity.Role;
 import twittergram.entity.User;
-import twittergram.model.UserRequestBody;
+import twittergram.exception.UserNotActiveException;
+import twittergram.exception.UserNotFoundException;
+import twittergram.exception.UserValidationException;
+import twittergram.model.UserRegistrationDTO;
+import twittergram.model.UserUpdateDTO;
 import twittergram.repository.RoleRepository;
 import twittergram.repository.UserRepository;
+import twittergram.service.mapper.UserMapper;
 
 @RequiredArgsConstructor
 @Service
@@ -16,28 +23,49 @@ public class UserService {
     private final UserRepository userRepo;
     private final RoleRepository roleRepo;
     private final PasswordEncoder passwordEncoder;
+    private final StoryService storyService;
+    private final PhotoService photoService;
+    private final UserMapper mapper;
+    private final UserValidator validator;
+
+    public User findById(Long id) {
+
+        Optional<User> op = userRepo.findById(id);
+        User user = op.orElseThrow(UserNotFoundException::new);
+        if (user.isActive()) {
+            return user;
+        } else {
+            throw new UserNotActiveException("User " + user.getNickname() + " has been deleted");
+        }
+    }
 
     public User findByNickname(String nickname) {
-        return userRepo.findByNickname(nickname);
+        User user = userRepo.findByNickname(nickname);
+        if (user != null && user.isActive()) {
+            return user;
+        } else {
+            throw new UserNotFoundException();
+        }
     }
 
     public User findByEmail(String email) {
-        return userRepo.findByEmail(email);
+        User user = userRepo.findByEmail(email);
+        if (user != null && user.isActive()) {
+            return user;
+        } else {
+            throw new UserNotFoundException();
+        }
     }
 
-    public User save(UserRequestBody userRequestBody) {
-        User user = new User();
-        user.setFirstName(userRequestBody.getFirstName());
-        user.setLastName(userRequestBody.getLastName());
-        user.setNickname(userRequestBody.getNickname());
-        user.setPassword(passwordEncoder.encode(userRequestBody.getPassword()));
-        user.setRole(roleRepo.findByName("ROLE_REGULAR"));
-        user.setEmail(userRequestBody.getEmail());
 
+    public User save(UserRegistrationDTO userRegistrationDTO) {
+        registrationDTOValidation(userRegistrationDTO);
+        Role role = roleRepo.findByName("ROLE_REGULAR");
+        User user = mapper.toEntity(userRegistrationDTO, passwordEncoder, role);
         return userRepo.save(user);
     }
 
-    public User update(String nickname, String firstName, String lastName) {
+    public UserUpdateDTO update(String nickname, String firstName, String lastName) {
         User user = findByNickname(nickname);
         if (!StringUtils.isEmpty(firstName)) {
             user.setFirstName(firstName);
@@ -45,7 +73,43 @@ public class UserService {
         if (!StringUtils.isEmpty(lastName)) {
             user.setLastName(lastName);
         }
-        return userRepo.save(user);
+        return mapper.toDTO(userRepo.save(user));
+    }
+
+    public void delete(Long id) {
+        User user = findById(id);
+        user.setActive(false);
+        userRepo.save(user);
+
+        storyService.deleteList(user.getStories());
+        photoService.deleteList(user.getPhotos());
+        storyService.deleteUserLikes(id);
+        photoService.deleteUserLikes(id);
+    }
+
+    public void registrationDTOValidation(UserRegistrationDTO userRegistrationDto) {
+        validator.arePasswordsMatch(userRegistrationDto);
+        checkNickname(userRegistrationDto.getNickname());
+        checkEmail(userRegistrationDto.getEmail());
+    }
+
+    private boolean checkNickname(String nick) {
+        try {
+            findByNickname(nick);
+            throw new UserValidationException("Nickname exists");
+
+        } catch (UserNotFoundException ex) {
+            return true;
+        }
+    }
+
+    private boolean checkEmail(String email) {
+        try {
+            findByEmail(email);
+            throw new UserValidationException("User with such email exists");
+        } catch (UserNotFoundException ex) {
+            return true;
+        }
     }
 
 }

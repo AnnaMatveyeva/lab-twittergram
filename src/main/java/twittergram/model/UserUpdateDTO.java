@@ -3,7 +3,6 @@ package twittergram.model;
 import lombok.Data;
 
 @Data
-public class StoryRequestBody {
+public class UserUpdateDTO extends AbstractUserDTO {
 
-    private String text;
 }

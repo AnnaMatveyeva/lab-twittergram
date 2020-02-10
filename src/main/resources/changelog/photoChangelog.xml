@@ -1,0 +1,36 @@
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="admin" id="init_photos_table">
+
+        <createTable tableName="photos">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="image" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="path" type="VARCHAR(255)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="description" type="VARCHAR(255)"/>
+            <column name="date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="latitude" type="INT"/>
+            <column name="longitude" type="INT"/>
+
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="user_id"
+            baseTableName="photos"
+            constraintName="fk_user_photo_id"
+            referencedColumnNames="id"
+            referencedTableName="users"/>
+    </changeSet>
+
+</databaseChangeLog>

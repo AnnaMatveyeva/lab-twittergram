@@ -3,6 +3,7 @@ package twittergram.config;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,10 +32,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
-            .antMatchers("/hello", "/update", "/story").hasRole("REGULAR")
-            .antMatchers("/hello-admin").hasRole("ADMIN")
+            .antMatchers(HttpMethod.GET, "/api/photo**", "/api/story**").permitAll()
+            .antMatchers("/hello", "/api/story/**", "/api/story**", "/api/photo/**")
+            .hasRole("REGULAR")
+            .antMatchers("/hello-admin", "/admin/**").hasRole("ADMIN")
             .antMatchers("/registration").anonymous()
-            .and();
+            .antMatchers("/api/search**").permitAll();
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

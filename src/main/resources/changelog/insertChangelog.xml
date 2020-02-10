@@ -1,55 +1,98 @@
 <databaseChangeLog
-  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-  <!--INSERT ROLES-->
-  <changeSet id="3" author="admin">
-    <insert tableName="roles">
-      <column name="id" value="1"/>
-      <column name="name" value="ROLE_ADMIN"/>
-    </insert>
+    <!--INSERT ROLES-->
+    <changeSet id="insert_roles" author="admin">
+        <insert tableName="roles">
+            <column name="id" value="1"/>
+            <column name="name" value="ROLE_ADMIN"/>
+        </insert>
 
-    <insert tableName="roles">
-      <column name="id" value="2"/>
-      <column name="name" value="ROLE_REGULAR"/>
-    </insert>
-  </changeSet>
+        <insert tableName="roles">
+            <column name="id" value="2"/>
+            <column name="name" value="ROLE_REGULAR"/>
+        </insert>
+    </changeSet>
 
-  <!--INSERT USERS-->
-  <changeSet id="4" author="admin">
-    <insert tableName="users">
-      <column name="id" value="1"/>
-      <column name="first_name" value="admin"/>
-      <column name="last_name" value="admin"/>
-      <column name="nickname" value="admin"/>
-<!-- password = admin-->
-      <column name="password" value="$2a$10$ja.g4DeanYTt/xreJ4GttOG6zx4Y5PZ3l7n8mlyseu0tOWex1EDKG"/>
-      <column name="role_id" value="1"/>
-      <column name="email" value="admin@gmail.com"/>
-    </insert>
+    <!--INSERT USERS-->
+    <changeSet id="insert_users" author="admin">
+        <insert tableName="users">
+            <column name="id" value="1"/>
+            <column name="first_name" value="admin"/>
+            <column name="last_name" value="admin"/>
+            <column name="nickname" value="admin"/>
+            <!-- password = admin-->
+            <column name="password"
+                value="$2a$10$ja.g4DeanYTt/xreJ4GttOG6zx4Y5PZ3l7n8mlyseu0tOWex1EDKG"/>
+            <column name="role_id" value="1"/>
+            <column name="is_active" value="1"/>
+            <column name="email" value="admin@gmail.com"/>
+        </insert>
 
-    <insert tableName="users">
-      <column name="id" value="2"/>
-      <column name="first_name" value="egor"/>
-      <column name="last_name" value="egorov"/>
-      <column name="nickname" value="egor"/>
-      <!-- password = egor-->
-      <column name="password" value="$2a$10$ClneJIBiv6blIwnHf/kNme0E3nQclagTWYff1w4pIjn4hXOiMQaL."/>
-      <column name="role_id" value="2"/>
-      <column name="email" value="egor@gmail.com"/>
-    </insert>
+        <insert tableName="users">
+            <column name="id" value="2"/>
+            <column name="first_name" value="egor"/>
+            <column name="last_name" value="egorov"/>
+            <column name="nickname" value="egor"/>
+            <!-- password = egor-->
+            <column name="password"
+                value="$2a$10$ClneJIBiv6blIwnHf/kNme0E3nQclagTWYff1w4pIjn4hXOiMQaL."/>
+            <column name="role_id" value="2"/>
+            <column name="is_active" value="1"/>
+            <column name="email" value="egor@gmail.com"/>
+        </insert>
 
-    <insert tableName="users">
-      <column name="id" value="3"/>
-      <column name="first_name" value="oleg"/>
-      <column name="last_name" value="olegov"/>
-      <column name="nickname" value="oleg"/>
-      <!-- password = oleg-->
-      <column name="password" value="$2a$10$GKsZ1Ao3A169xathpzSsg.D8BVFI.QtuJeM85XycEmHoZ3TimDwRG"/>
-      <column name="role_id" value="2"/>
-      <column name="email" value="oleg@gmail.com"/>
-    </insert>
+        <insert tableName="users">
+            <column name="id" value="3"/>
+            <column name="first_name" value="oleg"/>
+            <column name="last_name" value="olegov"/>
+            <column name="nickname" value="oleg"/>
+            <!-- password = oleg-->
+            <column name="password"
+                value="$2a$10$GKsZ1Ao3A169xathpzSsg.D8BVFI.QtuJeM85XycEmHoZ3TimDwRG"/>
+            <column name="role_id" value="2"/>
+            <column name="is_active" value="1"/>
+            <column name="email" value="oleg@gmail.com"/>
+        </insert>
+    </changeSet>
 
-  </changeSet>
+    <!--INSERT PHOTOS-->
+    <changeSet id="insert_photos" author="admin">
+        <insert tableName="photos">
+            <column name="id" value="1"/>
+            <column name="image" value="0"/>
+            <column name="description" value="This is photo"/>
+            <column name="path"
+                value="src\main\resources\uploads\egor\0"/>
+            <column name="date" value="2020-01-15"/>
+            <column name="user_id" value="2"/>
+            <column name="longitude" value="10"/>
+            <column name="latitude" value="10"/>
+        </insert>
+    </changeSet>
+
+    <!--  INSERT STORY-->
+    <changeSet id="insert_stories" author="admin">
+        <insert tableName="stories">
+            <column name="id" value="1"/>
+            <column name="text" value="This is new story"/>
+            <column name="date" value="2020-01-15"/>
+            <column name="user_id" value="2"/>
+        </insert>
+        <insert tableName="stories">
+            <column name="id" value="2"/>
+            <column name="text" value="This story by oleg"/>
+            <column name="date" value="2020-01-13"/>
+            <column name="user_id" value="3"/>
+        </insert>
+        <insert tableName="stories">
+            <column name="id" value="3"/>
+            <column name="text" value="This is story by egor"/>
+            <column name="date" value="2020-01-16"/>
+            <column name="user_id" value="2"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>

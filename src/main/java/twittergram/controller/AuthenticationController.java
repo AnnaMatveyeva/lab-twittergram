@@ -8,20 +8,19 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import twittergram.model.AuthenticationRequest;
-import twittergram.model.InvalidTokens;
-import twittergram.model.UserRequestBody;
+import twittergram.model.AuthenticationDTO;
+import twittergram.model.UserRegistrationDTO;
 import twittergram.security.JwtTokenProvider;
-import twittergram.service.UserRBService;
+import twittergram.service.InvalidTokenService;
 import twittergram.service.UserService;
 
 @RequiredArgsConstructor
@@ -31,10 +30,10 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
-    private final UserRBService userRBService;
+    private final InvalidTokenService invalidTokenService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody AuthenticationRequest data,
+    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data,
         HttpServletResponse response)
         throws IOException {
         try {
@@ -54,29 +53,23 @@ public class AuthenticationController {
         }
     }
 
-    @PostMapping("/logout")
-    public String logout(HttpServletRequest request) {
+    @PostMapping("/logoff")
+    public ResponseEntity logout(HttpServletRequest request) {
         String auth = request.getHeader("Authorization");
 
         if (auth != null && auth.startsWith("Bearer ")) {
             String token = auth.substring(7);
-            System.out.println("Token is " + token);
-            InvalidTokens.INSTANCE.getTokensList().add(token);
+            invalidTokenService.add(token);
         }
-        return "user logged out";
+        return ok("User logged out");
     }
 
     @PostMapping("/registration")
-    public ResponseEntity registration(@RequestBody UserRequestBody userRequestBody,
-        HttpServletResponse response, BindingResult bindingResult)
+    public ResponseEntity registration(@RequestBody @Valid UserRegistrationDTO userRegistrationDTO,
+        HttpServletResponse response)
         throws IOException {
-        userRBService.validate(userRequestBody, bindingResult);
-        if (bindingResult.hasErrors()) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid data");
-            return null;
-        }
-
-        return ok(userService.save(userRequestBody));
+        userService.registrationDTOValidation(userRegistrationDTO);
+        return ok(userService.save(userRegistrationDTO));
     }
 
 }

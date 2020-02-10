@@ -1,0 +1,26 @@
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet author="admin" id="init_stories_likes_table">
+
+        <createTable tableName="stories_likes">
+            <column name="story_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="like_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint constraintName="fk_stories_for_likes"
+            baseTableName="stories_likes" baseColumnNames="story_id"
+            referencedTableName="stories" referencedColumnNames="id"/>
+        <addForeignKeyConstraint constraintName="fk_like_for_stories"
+            baseTableName="stories_likes" baseColumnNames="like_id"
+            referencedTableName="likes" referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

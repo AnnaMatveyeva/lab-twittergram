@@ -1,38 +1,39 @@
 <databaseChangeLog
-  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-  <changeSet author="admin" id="2">
+    <changeSet author="admin" id="init_users_table">
 
-    <createTable tableName="users">
-      <column autoIncrement="true" name="id" type="INT">
-        <constraints primaryKey="true"/>
-      </column>
-      <column name="first_name" type="VARCHAR(40)">
-        <constraints nullable="false"/>
-      </column>
-      <column name="last_name" type="VARCHAR(40)">
-        <constraints nullable="false"/>
-      </column>
-      <column name="nickname" type="VARCHAR(40)">
-        <constraints nullable="false"/>
-      </column>
-      <column name="password" type="VARCHAR(255)">
-        <constraints nullable="false"/>
-      </column>
-      <column name="role_id" type="INT">
-        <constraints nullable="false"/>
-      </column>
-      <column name="email" type="VARCHAR(40)">
-        <constraints nullable="false"/>
-      </column>
-    </createTable>
+        <createTable tableName="users">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="first_name" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="last_name" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="nickname" type="VARCHAR(40)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="role_id" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(40)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_active" type="BOOLEAN"/>
+        </createTable>
 
-    <addForeignKeyConstraint baseColumnNames="role_id"
-      baseTableName="users"
-      constraintName="fk_user_role_id"
-      referencedColumnNames="id"
-      referencedTableName="roles"/>
-  </changeSet>
+        <addForeignKeyConstraint baseColumnNames="role_id"
+            baseTableName="users"
+            constraintName="fk_user_role_id"
+            referencedColumnNames="id"
+            referencedTableName="roles"/>
+    </changeSet>
 </databaseChangeLog>
