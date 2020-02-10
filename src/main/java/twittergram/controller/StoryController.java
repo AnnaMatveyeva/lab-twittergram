@@ -20,10 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import twittergram.model.StoryDTO;
 import twittergram.service.StoryService;
 import twittergram.service.UserService;
-import twittergram.service.specification.StoriesWithAuthor;
-import twittergram.service.specification.StoriesWithDate;
-import twittergram.service.specification.StoriesWithTag;
-import twittergram.service.specification.StoriesWithText;
 
 @RestController
 @RequestMapping("/api/story")
@@ -68,8 +64,6 @@ public class StoryController {
         @RequestParam(required = false) String tag, @RequestParam(required = false) String date,
         @RequestParam(required = false) String text, Pageable pageable, Sort sort) {
 
-        return storyService.findAll(new StoriesWithAuthor(userId).and(new StoriesWithTag(tag))
-            .and(new StoriesWithDate(date))
-            .and(new StoriesWithText(text)), pageable, sort);
+        return storyService.findAll(userId, tag, date, text, pageable, sort);
     }
 }

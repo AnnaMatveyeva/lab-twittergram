@@ -22,11 +22,6 @@ import org.springframework.web.multipart.MultipartFile;
 import twittergram.model.PhotoDTO;
 import twittergram.service.PhotoService;
 import twittergram.service.UserService;
-import twittergram.service.specification.PhotoByDistance;
-import twittergram.service.specification.PhotosWithAuthor;
-import twittergram.service.specification.PhotosWithCoordinates;
-import twittergram.service.specification.PhotosWithDate;
-import twittergram.service.specification.PhotosWithTag;
 
 
 @RestController
@@ -79,10 +74,7 @@ public class PhotoController {
         @RequestParam(required = false) Double latitude,
         @RequestParam(required = false) Integer radius, Sort sort, Pageable pageable) {
 
-        return photoService.findAll(
-            new PhotosWithAuthor(userId).and(new PhotosWithTag(tag)).and(new PhotosWithDate(date))
-                .and(new PhotosWithCoordinates(longitude, latitude, radius))
-                .and(new PhotoByDistance(longitude, latitude, radius)), pageable, sort);
+        return photoService.findAll(userId, tag, date, longitude, latitude, radius, pageable, sort);
     }
 
 }

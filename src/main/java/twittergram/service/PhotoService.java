@@ -21,6 +21,11 @@ import twittergram.exception.PhotoNotFoundException;
 import twittergram.model.PhotoDTO;
 import twittergram.repository.PhotoRepository;
 import twittergram.service.mapper.PhotoMapper;
+import twittergram.service.specification.PhotoByDistance;
+import twittergram.service.specification.PhotosWithAuthor;
+import twittergram.service.specification.PhotosWithCoordinates;
+import twittergram.service.specification.PhotosWithDate;
+import twittergram.service.specification.PhotosWithTag;
 
 @Service
 @RequiredArgsConstructor
@@ -119,9 +124,16 @@ public class PhotoService {
         photoRepo.delete(photo);
     }
 
-    public Page<PhotoDTO> findAll(Specification spec, Pageable pageable, Sort sort) {
+    public Page<PhotoDTO> findAll(Long userId, String tag, String date, Double longitude,
+        Double latitude, Integer radius, Pageable pageable, Sort sort) {
+
+        Specification specification = new PhotosWithAuthor(userId).and(new PhotosWithTag(tag))
+            .and(new PhotosWithDate(date))
+            .and(new PhotosWithCoordinates(longitude, latitude, radius))
+            .and(new PhotoByDistance(longitude, latitude, radius));
+
         List<PhotoDTO> dtos = new ArrayList<>();
-        for (Object entity : photoRepo.findAll(spec, sort)) {
+        for (Object entity : photoRepo.findAll(specification, sort)) {
             dtos.add(mapper.toDTO((Photo) entity));
         }
         return new PageImpl<PhotoDTO>(dtos, pageable, dtos.size());

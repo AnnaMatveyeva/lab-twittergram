@@ -19,6 +19,10 @@ import twittergram.exception.StoryNotFoundException;
 import twittergram.model.StoryDTO;
 import twittergram.repository.StoryRepository;
 import twittergram.service.mapper.StoryMapper;
+import twittergram.service.specification.StoriesWithAuthor;
+import twittergram.service.specification.StoriesWithDate;
+import twittergram.service.specification.StoriesWithTag;
+import twittergram.service.specification.StoriesWithText;
 
 @Service
 @RequiredArgsConstructor
@@ -114,10 +118,13 @@ public class StoryService {
     }
 
 
-    public Page<StoryDTO> findAll(Specification spec, Pageable pageable,
-        Sort sort) {
+    public Page<StoryDTO> findAll(Long userId, String tag, String date, String text,
+        Pageable pageable, Sort sort) {
+        Specification specification = new StoriesWithAuthor(userId).and(new StoriesWithTag(tag))
+            .and(new StoriesWithDate(date))
+            .and(new StoriesWithText(text));
         List<StoryDTO> dtos = new ArrayList<>();
-        for (Object entity : storyRepo.findAll(spec, sort)) {
+        for (Object entity : storyRepo.findAll(specification, sort)) {
             dtos.add(mapper.toDTO((Story) entity));
         }
         return new PageImpl<StoryDTO>(dtos, pageable, dtos.size());
