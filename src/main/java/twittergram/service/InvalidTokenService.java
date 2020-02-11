@@ -1,10 +1,12 @@
 package twittergram.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import twittergram.entity.InvalidToken;
 import twittergram.repository.InvalidTokenRepository;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class InvalidTokenService {
@@ -24,6 +26,7 @@ public class InvalidTokenService {
         InvalidToken invalidToken = new InvalidToken();
         invalidToken.setToken(token);
         invalidTokenRepo.save(invalidToken);
+        log.trace("Token" + token + " became invalid");
     }
 
 }

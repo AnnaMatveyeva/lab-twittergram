@@ -4,10 +4,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import twittergram.exception.FileStorageException;
 
+@Slf4j
 @Service
 public class FileService {
 
@@ -23,6 +25,7 @@ public class FileService {
             }
             FileOutputStream outputStream = new FileOutputStream(resultPath);
             outputStream.write(file.getBytes());
+            log.trace("File was created at " + resultPath);
             return resultPath;
         } catch (Exception e) {
             e.printStackTrace();
@@ -36,7 +39,8 @@ public class FileService {
         file.getAbsolutePath();
         File abFile = new File(file.getAbsolutePath());
         if (abFile.delete()) {
-            System.out.println("deleted");
+            log.trace("File with path " + path + " was deleted");
         }
+
     }
 }
