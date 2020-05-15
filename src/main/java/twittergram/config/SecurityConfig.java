@@ -20,35 +20,35 @@ import twittergram.security.JwtTokenFilter;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final PasswordEncoder passwordEncoder;
-    private final UserDetailsService userDetailsService;
-    private final JwtTokenFilter jwtRequestFilter;
+	private final PasswordEncoder passwordEncoder;
+	private final UserDetailsService userDetailsService;
+	private final JwtTokenFilter jwtRequestFilter;
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-            .httpBasic().disable()
-            .csrf().disable()
-            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/api/photo**", "/api/story**").permitAll()
-            .antMatchers("/hello", "/api/story/**", "/api/story**", "/api/photo/**")
-            .hasRole("REGULAR")
-            .antMatchers("/hello-admin", "/admin/**").hasRole("ADMIN")
-            .antMatchers("/registration").anonymous()
-            .antMatchers("/api/search**").permitAll();
-        http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-    }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http.httpBasic().disable()
+				.csrf().disable()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+				.and()
+				.authorizeRequests()
+				.antMatchers(HttpMethod.GET, "/api/photo**", "/api/story**").permitAll()
+				.antMatchers("/api/story/**", "/api/story**", "/api/photo/**")
+				.hasRole("REGULAR")
+				.antMatchers("/hello").anonymous()
+				.antMatchers("/hello-admin", "/admin/**").hasRole("ADMIN")
+				.antMatchers("/registration").anonymous()
+				.antMatchers("/api/search**").permitAll();
+		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+	}
 
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-    }
+	@Override
+	public void configure(AuthenticationManagerBuilder auth) throws Exception {
+		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+	}
 
-    @Bean
-    @Override
-    public AuthenticationManager authenticationManagerBean() throws Exception {
-        return super.authenticationManagerBean();
-    }
+	@Bean
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
 }

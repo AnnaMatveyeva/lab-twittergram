@@ -1,6 +1,5 @@
 package twittergram.service;
 
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +15,8 @@ import twittergram.repository.RoleRepository;
 import twittergram.repository.UserRepository;
 import twittergram.service.mapper.UserMapper;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 @Service
 public class UserService {
@@ -26,7 +27,7 @@ public class UserService {
     private final StoryService storyService;
     private final PhotoService photoService;
     private final UserMapper mapper;
-    private final UserValidator validator;
+    private final PasswordValidator passwordValidator;
 
     public User findById(Long id) {
 
@@ -88,7 +89,7 @@ public class UserService {
     }
 
     public void registrationDTOValidation(UserRegistrationDTO userRegistrationDto) {
-        validator.arePasswordsMatch(userRegistrationDto);
+        passwordValidator.arePasswordsMatch(userRegistrationDto);
         checkNickname(userRegistrationDto.getNickname());
         checkEmail(userRegistrationDto.getEmail());
     }
