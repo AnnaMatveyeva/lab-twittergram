@@ -9,6 +9,7 @@ import twittergram.entity.User;
 import twittergram.exception.UserNotActiveException;
 import twittergram.exception.UserNotFoundException;
 import twittergram.exception.UserValidationException;
+import twittergram.model.AuthenticationDTO;
 import twittergram.model.UserRegistrationDTO;
 import twittergram.model.UserUpdateDTO;
 import twittergram.repository.RoleRepository;
@@ -59,11 +60,14 @@ public class UserService {
     }
 
 
-    public User save(UserRegistrationDTO userRegistrationDTO) {
+    public AuthenticationDTO save(UserRegistrationDTO userRegistrationDTO) {
         registrationDTOValidation(userRegistrationDTO);
         Role role = roleRepo.findByName("ROLE_REGULAR");
-        User user = mapper.toEntity(userRegistrationDTO, passwordEncoder, role);
-        return userRepo.save(user);
+        User user = userRepo.save(mapper.toEntity(userRegistrationDTO, passwordEncoder, role));
+        AuthenticationDTO dto = new AuthenticationDTO();
+        dto.setNickname(user.getNickname());
+        dto.setPassword(userRegistrationDTO.getPassword());
+        return dto;
     }
 
     public UserUpdateDTO update(String nickname, String firstName, String lastName) {

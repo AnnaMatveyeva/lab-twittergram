@@ -1,14 +1,5 @@
 package twittergram.controller;
 
-import static org.springframework.http.ResponseEntity.ok;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,11 +8,23 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import twittergram.entity.User;
 import twittergram.model.AuthenticationDTO;
 import twittergram.model.UserRegistrationDTO;
 import twittergram.security.JwtTokenProvider;
 import twittergram.service.InvalidTokenService;
 import twittergram.service.UserService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import static org.springframework.http.ResponseEntity.ok;
 
 @RequiredArgsConstructor
 @RestController
@@ -35,14 +38,19 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data,
         HttpServletResponse response)
+
         throws IOException {
+
+        System.out.println(data.getNickname()
+                + " "
+                + data.getPassword());
         try {
             String nickname = data.getNickname();
             authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(nickname, data.getPassword()));
             String token = jwtTokenProvider.createToken(nickname,
                 Arrays.asList(userService.findByNickname(nickname).getRole()));
-            Map<Object, Object> model = new HashMap<>();
+            Map<String, String> model = new HashMap<>();
             model.put("nickname", nickname);
             model.put("token", token);
             System.out.println("New token created");
@@ -66,9 +74,9 @@ public class AuthenticationController {
 
     @PostMapping("/registration")
     public ResponseEntity registration(@RequestBody @Valid UserRegistrationDTO userRegistrationDTO,
-        HttpServletResponse response)
-        throws IOException {
+        HttpServletResponse response) {
         userService.registrationDTOValidation(userRegistrationDTO);
+
         return ok(userService.save(userRegistrationDTO));
     }
 
