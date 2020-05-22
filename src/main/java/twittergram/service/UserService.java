@@ -60,14 +60,11 @@ public class UserService {
     }
 
 
-    public AuthenticationDTO save(UserRegistrationDTO userRegistrationDTO) {
+    public User save(UserRegistrationDTO userRegistrationDTO) {
         registrationDTOValidation(userRegistrationDTO);
         Role role = roleRepo.findByName("ROLE_REGULAR");
-        User user = userRepo.save(mapper.toEntity(userRegistrationDTO, passwordEncoder, role));
-        AuthenticationDTO dto = new AuthenticationDTO();
-        dto.setNickname(user.getNickname());
-        dto.setPassword(userRegistrationDTO.getPassword());
-        return dto;
+
+        return userRepo.save(mapper.toEntity(userRegistrationDTO, passwordEncoder, role));
     }
 
     public UserUpdateDTO update(String nickname, String firstName, String lastName) {

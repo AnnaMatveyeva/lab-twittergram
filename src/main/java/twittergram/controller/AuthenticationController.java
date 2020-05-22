@@ -1,6 +1,7 @@
 package twittergram.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -26,6 +27,7 @@ import java.util.Map;
 
 import static org.springframework.http.ResponseEntity.ok;
 
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class AuthenticationController {
@@ -37,13 +39,7 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data,
-        HttpServletResponse response)
-
-        throws IOException {
-
-        System.out.println(data.getNickname()
-                + " "
-                + data.getPassword());
+        HttpServletResponse response) throws IOException {
         try {
             String nickname = data.getNickname();
             authenticationManager.authenticate(
@@ -53,7 +49,7 @@ public class AuthenticationController {
             Map<String, String> model = new HashMap<>();
             model.put("nickname", nickname);
             model.put("token", token);
-            System.out.println("New token created");
+            log.info("New token was created");
             return ok(model);
         } catch (AuthenticationException e) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
@@ -68,6 +64,7 @@ public class AuthenticationController {
         if (auth != null && auth.startsWith("Bearer ")) {
             String token = auth.substring(7);
             invalidTokenService.add(token);
+            log.info("Token was marked as invalid");
         }
         return ok("User logged out");
     }
@@ -76,8 +73,12 @@ public class AuthenticationController {
     public ResponseEntity registration(@RequestBody @Valid UserRegistrationDTO userRegistrationDTO,
         HttpServletResponse response) {
         userService.registrationDTOValidation(userRegistrationDTO);
-
-        return ok(userService.save(userRegistrationDTO));
+        Map<String, String> model = new HashMap<>();
+        User save = userService.save(userRegistrationDTO);
+        log.info("New user was created");
+        model.put("nickname",save.getNickname());
+        model.put("email", save.getEmail());
+        return ok(model);
     }
 
 }
