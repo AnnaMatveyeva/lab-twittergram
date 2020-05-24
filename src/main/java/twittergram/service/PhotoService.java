@@ -93,7 +93,7 @@ public class PhotoService {
 
 	public PhotoDTO addLike(Long photoId, Long likeOwnerId) {
 		Photo photo = findById(photoId);
-		Like like = likeService.setLike(photo, likeOwnerId);
+		Like like = likeService.addLike(likeOwnerId);
 		if (photo.getLikes().contains(like)) {
 			return mapper.toDTO(photo);
 		} else {
@@ -110,7 +110,10 @@ public class PhotoService {
 
 	public void deleteUserLikes(Long userId) {
 		List<Photo> photos = photoRepo.findByLikes_UserId(userId);
-		likeService.removeFromPhotos(photos, userId);
+		Like byOwnerId = likeService.findByOwnerId(userId);
+		if(byOwnerId!=null){
+			photos.forEach(photo -> photo.getLikes().remove(byOwnerId));
+		}
 		photoRepo.saveAll(photos);
 	}
 

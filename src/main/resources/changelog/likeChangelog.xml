@@ -14,11 +14,6 @@
             </column>
         </createTable>
 
-        <addForeignKeyConstraint baseColumnNames="user_id"
-            baseTableName="likes"
-            constraintName="fk_user_like_id"
-            referencedColumnNames="id"
-            referencedTableName="users"/>
     </changeSet>
 
 </databaseChangeLog>

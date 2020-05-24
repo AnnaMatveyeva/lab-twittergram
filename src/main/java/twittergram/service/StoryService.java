@@ -77,7 +77,7 @@ public class StoryService {
 
 	public StoryDTO addLike(Long storyId, Long likeOwnerId) {
 		Story story = findById(storyId);
-		Like like = likeService.setLike(story, likeOwnerId);
+		Like like = likeService.addLike(likeOwnerId);
 		if (story.getLikes().contains(like)) {
 			return mapper.toDTO(story);
 		} else {
@@ -94,7 +94,10 @@ public class StoryService {
 
 	public void deleteUserLikes(Long userId) {
 		List<Story> stories = storyRepo.findByLikes_UserId(userId);
-		likeService.removeFromStories(stories, userId);
+		Like byOwnerId = likeService.findByOwnerId(userId);
+		if(byOwnerId!=null) {
+			stories.forEach(story -> story.getLikes().remove(byOwnerId));
+		}
 		storyRepo.saveAll(stories);
 	}
 

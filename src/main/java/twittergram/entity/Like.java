@@ -16,12 +16,4 @@ public class Like extends AbstractEntity {
 
     @Column(name = "user_id", nullable = false, unique = true)
     private Long userId;
-
-    @JsonIgnore
-    @ManyToMany(mappedBy = "likes")
-    private List<Photo> photos = new ArrayList<>();
-
-    @JsonIgnore
-    @ManyToMany(mappedBy = "likes")
-    private List<Story> stories = new ArrayList<>();
 }

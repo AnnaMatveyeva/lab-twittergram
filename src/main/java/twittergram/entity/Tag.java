@@ -14,17 +14,7 @@ import lombok.Data;
 @Data
 public class Tag extends AbstractEntity {
 
-
     @Column(name = "text", nullable = false, length = 255, unique = true)
     private String text;
-//
-//    @JsonIgnore
-//    @ManyToMany(mappedBy = "tags")
-//    private List<Photo> photos = new ArrayList<>();
-//
-//    @JsonIgnore
-//    @ManyToMany(mappedBy = "tags")
-//    private List<Story> stories = new ArrayList<>();
-
 
 }
