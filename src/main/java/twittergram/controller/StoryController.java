@@ -70,7 +70,7 @@ public class StoryController {
         return storyService.findAll(userId, tag, date, text, pageable, sort);
     }
 
-    @DeleteMapping("/story/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity deleteStory(@PathVariable Long id) {
         storyService.delete(storyService.findById(id));
         return ResponseEntity.status(HttpStatus.OK).build();

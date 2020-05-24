@@ -102,19 +102,19 @@ class StoryServiceTest {
         assertEquals(tags.size(), storyFromService.getTags().size());
     }
 
-    @Test
-    void addTags_notEmptyList_test() {
-        Story story = new Story();
-        Tag tag = new Tag();
-        List<Tag> tags = Arrays.asList(tag);
-        story.setTags(tags);
-
-        when(tagService.saveAll(tags)).thenReturn(tags);
-        when(tagService.addTagStory(tag, story)).thenReturn(tag);
-        Story storyFromService = storyService.addTags(tags, story);
-
-        assertEquals(tags.size(), storyFromService.getTags().size());
-    }
+//    @Test
+//    void addTags_notEmptyList_test() {
+//        Story story = new Story();
+//        Tag tag = new Tag();
+//        List<Tag> tags = Arrays.asList(tag);
+//        story.setTags(tags);
+//
+//        when(tagService.saveAll(tags)).thenReturn(tags);
+//        when(tagService.addTagStory(tag, story)).thenReturn(tag);
+//        Story storyFromService = storyService.addTags(tags, story);
+//
+//        assertEquals(tags.size(), storyFromService.getTags().size());
+//    }
 
     @Test
     void update_test() {
@@ -173,34 +173,34 @@ class StoryServiceTest {
         assertEquals(1, storyDTO.getLikes().size());
         verify(storyRepository).findById(1L);
     }
-
-    @Test
-    void delete_test() {
-        Story story = new Story();
-        Like like = new Like();
-        Tag tag = new Tag();
-        story.setLikes(Arrays.asList(like));
-        story.setTags(Arrays.asList(tag));
-        doNothing().when(likeService).removeStory(like, story);
-        doNothing().when(tagService).removeStory(tag, story);
-
-        storyService.delete(story);
-        verify(storyRepository).delete(story);
-    }
-
-    @Test
-    void delete_list_test() {
-        Story story = new Story();
-        Like like = new Like();
-        Tag tag = new Tag();
-        story.setLikes(Arrays.asList(like));
-        story.setTags(Arrays.asList(tag));
-        doNothing().when(likeService).removeStory(like, story);
-        doNothing().when(tagService).removeStory(tag, story);
-
-        storyService.deleteList(Arrays.asList(story, story));
-        verify(storyRepository, times(2)).delete(story);
-    }
+//
+//    @Test
+//    void delete_test() {
+//        Story story = new Story();
+//        Like like = new Like();
+//        Tag tag = new Tag();
+//        story.setLikes(Arrays.asList(like));
+//        story.setTags(Arrays.asList(tag));
+//        doNothing().when(likeService).removeStory(like, story);
+//        doNothing().when(tagService).removeStory(tag, story);
+//
+//        storyService.delete(story);
+//        verify(storyRepository).delete(story);
+//    }
+//
+//    @Test
+//    void delete_list_test() {
+//        Story story = new Story();
+//        Like like = new Like();
+//        Tag tag = new Tag();
+//        story.setLikes(Arrays.asList(like));
+//        story.setTags(Arrays.asList(tag));
+//        doNothing().when(likeService).removeStory(like, story);
+//        doNothing().when(tagService).removeStory(tag, story);
+//
+//        storyService.deleteList(Arrays.asList(story, story));
+//        verify(storyRepository, times(2)).delete(story);
+//    }
 
     @Test
     void deleteUserLikes_test() {
