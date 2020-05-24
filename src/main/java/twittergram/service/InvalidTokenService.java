@@ -11,22 +11,22 @@ import twittergram.repository.InvalidTokenRepository;
 @RequiredArgsConstructor
 public class InvalidTokenService {
 
-    private final InvalidTokenRepository invalidTokenRepo;
+	private final InvalidTokenRepository invalidTokenRepo;
 
-    public boolean isExists(String token) {
-        InvalidToken tokenFromDb = invalidTokenRepo.findByToken(token);
-        if (tokenFromDb != null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+	public boolean isExists(String token) {
+		InvalidToken tokenFromDb = invalidTokenRepo.findByToken(token);
+		if (tokenFromDb != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-    public void add(String token) {
-        InvalidToken invalidToken = new InvalidToken();
-        invalidToken.setToken(token);
-        invalidTokenRepo.save(invalidToken);
-        log.trace("Token" + token + " became invalid");
-    }
+	public void add(String token) {
+		InvalidToken invalidToken = new InvalidToken();
+		invalidToken.setToken(token);
+		invalidTokenRepo.save(invalidToken);
+		log.trace("Token" + token + " became invalid");
+	}
 
 }

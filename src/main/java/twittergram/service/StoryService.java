@@ -95,7 +95,7 @@ public class StoryService {
 	public void deleteUserLikes(Long userId) {
 		List<Story> stories = storyRepo.findByLikes_UserId(userId);
 		Like byOwnerId = likeService.findByOwnerId(userId);
-		if(byOwnerId!=null) {
+		if (byOwnerId != null) {
 			stories.forEach(story -> story.getLikes().remove(byOwnerId));
 		}
 		storyRepo.saveAll(stories);

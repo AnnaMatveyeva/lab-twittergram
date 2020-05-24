@@ -7,5 +7,5 @@ import twittergram.entity.InvalidToken;
 @Repository
 public interface InvalidTokenRepository extends JpaRepository<InvalidToken, Long> {
 
-    InvalidToken findByToken(String token);
+	InvalidToken findByToken(String token);
 }

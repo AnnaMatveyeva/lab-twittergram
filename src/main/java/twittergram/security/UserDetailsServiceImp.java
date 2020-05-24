@@ -1,7 +1,5 @@
 package twittergram.security;
 
-import java.util.Collections;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,31 +12,34 @@ import twittergram.exception.UserNotActiveException;
 import twittergram.exception.UserNotFoundException;
 import twittergram.service.UserService;
 
+import java.util.Collections;
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class UserDetailsServiceImp implements UserDetailsService {
 
-    private final UserService userService;
+	private final UserService userService;
 
-    public UserDetails loadUserByUsername(String nickname) {
-        User user = null;
-        try {
-            user = userService.findByNickname(nickname);
-        } catch (UserNotFoundException ex) {
-            throw new UsernameNotFoundException("User " + nickname + " not found");
-        }
+	public UserDetails loadUserByUsername(String nickname) {
+		User user = null;
+		try {
+			user = userService.findByNickname(nickname);
+		} catch (UserNotFoundException ex) {
+			throw new UsernameNotFoundException("User " + nickname + " not found");
+		}
 
-        UserDetails userDetails = null;
-        List<GrantedAuthority> grantList = null;
-        if (!user.isActive()) {
-            throw new UserNotActiveException("User " + nickname + " not active");
-        }
-        String userRole = user.getRole().getName();
+		UserDetails userDetails = null;
+		List<GrantedAuthority> grantList = null;
+		if (!user.isActive()) {
+			throw new UserNotActiveException("User " + nickname + " not active");
+		}
+		String userRole = user.getRole().getName();
 
-        grantList = Collections.singletonList(new SimpleGrantedAuthority(userRole));
-        userDetails = new org.springframework.security.core.userdetails.User(user.getNickname(),
-            user.getPassword(), grantList);
+		grantList = Collections.singletonList(new SimpleGrantedAuthority(userRole));
+		userDetails = new org.springframework.security.core.userdetails.User(user.getNickname(),
+				user.getPassword(), grantList);
 
-        return userDetails;
-    }
+		return userDetails;
+	}
 }

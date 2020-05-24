@@ -7,5 +7,5 @@ import twittergram.entity.Tag;
 @Repository
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
-    Tag findByText(String text);
+	Tag findByText(String text);
 }

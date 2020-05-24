@@ -22,91 +22,91 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    private final UserRepository userRepo;
-    private final RoleRepository roleRepo;
-    private final PasswordEncoder passwordEncoder;
-    private final UserMapper mapper;
-    private final PasswordValidator passwordValidator;
+	private final UserRepository userRepo;
+	private final RoleRepository roleRepo;
+	private final PasswordEncoder passwordEncoder;
+	private final UserMapper mapper;
+	private final PasswordValidator passwordValidator;
 
-    public User findById(Long id) {
+	public User findById(Long id) {
 
-        Optional<User> op = userRepo.findById(id);
-        User user = op.orElseThrow(UserNotFoundException::new);
-        if (user.isActive()) {
-            return user;
-        } else {
-            throw new UserNotActiveException("User " + user.getNickname() + " has been deleted");
-        }
-    }
+		Optional<User> op = userRepo.findById(id);
+		User user = op.orElseThrow(UserNotFoundException::new);
+		if (user.isActive()) {
+			return user;
+		} else {
+			throw new UserNotActiveException("User " + user.getNickname() + " has been deleted");
+		}
+	}
 
-    public User findByNickname(String nickname) {
-        User user = userRepo.findByNickname(nickname);
-        if (user != null && user.isActive()) {
-            return user;
-        } else {
-            throw new UserNotFoundException();
-        }
-    }
+	public User findByNickname(String nickname) {
+		User user = userRepo.findByNickname(nickname);
+		if (user != null && user.isActive()) {
+			return user;
+		} else {
+			throw new UserNotFoundException();
+		}
+	}
 
-    public User findByEmail(String email) {
-        User user = userRepo.findByEmail(email);
-        if (user != null && user.isActive()) {
-            return user;
-        } else {
-            throw new UserNotFoundException();
-        }
-    }
+	public User findByEmail(String email) {
+		User user = userRepo.findByEmail(email);
+		if (user != null && user.isActive()) {
+			return user;
+		} else {
+			throw new UserNotFoundException();
+		}
+	}
 
 
-    public User save(UserRegistrationDTO userRegistrationDTO) {
-        registrationDTOValidation(userRegistrationDTO);
-        Role role = roleRepo.findByName("ROLE_REGULAR");
+	public User save(UserRegistrationDTO userRegistrationDTO) {
+		registrationDTOValidation(userRegistrationDTO);
+		Role role = roleRepo.findByName("ROLE_REGULAR");
 
-        return userRepo.save(mapper.toEntity(userRegistrationDTO, passwordEncoder, role));
-    }
+		return userRepo.save(mapper.toEntity(userRegistrationDTO, passwordEncoder, role));
+	}
 
-    public UserUpdateDTO update(String nickname, String firstName, String lastName) {
-        User user = findByNickname(nickname);
-        if (!StringUtils.isEmpty(firstName)) {
-            user.setFirstName(firstName);
-        }
-        if (!StringUtils.isEmpty(lastName)) {
-            user.setLastName(lastName);
-        }
-        return mapper.toDTO(userRepo.save(user));
-    }
+	public UserUpdateDTO update(String nickname, String firstName, String lastName) {
+		User user = findByNickname(nickname);
+		if (!StringUtils.isEmpty(firstName)) {
+			user.setFirstName(firstName);
+		}
+		if (!StringUtils.isEmpty(lastName)) {
+			user.setLastName(lastName);
+		}
+		return mapper.toDTO(userRepo.save(user));
+	}
 
-    public void delete(Long id) {
-        User user = findById(id);
-        user.setActive(false);
-        user.setStories(new ArrayList<>());
-        user.setPhotos(new ArrayList<>());
-        userRepo.save(user);
-    }
+	public void delete(Long id) {
+		User user = findById(id);
+		user.setActive(false);
+		user.setStories(new ArrayList<>());
+		user.setPhotos(new ArrayList<>());
+		userRepo.save(user);
+	}
 
-    public void registrationDTOValidation(UserRegistrationDTO userRegistrationDto) {
-        passwordValidator.arePasswordsMatch(userRegistrationDto);
-        checkNickname(userRegistrationDto.getNickname());
-        checkEmail(userRegistrationDto.getEmail());
-    }
+	public void registrationDTOValidation(UserRegistrationDTO userRegistrationDto) {
+		passwordValidator.arePasswordsMatch(userRegistrationDto);
+		checkNickname(userRegistrationDto.getNickname());
+		checkEmail(userRegistrationDto.getEmail());
+	}
 
-    private boolean checkNickname(String nick) {
-        try {
-            findByNickname(nick);
-            throw new UserValidationException("Nickname exists");
+	private boolean checkNickname(String nick) {
+		try {
+			findByNickname(nick);
+			throw new UserValidationException("Nickname exists");
 
-        } catch (UserNotFoundException ex) {
-            return true;
-        }
-    }
+		} catch (UserNotFoundException ex) {
+			return true;
+		}
+	}
 
-    private boolean checkEmail(String email) {
-        try {
-            findByEmail(email);
-            throw new UserValidationException("User with such email exists");
-        } catch (UserNotFoundException ex) {
-            return true;
-        }
-    }
+	private boolean checkEmail(String email) {
+		try {
+			findByEmail(email);
+			throw new UserValidationException("User with such email exists");
+		} catch (UserNotFoundException ex) {
+			return true;
+		}
+	}
 
 }

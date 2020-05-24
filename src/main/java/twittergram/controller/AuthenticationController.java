@@ -22,7 +22,6 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -32,53 +31,53 @@ import static org.springframework.http.ResponseEntity.ok;
 @RestController
 public class AuthenticationController {
 
-    private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final UserService userService;
-    private final InvalidTokenService invalidTokenService;
+	private final AuthenticationManager authenticationManager;
+	private final JwtTokenProvider jwtTokenProvider;
+	private final UserService userService;
+	private final InvalidTokenService invalidTokenService;
 
-    @PostMapping("/login")
-    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data,
-        HttpServletResponse response) throws IOException {
-        try {
-            String nickname = data.getNickname();
-            authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(nickname, data.getPassword()));
-            String token = jwtTokenProvider.createToken(nickname,
-                Arrays.asList(userService.findByNickname(nickname).getRole()));
-            Map<String, String> model = new HashMap<>();
-            model.put("nickname", nickname);
-            model.put("token", token);
-            log.info("New token was created");
-            return ok(model);
-        } catch (AuthenticationException e) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return null;
-        }
-    }
+	@PostMapping("/login")
+	public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data,
+								HttpServletResponse response) throws IOException {
+		try {
+			String nickname = data.getNickname();
+			authenticationManager.authenticate(
+					new UsernamePasswordAuthenticationToken(nickname, data.getPassword()));
+			String token = jwtTokenProvider.createToken(nickname,
+					Arrays.asList(userService.findByNickname(nickname).getRole()));
+			Map<String, String> model = new HashMap<>();
+			model.put("nickname", nickname);
+			model.put("token", token);
+			log.info("New token was created");
+			return ok(model);
+		} catch (AuthenticationException e) {
+			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			return null;
+		}
+	}
 
-    @PostMapping("/logoff")
-    public ResponseEntity logout(HttpServletRequest request) {
-        String auth = request.getHeader("Authorization");
+	@PostMapping("/logoff")
+	public ResponseEntity logout(HttpServletRequest request) {
+		String auth = request.getHeader("Authorization");
 
-        if (auth != null && auth.startsWith("Bearer ")) {
-            String token = auth.substring(7);
-            invalidTokenService.add(token);
-            log.info("Token was marked as invalid");
-        }
-        return ok("User logged out");
-    }
+		if (auth != null && auth.startsWith("Bearer ")) {
+			String token = auth.substring(7);
+			invalidTokenService.add(token);
+			log.info("Token was marked as invalid");
+		}
+		return ok("User logged out");
+	}
 
-    @PostMapping("/registration")
-    public ResponseEntity registration(@RequestBody @Valid UserRegistrationDTO userRegistrationDTO,
-        HttpServletResponse response) {
-        userService.registrationDTOValidation(userRegistrationDTO);
-        Map<String, String> model = new HashMap<>();
-        User save = userService.save(userRegistrationDTO);
-        log.info("New user was created");
-        model.put("nickname",save.getNickname());
-        model.put("email", save.getEmail());
-        return ok(model);
-    }
+	@PostMapping("/registration")
+	public ResponseEntity registration(@RequestBody @Valid UserRegistrationDTO userRegistrationDTO,
+									   HttpServletResponse response) {
+		userService.registrationDTOValidation(userRegistrationDTO);
+		Map<String, String> model = new HashMap<>();
+		User save = userService.save(userRegistrationDTO);
+		log.info("New user was created");
+		model.put("nickname", save.getNickname());
+		model.put("email", save.getEmail());
+		return ok(model);
+	}
 
 }

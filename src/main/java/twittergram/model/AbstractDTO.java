@@ -7,6 +7,6 @@ import lombok.Data;
 @Data
 public class AbstractDTO {
 
-    @JsonProperty(access = Access.READ_ONLY)
-    private Long id;
+	@JsonProperty(access = Access.READ_ONLY)
+	private Long id;
 }

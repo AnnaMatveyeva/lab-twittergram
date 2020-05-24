@@ -25,7 +25,6 @@ import twittergram.service.specification.PhotosWithTag;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -49,14 +48,14 @@ public class PhotoService {
 		}
 		if (dto.getTags().length > 0) {
 			List<Tag> tags = new ArrayList<>();
-			for (String tagText : dto.getTags()){
+			for (String tagText : dto.getTags()) {
 				Tag tag = new Tag();
 				tag.setText(tagText);
 				tags.add(tag);
 			}
 			photo.setTags(tagService.saveAll(tags));
 		}
-		if (dto.getLatitude()!=null && dto.getLongitude()!=null){
+		if (dto.getLatitude() != null && dto.getLongitude() != null) {
 			photo.setLatitude(dto.getLatitude());
 			photo.setLongitude(dto.getLongitude());
 		}
@@ -111,7 +110,7 @@ public class PhotoService {
 	public void deleteUserLikes(Long userId) {
 		List<Photo> photos = photoRepo.findByLikes_UserId(userId);
 		Like byOwnerId = likeService.findByOwnerId(userId);
-		if(byOwnerId!=null){
+		if (byOwnerId != null) {
 			photos.forEach(photo -> photo.getLikes().remove(byOwnerId));
 		}
 		photoRepo.saveAll(photos);

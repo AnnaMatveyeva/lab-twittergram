@@ -7,11 +7,11 @@ import twittergram.model.UserRegistrationDTO;
 @Component
 public class PasswordValidatorImpl implements PasswordValidator {
 
-    @Override
-    public void arePasswordsMatch(UserRegistrationDTO userRegistrationDTO) {
-        if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getConfirmPass())) {
-            throw new UserValidationException("Passwords don't match");
-        }
+	@Override
+	public void arePasswordsMatch(UserRegistrationDTO userRegistrationDTO) {
+		if (!userRegistrationDTO.getPassword().equals(userRegistrationDTO.getConfirmPass())) {
+			throw new UserValidationException("Passwords don't match");
+		}
 
-    }
+	}
 }

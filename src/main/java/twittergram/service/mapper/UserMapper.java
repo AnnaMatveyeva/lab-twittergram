@@ -12,24 +12,24 @@ import twittergram.model.UserUpdateDTO;
 @RequiredArgsConstructor
 public class UserMapper implements Mapper<User, UserUpdateDTO> {
 
-    public User toEntity(UserRegistrationDTO dto, PasswordEncoder passwordEncoder, Role role) {
-        User user = new User();
-        user.setFirstName(dto.getFirstName());
-        user.setLastName(dto.getLastName());
-        user.setNickname(dto.getNickname());
-        user.setPassword(passwordEncoder.encode(dto.getPassword()));
-        user.setRole(role);
-        user.setActive(true);
-        user.setEmail(dto.getEmail());
-        return user;
-    }
+	public User toEntity(UserRegistrationDTO dto, PasswordEncoder passwordEncoder, Role role) {
+		User user = new User();
+		user.setFirstName(dto.getFirstName());
+		user.setLastName(dto.getLastName());
+		user.setNickname(dto.getNickname());
+		user.setPassword(passwordEncoder.encode(dto.getPassword()));
+		user.setRole(role);
+		user.setActive(true);
+		user.setEmail(dto.getEmail());
+		return user;
+	}
 
-    @Override
-    public UserUpdateDTO toDTO(User entity) {
-        UserUpdateDTO dto = new UserUpdateDTO();
-        dto.setId(entity.getId());
-        dto.setFirstName(entity.getFirstName());
-        dto.setLastName(entity.getLastName());
-        return dto;
-    }
+	@Override
+	public UserUpdateDTO toDTO(User entity) {
+		UserUpdateDTO dto = new UserUpdateDTO();
+		dto.setId(entity.getId());
+		dto.setFirstName(entity.getFirstName());
+		dto.setLastName(entity.getLastName());
+		return dto;
+	}
 }
