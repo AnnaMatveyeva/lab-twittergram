@@ -9,13 +9,13 @@ import twittergram.entity.User;
 import twittergram.exception.UserNotActiveException;
 import twittergram.exception.UserNotFoundException;
 import twittergram.exception.UserValidationException;
-import twittergram.model.AuthenticationDTO;
 import twittergram.model.UserRegistrationDTO;
 import twittergram.model.UserUpdateDTO;
 import twittergram.repository.RoleRepository;
 import twittergram.repository.UserRepository;
 import twittergram.service.mapper.UserMapper;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -25,8 +25,6 @@ public class UserService {
     private final UserRepository userRepo;
     private final RoleRepository roleRepo;
     private final PasswordEncoder passwordEncoder;
-    private final StoryService storyService;
-    private final PhotoService photoService;
     private final UserMapper mapper;
     private final PasswordValidator passwordValidator;
 
@@ -81,12 +79,9 @@ public class UserService {
     public void delete(Long id) {
         User user = findById(id);
         user.setActive(false);
+        user.setStories(new ArrayList<>());
+        user.setPhotos(new ArrayList<>());
         userRepo.save(user);
-
-        storyService.deleteList(user.getStories());
-        photoService.deleteList(user.getPhotos());
-        storyService.deleteUserLikes(id);
-        photoService.deleteUserLikes(id);
     }
 
     public void registrationDTOValidation(UserRegistrationDTO userRegistrationDto) {

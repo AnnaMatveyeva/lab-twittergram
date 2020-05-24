@@ -23,15 +23,15 @@ public class AdminController {
 
     @DeleteMapping("/user/{id}")
     public ResponseEntity<Object> deleteUser(@PathVariable Long id, HttpServletResponse response) {
+        storyService.deleteList(userService.findById(id).getStories());
+        photoService.deleteList(userService.findById(id).getPhotos());
+        storyService.deleteUserLikes(id);
+        photoService.deleteUserLikes(id);
         userService.delete(id);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
-    @DeleteMapping("/story/{id}")
-    public ResponseEntity deleteStory(@PathVariable Long id) {
-        storyService.delete(storyService.findById(id));
-        return ResponseEntity.status(HttpStatus.OK).build();
-    }
+
 
     @DeleteMapping("/photo/{id}")
     public ResponseEntity deletePhoto(@PathVariable Long id) {
