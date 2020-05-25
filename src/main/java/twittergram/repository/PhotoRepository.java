@@ -11,7 +11,5 @@ import java.util.List;
 public interface PhotoRepository extends JpaRepository<Photo, Long>,
 		JpaSpecificationExecutor<Photo> {
 
-	Photo findByImageAndUserId(int id, Long userId);
-
 	List<Photo> findByLikes_UserId(Long userId);
 }

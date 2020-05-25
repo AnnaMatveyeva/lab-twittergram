@@ -65,11 +65,22 @@
             <column name="image" value="0"/>
             <column name="description" value="This is photo"/>
             <column name="path"
-                value="src\main\resources\uploads\egor\0"/>
+                value="src\main\resources\uploads\egor\1"/>
             <column name="date" value="2020-01-15"/>
             <column name="user_id" value="2"/>
             <column name="longitude" value="10"/>
             <column name="latitude" value="10"/>
+        </insert>
+        <insert tableName="photos">
+            <column name="id" value="2"/>
+            <column name="image" value="0"/>
+            <column name="description" value="This is photo by oleg"/>
+            <column name="path"
+                    value="src\main\resources\uploads\oleg\2"/>
+            <column name="date" value="2020-03-15"/>
+            <column name="user_id" value="1"/>
+            <column name="longitude" value="5.34"/>
+            <column name="latitude" value="1"/>
         </insert>
     </changeSet>
 
