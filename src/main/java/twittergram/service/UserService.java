@@ -16,6 +16,7 @@ import twittergram.repository.UserRepository;
 import twittergram.service.mapper.UserMapper;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -37,6 +38,10 @@ public class UserService {
 		} else {
 			throw new UserNotActiveException("User " + user.getNickname() + " has been deleted");
 		}
+	}
+
+	public List<User> findAll(){
+		return userRepo.findAll();
 	}
 
 	public User findByNickname(String nickname) {
