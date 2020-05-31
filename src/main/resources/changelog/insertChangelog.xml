@@ -6,12 +6,10 @@
     <!--INSERT ROLES-->
     <changeSet id="insert_roles" author="admin">
         <insert tableName="roles">
-            <column name="id" value="1"/>
             <column name="name" value="ROLE_ADMIN"/>
         </insert>
 
         <insert tableName="roles">
-            <column name="id" value="2"/>
             <column name="name" value="ROLE_REGULAR"/>
         </insert>
     </changeSet>
@@ -19,7 +17,6 @@
     <!--INSERT USERS-->
     <changeSet id="insert_users" author="admin">
         <insert tableName="users">
-            <column name="id" value="1"/>
             <column name="first_name" value="admin"/>
             <column name="last_name" value="admin"/>
             <column name="nickname" value="admin"/>
@@ -32,7 +29,6 @@
         </insert>
 
         <insert tableName="users">
-            <column name="id" value="2"/>
             <column name="first_name" value="egor"/>
             <column name="last_name" value="egorov"/>
             <column name="nickname" value="egor"/>
@@ -45,7 +41,6 @@
         </insert>
 
         <insert tableName="users">
-            <column name="id" value="3"/>
             <column name="first_name" value="oleg"/>
             <column name="last_name" value="olegov"/>
             <column name="nickname" value="oleg"/>
@@ -61,7 +56,6 @@
     <!--INSERT PHOTOS-->
     <changeSet id="insert_photos" author="admin">
         <insert tableName="photos">
-            <column name="id" value="1"/>
             <column name="image" value="0"/>
             <column name="description" value="This is photo"/>
             <column name="path"
@@ -72,7 +66,6 @@
             <column name="latitude" value="10"/>
         </insert>
         <insert tableName="photos">
-            <column name="id" value="2"/>
             <column name="image" value="0"/>
             <column name="description" value="This is photo by oleg"/>
             <column name="path"
@@ -87,37 +80,31 @@
     <!--  INSERT STORY-->
     <changeSet id="insert_stories" author="admin">
         <insert tableName="stories">
-            <column name="id" value="1"/>
             <column name="text" value="I'm selfish, impatient and a little insecure. I make mistakes, I am out of control and at times hard to handle. But if you can't handle me at my worst, then you sure as hell don't deserve me at my best."/>
             <column name="date" value="2020-01-15"/>
             <column name="user_id" value="2"/>
         </insert>
         <insert tableName="stories">
-            <column name="id" value="2"/>
             <column name="text" value="Two things are infinite: the universe and human stupidity; and I'm not sure about the universe."/>
             <column name="date" value="2020-01-13"/>
             <column name="user_id" value="3"/>
         </insert>
         <insert tableName="stories">
-            <column name="id" value="3"/>
             <column name="text" value="So many books, so little time."/>
             <column name="date" value="2020-01-16"/>
             <column name="user_id" value="2"/>
         </insert>
         <insert tableName="stories">
-            <column name="id" value="4"/>
             <column name="text" value="Be who you are and say what you feel, because those who mind don't matter, and those who matter don't mind."/>
             <column name="date" value="2020-01-17"/>
             <column name="user_id" value="2"/>
         </insert>
         <insert tableName="stories">
-            <column name="id" value="5"/>
             <column name="text" value="You know you're in love when you can't fall asleep because reality is finally better than your dreams"/>
             <column name="date" value="2020-02-1"/>
             <column name="user_id" value="3"/>
         </insert>
         <insert tableName="stories">
-            <column name="id" value="6"/>
             <column name="text" value="If you want to know what a man's like, take a good look at how he treats his inferiors, not his equals"/>
             <column name="date" value="2020-02-2"/>
             <column name="user_id" value="3"/>
