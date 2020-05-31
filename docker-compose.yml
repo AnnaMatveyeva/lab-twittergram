@@ -7,5 +7,3 @@ postgres:
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_USER: "postgres"
       POSTGRES_DB: "twittergram"
-    volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
