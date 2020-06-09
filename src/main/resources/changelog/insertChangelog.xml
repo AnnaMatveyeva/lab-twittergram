@@ -109,6 +109,71 @@
             <column name="date" value="2020-02-2"/>
             <column name="user_id" value="3"/>
         </insert>
+        <insert tableName="stories">
+            <column name="text" value="If life were predictable it would cease to be life, and be without flavor."/>
+            <column name="date" value="2020-02-02"/>
+            <column name="user_id" value="2"/>
+        </insert>
+        <insert tableName="stories">
+            <column name="text" value="If you set your goals ridiculously high and it's a failure, you will fail above everyone else's success."/>
+            <column name="date" value="2020-03-01"/>
+            <column name="user_id" value="3"/>
+        </insert>
+        <insert tableName="stories">
+            <column name="text" value="Life is what happens when you're busy making other plans."/>
+            <column name="date" value="2020-03-02"/>
+            <column name="user_id" value="3"/>
+        </insert>
+        <insert tableName="stories">
+            <column name="text" value="Always remember that you are absolutely unique. Just like everyone else."/>
+            <column name="date" value="2020-03-04"/>
+            <column name="user_id" value="2"/>
+        </insert>
+        <insert tableName="stories">
+            <column name="text" value="Don't judge each day by the harvest you reap but by the seeds that you plant."/>
+            <column name="date" value="2020-03-07"/>
+            <column name="user_id" value="2"/>
+        </insert>
+        <insert tableName="stories">
+            <column name="text" value="The future belongs to those who believe in the beauty of their dreams."/>
+            <column name="date" value="2020-03-12"/>
+            <column name="user_id" value="3"/>
+        </insert>
+        <insert tableName="stories">
+            <column name="text" value="It is during our darkest moments that we must focus to see the light."/>
+            <column name="date" value="2020-03-15"/>
+            <column name="user_id" value="2"/>
+        </insert>
+        <insert tableName="stories">
+            <column name="text" value="Whoever is happy will make others happy too."/>
+            <column name="date" value="2020-03-16"/>
+            <column name="user_id" value="3"/>
+        </insert>
+        <insert tableName="stories">
+            <column name="text" value="Spread love everywhere you go. Let no one ever come to you without leaving happier."/>
+            <column name="date" value="2020-03-17"/>
+            <column name="user_id" value="2"/>
+        </insert>
+        <insert tableName="stories">
+            <column name="text" value="You will face many defeats in life, but never let yourself be defeated."/>
+            <column name="date" value="2020-03-17"/>
+            <column name="user_id" value="3"/>
+        </insert>
+        <insert tableName="stories">
+            <column name="text" value="Never let the fear of striking out keep you from playing the game."/>
+            <column name="date" value="2020-03-21"/>
+            <column name="user_id" value="3"/>
+        </insert>
+        <insert tableName="stories">
+            <column name="text" value="Life is either a daring adventure or nothing at all."/>
+            <column name="date" value="2020-03-22"/>
+            <column name="user_id" value="2"/>
+        </insert>
+        <insert tableName="stories">
+            <column name="text" value="Many of life's failures are people who did not realize how close they were to success when they gave up."/>
+            <column name="date" value="2020-03-23"/>
+            <column name="user_id" value="3"/>
+        </insert>
     </changeSet>
 
     <changeSet id="insertLikes" author="admin">

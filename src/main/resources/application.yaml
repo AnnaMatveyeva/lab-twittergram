@@ -1,0 +1,26 @@
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/twittergram
+    username: postgres
+    password: postgres
+    driverClassName: org.postgresql.Driver
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQL9Dialect
+  h2:
+    console:
+      enabled: true
+  liquibase:
+    change-log: classpath:/changelog/mainChangelog.xml
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 20MB
+file:
+  upload-dir: /uploads
+
+application:
+  company:
+    email-domain: gmail.com
+

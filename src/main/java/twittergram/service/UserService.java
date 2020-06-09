@@ -1,6 +1,7 @@
 package twittergram.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -28,6 +29,8 @@ public class UserService {
 	private final PasswordEncoder passwordEncoder;
 	private final UserMapper mapper;
 	private final PasswordValidator passwordValidator;
+	@Value("${application.company.email-domain}")
+	private String emailDomain;
 
 	public User findById(Long id) {
 
@@ -40,7 +43,7 @@ public class UserService {
 		}
 	}
 
-	public List<User> findAll(){
+	public List<User> findAll() {
 		return userRepo.findAll();
 	}
 
@@ -110,7 +113,10 @@ public class UserService {
 			findByEmail(email);
 			throw new UserValidationException("User with such email exists");
 		} catch (UserNotFoundException ex) {
-			return true;
+			String[] splitted = email.split("@");
+			if (splitted[1].equals(emailDomain)) {
+				return true;
+			} else throw new UserValidationException("Email domain does not match company domain " + emailDomain);
 		}
 	}
 
