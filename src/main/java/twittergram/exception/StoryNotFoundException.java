@@ -5,5 +5,4 @@ public class StoryNotFoundException extends RuntimeException {
 	public StoryNotFoundException() {
 		super("Story not found");
 	}
-
 }

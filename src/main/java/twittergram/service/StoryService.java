@@ -34,6 +34,7 @@ public class StoryService {
 	private final LikeService likeService;
 	private final StoryMapper mapper;
 
+	//метод для получения историй по id
 	public Story findById(Long id) {
 		try {
 			return storyRepo.findById(id).get();
@@ -41,11 +42,12 @@ public class StoryService {
 			throw new StoryNotFoundException();
 		}
 	}
-
+	//метод для получения StoryDTO по id
 	public StoryDTO findDTOById(Long id) {
 		return mapper.toDTO(findById(id));
 	}
 
+	//метод для создания историй
 	public StoryDTO create(StoryDTO storyDTO, Long userId) {
 		Story story = new Story();
 		story.setText(storyDTO.getText());
@@ -57,12 +59,13 @@ public class StoryService {
 		return mapper.toDTO(storyRepo.save(story));
 	}
 
+	//метод для добавления тегэв к истории
 	public Story addTags(List<Tag> storyTags, Story story) {
 		List<Tag> tags = tagService.saveAll(storyTags);
 		story.setTags(tags);
 		return story;
 	}
-
+	//метод для редактирования историй
 	public StoryDTO update(Long storyId, StoryDTO storyDTO) {
 		Story story = findById(storyId);
 		if (!StringUtils.isEmpty(storyDTO.getText())) {
@@ -74,7 +77,7 @@ public class StoryService {
 		return mapper.toDTO(storyRepo.save(story));
 
 	}
-
+	//метод для добавления к истории
 	public StoryDTO addLike(Long storyId, Long likeOwnerId) {
 		Story story = findById(storyId);
 		Like like = likeService.addLike(likeOwnerId);
@@ -86,12 +89,14 @@ public class StoryService {
 		}
 	}
 
+	//метод для удаления списка историй
 	public void deleteList(List<Story> stories) {
 		for (Story story : stories) {
 			delete(story);
 		}
 	}
 
+	//метод для удаления лайка из историй
 	public void deleteUserLikes(Long userId) {
 		List<Story> stories = storyRepo.findByLikes_UserId(userId);
 		Like byOwnerId = likeService.findByOwnerId(userId);
@@ -100,12 +105,12 @@ public class StoryService {
 		}
 		storyRepo.saveAll(stories);
 	}
-
+	//метод для удаления историй
 	public void delete(Story story) {
 		storyRepo.delete(story);
 	}
 
-
+	//метод для поиска историй
 	public Page<StoryDTO> findAll(Long userId, String tag, String date, String text,
 								  Pageable pageable, Sort sort) {
 		Specification specification = new StoriesWithAuthor(userId).and(new StoriesWithTag(tag))

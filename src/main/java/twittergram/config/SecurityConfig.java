@@ -7,6 +7,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -31,11 +32,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
 				.authorizeRequests()
-				.antMatchers(HttpMethod.DELETE,"/user**").hasRole("ADMIN")
-				.antMatchers(HttpMethod.GET,"/user**").hasRole("ADMIN")
-				.antMatchers(HttpMethod.GET, "/api/photo**", "/api/story**").permitAll()
-				.antMatchers("/api/story/**", "/api/story**", "/api/photo/**","/user**").hasAnyRole("REGULAR","ADMIN")
-				.antMatchers("/registration").anonymous();
+				.antMatchers(HttpMethod.DELETE,"/user**")
+				.hasRole("ADMIN")
+				.antMatchers(HttpMethod.GET,"/user**")
+				.hasRole("ADMIN")
+				.antMatchers(HttpMethod.GET, "/api/photo**", "/api/story**")
+				.permitAll()
+				.antMatchers("/api/story/**", "/api/story**", "/api/photo/**","/user**")
+				.hasAnyRole("REGULAR","ADMIN")
+				.antMatchers("/registration")
+				.anonymous();
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 	}
 
