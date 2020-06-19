@@ -56,7 +56,7 @@
     <!--INSERT PHOTOS-->
     <changeSet id="insert_photos" author="admin">
         <insert tableName="photos">
-            <column name="image" value="0"/>
+            <column name="image" value="1"/>
             <column name="description" value="This is photo"/>
             <column name="path"
                 value="src\main\resources\uploads\egor\1"/>
@@ -66,7 +66,7 @@
             <column name="latitude" value="10"/>
         </insert>
         <insert tableName="photos">
-            <column name="image" value="0"/>
+            <column name="image" value="2"/>
             <column name="description" value="This is photo by oleg"/>
             <column name="path"
                     value="src\main\resources\uploads\oleg\2"/>
