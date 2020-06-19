@@ -6,6 +6,9 @@ spring:
     password: postgres
     driverClassName: org.postgresql.Driver
   jpa:
+    roperties:
+      hibernate:
+        default_schema: public
     database-platform: org.hibernate.dialect.PostgreSQL9Dialect
   h2:
     console:

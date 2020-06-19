@@ -23,7 +23,6 @@ import twittergram.service.specification.StoriesWithText;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
@@ -36,12 +35,9 @@ public class StoryService {
 
 	//метод для получения историй по id
 	public Story findById(Long id) {
-		try {
-			return storyRepo.findById(id).get();
-		} catch (NoSuchElementException ex) {
-			throw new StoryNotFoundException();
-		}
+		return storyRepo.findById(id).orElseThrow(StoryNotFoundException::new);
 	}
+
 	//метод для получения StoryDTO по id
 	public StoryDTO findDTOById(Long id) {
 		return mapper.toDTO(findById(id));
@@ -65,6 +61,7 @@ public class StoryService {
 		story.setTags(tags);
 		return story;
 	}
+
 	//метод для редактирования историй
 	public StoryDTO update(Long storyId, StoryDTO storyDTO) {
 		Story story = findById(storyId);
@@ -77,6 +74,7 @@ public class StoryService {
 		return mapper.toDTO(storyRepo.save(story));
 
 	}
+
 	//метод для добавления к истории
 	public StoryDTO addLike(Long storyId, Long likeOwnerId) {
 		Story story = findById(storyId);
@@ -105,6 +103,7 @@ public class StoryService {
 		}
 		storyRepo.saveAll(stories);
 	}
+
 	//метод для удаления историй
 	public void delete(Story story) {
 		storyRepo.delete(story);

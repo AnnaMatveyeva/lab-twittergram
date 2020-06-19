@@ -39,14 +39,15 @@ public class PhotoService {
 
 	public PhotoDTO create(PhotoCreateDTO dto, User user) {
 		Photo photo = new Photo();
-		photo.setImage(photoRepo.findAll().size() + 1);
+		List<Photo> all = photoRepo.findAll();
+		photo.setImage((int) (all.get(all.size() - 1).getId() + 1));
 		photo.setUserId(user.getId());
 		photo.setDate(LocalDate.now());
 		photo.setPath(fileService.uploadFile(dto.getFile(), photo.getImage(), user.getNickname()));
-		if (!dto.getDescription().isBlank()) {
+		if (dto.getDescription() != null && !dto.getDescription().isBlank()) {
 			photo.setDescription(dto.getDescription());
 		}
-		if (dto.getTags().length > 0) {
+		if (dto.getTags() != null && dto.getTags().length > 0) {
 			List<Tag> tags = new ArrayList<>();
 			for (String tagText : dto.getTags()) {
 				Tag tag = new Tag();
@@ -117,7 +118,9 @@ public class PhotoService {
 	}
 
 	public void delete(Photo photo) {
+
 		photoRepo.delete(photo);
+		fileService.deleteFile(photo.getPath());
 	}
 
 	public Page<PhotoDTO> findAll(Long userId, String tag, String date, Double longitude,
