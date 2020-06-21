@@ -51,6 +51,7 @@ public class UserController {
 					model.put("lastName", user.getLastName());
 					model.put("Num_of_stories", String.valueOf(user.getStories().size()));
 					model.put("Num_of_photos", String.valueOf(user.getPhotos().size()));
+					model.put("isActive", String.valueOf(user.isActive()));
 					return model;
 				}).collect(Collectors.toList());
 	}

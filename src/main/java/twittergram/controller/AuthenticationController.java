@@ -53,7 +53,7 @@ public class AuthenticationController {
 			log.info("New token was created");
 			return ok(model);
 		} catch (AuthenticationException e) {
-			response.sendError(HttpServletResponse.SC_FORBIDDEN);
+			response.sendError(HttpServletResponse.SC_FORBIDDEN, e.getMessage());
 			return null;
 		}
 	}

@@ -178,7 +178,6 @@
 
     <changeSet id="insertLikes" author="admin">
         <insert tableName="likes">
-            <column name="id">1</column>
             <column name="user_id">2</column>
         </insert>
     </changeSet>

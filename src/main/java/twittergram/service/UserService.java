@@ -17,8 +17,11 @@ import twittergram.repository.UserRepository;
 import twittergram.service.mapper.UserMapper;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -43,6 +46,23 @@ public class UserService {
 		}
 	}
 
+	public List<Map<String, String>> findAllForAdmin() {
+		return findAll().stream()
+				.filter(user -> !user.getRole().getName().contains("ADMIN"))
+				.map(user -> {
+					final Map<String, String> model = new LinkedHashMap<>();
+					model.put("id", user.getId().toString());
+					model.put("nickname", user.getNickname());
+					model.put("email", user.getEmail());
+					model.put("firstName", user.getFirstName());
+					model.put("lastName", user.getLastName());
+					model.put("Num_of_stories", String.valueOf(user.getStories().size()));
+					model.put("Num_of_photos", String.valueOf(user.getPhotos().size()));
+					model.put("isActive", String.valueOf(user.isActive()));
+					return model;
+				}).collect(Collectors.toList());
+	}
+
 	public List<User> findAll() {
 		return userRepo.findAll();
 	}
@@ -54,6 +74,16 @@ public class UserService {
 		} else {
 			throw new UserNotFoundException();
 		}
+	}
+
+	private User findAnyActive(String nickname) {
+		User user = userRepo.findByNickname(nickname);
+		if (user != null) {
+			return user;
+		} else {
+			throw new UserNotFoundException();
+		}
+
 	}
 
 	public User findByEmail(String email) {
@@ -100,9 +130,8 @@ public class UserService {
 
 	private boolean checkNickname(String nick) {
 		try {
-			findByNickname(nick);
+			findAnyActive(nick);
 			throw new UserValidationException("Nickname exists");
-
 		} catch (UserNotFoundException ex) {
 			return true;
 		}
@@ -111,6 +140,7 @@ public class UserService {
 	private boolean checkEmail(String email) {
 		try {
 			findByEmail(email);
+
 			throw new UserValidationException("User with such email exists");
 		} catch (UserNotFoundException ex) {
 			String[] splitted = email.split("@");

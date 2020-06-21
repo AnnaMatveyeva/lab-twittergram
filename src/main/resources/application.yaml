@@ -21,9 +21,12 @@ spring:
       max-file-size: 20MB
       max-request-size: 20MB
 file:
-  upload-dir: /uploads
+  upload-dir: "C:\\uploads"
 
 application:
   company:
     email-domain: gmail.com
 
+logging:
+  level:
+    org.springframework.web: DEBUG
