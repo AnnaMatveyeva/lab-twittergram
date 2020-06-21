@@ -1,6 +1,8 @@
 package twittergram.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +25,7 @@ import twittergram.service.specification.PhotosWithCoordinates;
 import twittergram.service.specification.PhotosWithDate;
 import twittergram.service.specification.PhotosWithTag;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -121,6 +124,13 @@ public class PhotoService {
 
 		photoRepo.delete(photo);
 		fileService.deleteFile(photo.getPath());
+	}
+
+	public Resource findImageByPhotoId(Long photoId) {
+		String path = findById(photoId).getPath();
+		File base_path = fileService.base_Path;
+		System.out.println(base_path +"\\"+ path);
+		return new FileSystemResource(base_path +"\\"+ path);
 	}
 
 	public Page<PhotoDTO> findAll(Long userId, String tag, String date, Double longitude,

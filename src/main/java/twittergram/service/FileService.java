@@ -17,7 +17,7 @@ import java.nio.file.Paths;
 @Service
 public class FileService {
 
-	private static File base_Path = new File("C:\\uploads");
+	public static File base_Path = new File("C:\\uploads");
 	private final Path absolutePath = base_Path.toPath();
 	private static final Logger log = LoggerFactory.getLogger(FileService.class);
 

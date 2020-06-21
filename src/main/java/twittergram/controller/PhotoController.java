@@ -51,8 +51,7 @@ public class PhotoController {
 
 	@GetMapping("/image/{photoId}")
 	public ResponseEntity getImage(@PathVariable Long photoId, HttpServletRequest request) {
-		Resource fileSystemResource = new FileSystemResource(
-				photoService.findById(photoId).getPath());
+		Resource fileSystemResource = photoService.findImageByPhotoId(photoId);
 		return ResponseEntity.ok()
 				.contentType(MediaType.IMAGE_JPEG)
 				.body(fileSystemResource);
