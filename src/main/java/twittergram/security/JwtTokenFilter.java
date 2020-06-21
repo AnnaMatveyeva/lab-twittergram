@@ -2,7 +2,8 @@ package twittergram.security;
 
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -16,11 +17,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @RequiredArgsConstructor
-@Slf4j
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 
 	private final JwtTokenProvider jwtTokenProvider;
+	private static final Logger log = LoggerFactory.getLogger(JwtTokenFilter.class);
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request,

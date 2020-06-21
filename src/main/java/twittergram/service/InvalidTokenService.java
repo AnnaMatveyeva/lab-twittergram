@@ -1,32 +1,30 @@
 package twittergram.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import twittergram.entity.InvalidToken;
 import twittergram.repository.InvalidTokenRepository;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class InvalidTokenService {
 
 	private final InvalidTokenRepository invalidTokenRepo;
+	private static final Logger log = LoggerFactory.getLogger(InvalidTokenService.class);
+
 
 	public boolean isExists(String token) {
 		InvalidToken tokenFromDb = invalidTokenRepo.findByToken(token);
-		if (tokenFromDb != null) {
-			return true;
-		} else {
-			return false;
-		}
+		return tokenFromDb != null;
 	}
 
 	public void add(String token) {
 		InvalidToken invalidToken = new InvalidToken();
 		invalidToken.setToken(token);
 		invalidTokenRepo.save(invalidToken);
-		log.trace("Token" + token + " became invalid");
+		log.debug("Token {} became invalid", token);
 	}
 
 }

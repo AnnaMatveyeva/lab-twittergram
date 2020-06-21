@@ -1,7 +1,8 @@
 package twittergram.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,13 +21,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import static org.springframework.http.ResponseEntity.ok;
 
-@Slf4j
 @RequiredArgsConstructor
 @RestController
 public class AuthenticationController {
@@ -36,6 +36,8 @@ public class AuthenticationController {
 	private final UserService userService;
 	private final InvalidTokenService invalidTokenService;
 
+	private static final Logger log = LoggerFactory.getLogger(AuthenticationController.class);
+
 	@PostMapping("/login")
 	public ResponseEntity login(@RequestBody @Valid AuthenticationDTO data,
 								HttpServletResponse response) throws IOException {
@@ -44,7 +46,7 @@ public class AuthenticationController {
 			authenticationManager.authenticate(
 					new UsernamePasswordAuthenticationToken(nickname, data.getPassword()));
 			String token = jwtTokenProvider.createToken(nickname,
-					Arrays.asList(userService.findByNickname(nickname).getRole()));
+					Collections.singletonList(userService.findByNickname(nickname).getRole()));
 			Map<String, String> model = new HashMap<>();
 			model.put("nickname", nickname);
 			model.put("token", token);

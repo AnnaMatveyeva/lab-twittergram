@@ -47,18 +47,21 @@ public class StoryController {
 			return null;
 		}
 	}
+
 	//редактирование историй, маппинг /api/story/{id}
 	@PutMapping("/{id}")
 	public StoryDTO update(@PathVariable Long id,
 						   @RequestBody @Valid StoryDTO storyDTO) {
 		return storyService.update(id, storyDTO);
 	}
+
 	//поставить лайк, маппинг /api/story/like/{id}
 	@PostMapping("/like/{id}")
 	public StoryDTO setLike(@PathVariable Long id, HttpServletRequest request) {
 		return storyService
 				.addLike(id, userService.findByNickname(request.getRemoteUser()).getId());
 	}
+
 	//получение историй по id, маппинг /api/story/{id}
 	@GetMapping("/{id}")
 	public StoryDTO getStoryById(@PathVariable Long id) {
@@ -73,6 +76,7 @@ public class StoryController {
 
 		return storyService.findAll(userId, tag, date, text, pageable, sort);
 	}
+
 	//удаление историй по id, маппинг /api/story/{id}
 	@DeleteMapping("/{id}")
 	public ResponseEntity deleteStory(@PathVariable Long id) {

@@ -1,7 +1,8 @@
 package twittergram.service;
 
 import lombok.SneakyThrows;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import twittergram.exception.FileStorageException;
@@ -12,22 +13,22 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@Slf4j
 @Service
 public class FileService {
 
 	private final Path absolutePath = Paths.get("src/main/resources/uploads/");
+	private static final Logger log = LoggerFactory.getLogger(FileService.class);
 
 	public String uploadFile(MultipartFile file, int imageId, String nickname) {
 		String fileName = String.valueOf(imageId);
 		String resultPath = absolutePath + "\\" + nickname + "\\" + fileName;
-		try(FileOutputStream outputStream = new FileOutputStream(resultPath)) {
+		try (FileOutputStream outputStream = new FileOutputStream(resultPath)) {
 			File filePath = new File(resultPath);
 			if (!filePath.exists()) {
 				filePath.getParentFile().mkdir();
 			}
 			outputStream.write(file.getBytes());
-			log.trace("File was created at " + resultPath);
+			log.debug("File was created at {}", resultPath);
 			return resultPath;
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -39,7 +40,7 @@ public class FileService {
 	@SneakyThrows
 	public void deleteFile(String path) {
 		if (Files.deleteIfExists(Path.of(path))) {
-			log.trace("File with path " + path + " was deleted");
+			log.debug("File with path {} was deleted", path);
 		}
 
 	}

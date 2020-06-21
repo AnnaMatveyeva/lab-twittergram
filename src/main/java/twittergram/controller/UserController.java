@@ -17,8 +17,6 @@ import twittergram.service.UserService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +32,7 @@ public class UserController {
 
 	@PutMapping
 	public UserUpdateDTO updateUser(@RequestBody @Valid UserUpdateDTO userUpdateDTO,
-									HttpServletRequest request)
-			throws IOException {
+									HttpServletRequest request) {
 
 		return userService.update(request.getRemoteUser(), userUpdateDTO.getFirstName(),
 				userUpdateDTO.getLastName());

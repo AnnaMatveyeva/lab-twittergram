@@ -10,6 +10,7 @@ import twittergram.repository.LikeRepository;
 public class LikeService {
 
 	private final LikeRepository likeRepo;
+
 	//метод для добвления Like
 	public Like addLike(Long userId) {
 		Like byUserId = likeRepo.findByUserId(userId);
@@ -20,6 +21,7 @@ public class LikeService {
 		like.setUserId(userId);
 		return likeRepo.save(like);
 	}
+
 	//метод для поиска Like по id владельца
 	public Like findByOwnerId(Long ownerId) {
 		Like byUserId = likeRepo.findByUserId(ownerId);
