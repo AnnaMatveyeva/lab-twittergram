@@ -40,20 +40,7 @@ public class UserController {
 
 	@GetMapping
 	public List<Map<String, String>> findAll() {
-		return userService.findAll().stream()
-				.filter(user -> !user.getRole().getName().contains("ADMIN"))
-				.map(user -> {
-					final Map<String, String> model = new LinkedHashMap<>();
-					model.put("id", user.getId().toString());
-					model.put("nickname", user.getNickname());
-					model.put("email", user.getEmail());
-					model.put("firstName", user.getFirstName());
-					model.put("lastName", user.getLastName());
-					model.put("Num_of_stories", String.valueOf(user.getStories().size()));
-					model.put("Num_of_photos", String.valueOf(user.getPhotos().size()));
-					model.put("isActive", String.valueOf(user.isActive()));
-					return model;
-				}).collect(Collectors.toList());
+		return userService.findAllForAdmin();
 	}
 
 	@DeleteMapping

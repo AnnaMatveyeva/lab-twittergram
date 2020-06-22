@@ -23,10 +23,10 @@ public class PhotoByDistance implements Specification<Photo> {
 	@Override
 	public Predicate toPredicate(Root<Photo> root, CriteriaQuery<?> criteriaQuery,
 								 CriteriaBuilder criteriaBuilder) {
-		if (latitude != null && longitude != null & radius != null) {
+		if (latitude != null && longitude != null && radius != null) {
 
 			Predicate predBetweenLong = criteriaBuilder
-					.between(root.get("longitude"), longitude - radius, latitude + radius);
+					.between(root.get("longitude"), longitude - radius, longitude + radius);
 			Predicate predBetweenLat = criteriaBuilder
 					.between(root.get("latitude"), latitude - radius, latitude + radius);
 			return criteriaBuilder.and(predBetweenLat, predBetweenLong);

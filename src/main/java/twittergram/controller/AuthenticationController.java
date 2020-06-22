@@ -76,9 +76,12 @@ public class AuthenticationController {
 		userService.registrationDTOValidation(userRegistrationDTO);
 		Map<String, String> model = new HashMap<>();
 		User save = userService.save(userRegistrationDTO);
-		log.info("New user was created");
+
+		model.put("id", save.getId().toString());
 		model.put("nickname", save.getNickname());
 		model.put("email", save.getEmail());
+		model.put("firstName", save.getFirstName());
+		model.put("lastName", save.getLastName());
 		return ok(model);
 	}
 

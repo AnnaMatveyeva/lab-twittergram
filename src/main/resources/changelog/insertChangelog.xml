@@ -90,8 +90,7 @@
         <insert tableName="photos">
             <column name="image" value="3"/>
             <column name="description" value="Just beautiful view for you."/>
-            <column name="path"
-                    value="dima\3"/>
+            <column name="path" value="dima\3"/>
             <column name="date" value="2020-06-16"/>
             <column name="user_id" value="4"/>
             <column name="longitude" value="48.57"/>
@@ -208,16 +207,98 @@
         </insert>
     </changeSet>
 
+    <changeSet id="insertTags" author="admin">
+        <insert tableName="tags">
+            <column name="text">MyOpinion</column>
+        </insert>
+        <insert tableName="tags">
+            <column name="text">IMHO</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insertStoriesTags" author="admin">
+        <insert tableName="stories_tags">
+            <column name="story_id">2</column>
+            <column name="tag_id">1</column>
+        </insert>
+        <insert tableName="stories_tags">
+            <column name="story_id">6</column>
+            <column name="tag_id">1</column>
+        </insert>
+        <insert tableName="stories_tags">
+            <column name="story_id">12</column>
+            <column name="tag_id">2</column>
+        </insert>
+
+        <insert tableName="stories_tags">
+            <column name="story_id">3</column>
+            <column name="tag_id">1</column>
+        </insert>
+        <insert tableName="stories_tags">
+            <column name="story_id">5</column>
+            <column name="tag_id">2</column>
+        </insert>
+
+        <insert tableName="stories_tags">
+            <column name="story_id">15</column>
+            <column name="tag_id">1</column>
+        </insert>
+        <insert tableName="stories_tags">
+            <column name="story_id">17</column>
+            <column name="tag_id">2</column>
+        </insert>
+    </changeSet>
+
     <changeSet id="insertLikes" author="admin">
         <insert tableName="likes">
             <column name="user_id">2</column>
         </insert>
+        <insert tableName="likes">
+            <column name="user_id">3</column>
+        </insert>
+        <insert tableName="likes">
+            <column name="user_id">4</column>
+        </insert>
     </changeSet>
+
 
     <changeSet id="insertStoriesLikes" author="admin">
         <insert tableName="stories_likes">
             <column name="story_id">5</column>
             <column name="like_id">1</column>
+        </insert>
+        <insert tableName="stories_likes">
+            <column name="story_id">1</column>
+            <column name="like_id">3</column>
+        </insert>
+        <insert tableName="stories_likes">
+            <column name="story_id">15</column>
+            <column name="like_id">2</column>
+        </insert>
+        <insert tableName="stories_likes">
+            <column name="story_id">10</column>
+            <column name="like_id">1</column>
+        </insert>
+
+        <insert tableName="stories_likes">
+            <column name="story_id">8</column>
+            <column name="like_id">3</column>
+        </insert>
+
+        <insert tableName="stories_likes">
+            <column name="story_id">17</column>
+            <column name="like_id">2</column>
+        </insert>
+    </changeSet>
+
+    <changeSet id="insertPhotosLikes" author="admin">
+        <insert tableName="photos_likes">
+            <column name="photo_id">2</column>
+            <column name="like_id">1</column>
+        </insert>
+        <insert tableName="photos_likes">
+            <column name="photo_id">1</column>
+            <column name="like_id">3</column>
         </insert>
     </changeSet>
 

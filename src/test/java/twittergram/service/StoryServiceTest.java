@@ -18,6 +18,8 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -213,13 +215,4 @@ class StoryServiceTest {
 //        verify(storyRepository).findByLikes_UserId(1L);
 //    }
 
-    @Test
-    void findAll_test() {
-        Story story = new Story();
-        when(storyRepository.findAll(any(Specification.class), any(Sort.class)))
-            .thenReturn(Arrays.asList(story));
-        assertNotNull(storyService.findAll(1L, "tag", "2011-12-03",
-            "text", pageable, sort));
-        verify(storyRepository).findAll(any(Specification.class), any(Sort.class));
-    }
 }

@@ -94,11 +94,12 @@ public class PhotoService {
 		return mapper.toDTO(findById(id));
 	}
 
-	public PhotoDTO addLike(Long photoId, Long likeOwnerId) {
+	public PhotoDTO like(Long photoId, Long likeOwnerId) {
 		Photo photo = findById(photoId);
 		Like like = likeService.addLike(likeOwnerId);
 		if (photo.getLikes().contains(like)) {
-			return mapper.toDTO(photo);
+			photo.getLikes().remove(like);
+			return mapper.toDTO(photoRepo.save(photo));
 		} else {
 			photo.getLikes().add(like);
 			return mapper.toDTO(photoRepo.save(photo));
@@ -134,7 +135,7 @@ public class PhotoService {
 	}
 
 	public Page<PhotoDTO> findAll(Long userId, String tag, String date, Double longitude,
-								  Double latitude, Integer radius, Pageable pageable, Sort sort) {
+								  Double latitude, Integer radius, Pageable pageable) {
 
 		Specification specification = new PhotosWithAuthor(userId).and(new PhotosWithTag(tag))
 				.and(new PhotosWithDate(date))
@@ -142,9 +143,10 @@ public class PhotoService {
 				.and(new PhotoByDistance(longitude, latitude, radius));
 
 		List<PhotoDTO> dtos = new ArrayList<>();
-		for (Object entity : photoRepo.findAll(specification, sort)) {
+		Page all = photoRepo.findAll(specification, pageable);
+		for (Object entity : all) {
 			dtos.add(mapper.toDTO((Photo) entity));
 		}
-		return new PageImpl<PhotoDTO>(dtos, pageable, dtos.size());
+		return new PageImpl<PhotoDTO>(dtos, pageable, all.getTotalElements());
 	}
 }

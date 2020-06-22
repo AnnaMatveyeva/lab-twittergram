@@ -22,6 +22,7 @@ import twittergram.service.specification.StoriesWithText;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -76,11 +77,12 @@ public class StoryService {
 	}
 
 	//метод для добавления к истории
-	public StoryDTO addLike(Long storyId, Long likeOwnerId) {
+	public StoryDTO like(Long storyId, Long likeOwnerId) {
 		Story story = findById(storyId);
 		Like like = likeService.addLike(likeOwnerId);
 		if (story.getLikes().contains(like)) {
-			return mapper.toDTO(story);
+			story.getLikes().remove(like);
+			return mapper.toDTO(storyRepo.save(story));
 		} else {
 			story.getLikes().add(like);
 			return mapper.toDTO(storyRepo.save(story));
@@ -111,14 +113,15 @@ public class StoryService {
 
 	//метод для поиска историй
 	public Page<StoryDTO> findAll(Long userId, String tag, String date, String text,
-								  Pageable pageable, Sort sort) {
+								  Pageable pageable) {
 		Specification specification = new StoriesWithAuthor(userId).and(new StoriesWithTag(tag))
 				.and(new StoriesWithDate(date))
 				.and(new StoriesWithText(text));
 		List<StoryDTO> dtos = new ArrayList<>();
-		for (Object entity : storyRepo.findAll(specification, sort)) {
+		Page all = storyRepo.findAll(specification, pageable);
+		for (Object entity : all) {
 			dtos.add(mapper.toDTO((Story) entity));
 		}
-		return new PageImpl<StoryDTO>(dtos, pageable, dtos.size());
+		return new PageImpl<StoryDTO>(dtos, pageable,all.getTotalElements());
 	}
 }

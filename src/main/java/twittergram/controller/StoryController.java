@@ -59,7 +59,7 @@ public class StoryController {
 	@PostMapping("/like/{id}")
 	public StoryDTO setLike(@PathVariable Long id, HttpServletRequest request) {
 		return storyService
-				.addLike(id, userService.findByNickname(request.getRemoteUser()).getId());
+				.like(id, userService.findByNickname(request.getRemoteUser()).getId());
 	}
 
 	//получение историй по id, маппинг /api/story/{id}
@@ -72,9 +72,9 @@ public class StoryController {
 	@GetMapping
 	public Page<StoryDTO> getStories(@RequestParam(required = false) Long userId,
 									 @RequestParam(required = false) String tag, @RequestParam(required = false) String date,
-									 @RequestParam(required = false) String text, Pageable pageable, Sort sort) {
+									 @RequestParam(required = false) String text, Pageable pageable) {
 
-		return storyService.findAll(userId, tag, date, text, pageable, sort);
+		return storyService.findAll(userId, tag, date, text, pageable);
 	}
 
 	//удаление историй по id, маппинг /api/story/{id}

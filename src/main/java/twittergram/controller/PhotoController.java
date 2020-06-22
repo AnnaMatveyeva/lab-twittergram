@@ -1,7 +1,6 @@
 package twittergram.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -65,7 +64,7 @@ public class PhotoController {
 	@PostMapping("/like/{id}")
 	public PhotoDTO setLike(HttpServletRequest request, @PathVariable Long id) {
 		return photoService
-				.addLike(id, userService.findByNickname(request.getRemoteUser()).getId());
+				.like(id, userService.findByNickname(request.getRemoteUser()).getId());
 	}
 
 	@GetMapping
@@ -73,9 +72,9 @@ public class PhotoController {
 									@RequestParam(required = false) String tag, @RequestParam(required = false) String date,
 									@RequestParam(required = false) Double longitude,
 									@RequestParam(required = false) Double latitude,
-									@RequestParam(required = false) Integer radius, Sort sort, Pageable pageable) {
+									@RequestParam(required = false) Integer radius, Pageable pageable) {
 
-		return photoService.findAll(userId, tag, date, longitude, latitude, radius, pageable, sort);
+		return photoService.findAll(userId, tag, date, longitude, latitude, radius, pageable);
 	}
 
 
