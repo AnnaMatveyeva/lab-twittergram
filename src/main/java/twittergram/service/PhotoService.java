@@ -3,6 +3,7 @@ package twittergram.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import twittergram.entity.Like;
 import twittergram.entity.Photo;
 import twittergram.entity.Tag;
@@ -29,6 +31,7 @@ import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -119,6 +122,16 @@ public class PhotoService {
 			photos.forEach(photo -> photo.getLikes().remove(byOwnerId));
 		}
 		photoRepo.saveAll(photos);
+	}
+
+	public void deleteWithUser(Photo photo,User user) {
+		Optional<Photo> one = photoRepo.findOne(Example.of(photo));
+		Photo photo1 = one.orElseThrow(PhotoNotFoundException::new);
+		if(photo1.getUserId().equals(user.getId()) || user.getRole().getName().equals("ROLE_ADMIN")){
+			photoRepo.delete(photo);
+			fileService.deleteFile(photo.getPath());
+		}else throw new UnsupportedOperationException("You don't have permissions to delete this photo");
+
 	}
 
 	public void delete(Photo photo) {

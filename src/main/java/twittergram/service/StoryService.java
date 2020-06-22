@@ -1,16 +1,17 @@
 package twittergram.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import twittergram.entity.Like;
 import twittergram.entity.Story;
 import twittergram.entity.Tag;
+import twittergram.entity.User;
 import twittergram.exception.StoryNotFoundException;
 import twittergram.model.StoryDTO;
 import twittergram.repository.StoryRepository;
@@ -22,8 +23,8 @@ import twittergram.service.specification.StoriesWithText;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -107,6 +108,15 @@ public class StoryService {
 	}
 
 	//метод для удаления историй
+	public void deleteWithUser(Story story, User user) {
+		Optional<Story> one = storyRepo.findOne(Example.of(story));
+		Story found = one.orElseThrow(StoryNotFoundException::new);
+		if (found.getUserId().equals(user.getId()) || user.getRole().getName().equals("ROLE_ADMIN")) {
+			storyRepo.delete(story);
+		} else throw new UnsupportedOperationException("You don't have permissions to delete this story");
+
+	}
+
 	public void delete(Story story) {
 		storyRepo.delete(story);
 	}
@@ -122,6 +132,6 @@ public class StoryService {
 		for (Object entity : all) {
 			dtos.add(mapper.toDTO((Story) entity));
 		}
-		return new PageImpl<StoryDTO>(dtos, pageable,all.getTotalElements());
+		return new PageImpl<StoryDTO>(dtos, pageable, all.getTotalElements());
 	}
 }

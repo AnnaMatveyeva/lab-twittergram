@@ -79,8 +79,8 @@ public class PhotoController {
 
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity deletePhoto(@PathVariable Long id) {
-		photoService.delete(photoService.findById(id));
+	public ResponseEntity deletePhoto(@PathVariable Long id, HttpServletRequest request) {
+		photoService.deleteWithUser(photoService.findById(id), userService.findByNickname(request.getRemoteUser()));
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 

@@ -3,7 +3,6 @@ package twittergram.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -79,8 +78,8 @@ public class StoryController {
 
 	//удаление историй по id, маппинг /api/story/{id}
 	@DeleteMapping("/{id}")
-	public ResponseEntity deleteStory(@PathVariable Long id) {
-		storyService.delete(storyService.findById(id));
+	public ResponseEntity deleteStory(@PathVariable Long id, HttpServletRequest request) {
+		storyService.deleteWithUser(storyService.findById(id), userService.findByNickname(request.getRemoteUser()));
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 }
